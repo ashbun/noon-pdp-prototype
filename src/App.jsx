@@ -71,8 +71,8 @@ const PAB_PRODUCTS = [
   { id: 'p1', img: '/pab-powerbank.png', fit: 'cover', title: 'Anker magnetic power bank for easy and fast charging', price: '160', was: '453' },
   { id: 'p2', img: '/pab-anker737.png', fit: 'contain', title: 'Anker 737 Power Bank (PowerCore 24K3), 24,000mAh 3-Port Portable Charger with 140W Output, Smart Digital Display', price: '325', was: '1399' },
   { id: 'p3', img: '/pab-ugreen.png', fit: 'cover', title: '60W USB Type C Cable Nylon Braided USB C to USB C 2.0 Cable (C to C) Compatible For iPhone', price: '35', was: '1399' },
-  { id: 'p4', img: '/pab-wallcharger.jpg', fit: 'contain', title: 'Anker 96W USB-C Wall Charger with 2m Charge Cable, GaN Fast Charging for MacBook & iPhone', price: '129', was: '299' },
-  { id: 'p5', img: '/pab-usbc-cable.jpg', fit: 'cover', title: 'Anker 100W USB-C to USB-C Fast Charging Cable, 2m Braided Nylon Cord', price: '29', was: '79' },
+  { id: 'p4', img: '/pab-wallcharger.jpg', fit: 'contain', title: 'Anker 96W USB-C Wall Charger with 2m Charge Cable, GaN Fast Charging for MacBook & iPhone', price: '129', was: '299', noAd: true },
+  { id: 'p5', img: '/pab-usbc-cable.jpg', fit: 'cover', title: 'Anker 100W USB-C to USB-C Fast Charging Cable, 2m Braided Nylon Cord', price: '29', was: '79', noAd: true },
 ]
 
 function CartSheet({ open, onClose, onCheckout }) {
@@ -114,32 +114,34 @@ function CartSheet({ open, onClose, onCheckout }) {
   )
 }
 
+const TRASH_D = 'M10.5615 2.3125H13.4385C14.6735 2.3125 15.7465 3.1503 16.0459 4.34863L16.5254 6.26758L16.5371 6.31543H19.9053C19.9379 6.31418 19.969 6.3125 20 6.3125C20.3792 6.3125 20.6875 6.62174 20.6875 7.00098L20.6738 7.13965C20.6097 7.45275 20.3319 7.68848 20 7.68848H19.9492C19.2497 7.71604 18.6875 8.29265 18.6875 8.99902V17.999C18.6874 20.0319 17.0329 21.6865 15 21.6865H9C6.96711 21.6865 5.31265 20.0319 5.3125 17.999V8.99902C5.3125 8.29265 4.75025 7.71604 4.05078 7.68848H4C3.62077 7.68848 3.3125 7.38021 3.3125 7.00098V7C3.3125 6.62077 3.62077 6.3125 4 6.3125C4.01471 6.3125 4.02962 6.31285 4.0459 6.31348C4.06195 6.31409 4.08 6.31543 4.09766 6.31543H7.46289L7.47461 6.26758L7.9541 4.34863C8.23477 3.22396 9.19536 2.41847 10.332 2.32227L10.5615 2.3125ZM6.39453 7.78125C6.58134 8.14768 6.6875 8.56161 6.6875 9V18C6.6875 19.2758 7.72423 20.3125 9 20.3125H15C16.2745 20.3125 17.3125 19.2758 17.3125 18V9.0625H17.3135V9C17.3135 8.56166 17.4197 8.14765 17.6064 7.78125L17.6533 7.69043H6.34766L6.39453 7.78125ZM10 10.3125C10.3792 10.3125 10.6875 10.6208 10.6875 11V17C10.6875 17.3792 10.3792 17.6875 10 17.6875C9.62077 17.6875 9.3125 17.3792 9.3125 17V11C9.3125 10.6208 9.62077 10.3125 10 10.3125ZM14 10.3125C14.3792 10.3125 14.6875 10.6208 14.6875 11V17C14.6875 17.3792 14.3792 17.6875 14 17.6875C13.6208 17.6875 13.3125 17.3792 13.3125 17V11C13.3125 10.6208 13.6208 10.3125 14 10.3125ZM10.5615 3.6875C9.95782 3.6875 9.43377 4.09726 9.28809 4.68262L8.87988 6.31543H15.1201L14.7119 4.68262C14.5662 4.09726 14.0422 3.6875 13.4385 3.6875H10.5615Z'
+
 function PabCard({ p, qty, onChange }) {
   return (
     <div className="pab-card">
       <div className="pab-img">
         <img className="pab-photo" src={p.img} alt={p.title} style={{ objectFit: p.fit }} />
         <button className="pab-wish" aria-label="Wishlist">
-          <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="1.8" d="M12 20s-7-4.4-7-9.5A3.5 3.5 0 0 1 12 7a3.5 3.5 0 0 1 7 3.5C19 15.6 12 20 12 20z"/></svg>
+          <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden><path fill="#fff" stroke="#475067" strokeLinecap="round" strokeLinejoin="round" d="M14 6C14 4.34315 12.6009 3 10.875 3C9.58459 3 8.47685 3.75085 8 4.82228C7.52315 3.75085 6.41541 3 5.125 3C3.39911 3 2 4.34315 2 6C2 10.8137 8 14 8 14C8 14 14 10.8137 14 6Z"/></svg>
         </button>
-        <span className="pab-ad">Ad</span>
+        {!p.noAd && <span className="pab-ad">Ad</span>}
         <div className="pab-dots"><span /><span className="on" /><span /><span /></div>
         {qty === 0 ? (
           <button className="pab-atc" aria-label="Add to cart" onClick={() => onChange(1)}>
-            <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" d="M12 5v14M5 12h14"/></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="#101628" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" d="M12 4.5V19.5M19.5 12L4.5 12"/></svg>
           </button>
         ) : (
           <div className="pab-stepper" onClick={(e) => e.stopPropagation()}>
             <button aria-label={qty === 1 ? 'Remove' : 'Decrease'} onClick={() => onChange(-1)}>
               {qty === 1 ? (
-                <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2m2 0-1 13a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1L6 7"/></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden><path fill="#fff" d={TRASH_D}/></svg>
               ) : (
-                <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" d="M5 12h14"/></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" d="M19.5 12L4.5 12"/></svg>
               )}
             </button>
             <span>{qty}</span>
             <button aria-label="Increase" onClick={() => onChange(1)}>
-              <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" d="M12 5v14M5 12h14"/></svg>
+              <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" d="M12 4.5V19.5M19.5 12L4.5 12"/></svg>
             </button>
           </div>
         )}
@@ -150,10 +152,7 @@ function PabCard({ p, qty, onChange }) {
           <span className="pab-now"><Dh />{p.price}</span>
           <span className="pab-was"><Dh />{p.was}</span>
         </div>
-        <div className="pab-eta">
-          <span className="express-pill">express</span>
-          <span className="pab-eta-flag">Today</span>
-        </div>
+        <img className="pab-eta-img" src="/icons/express-today.svg" alt="express Today" width="122" height="18" />
       </div>
     </div>
   )
