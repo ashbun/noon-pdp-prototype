@@ -203,20 +203,18 @@ function Checkout({ onBack, cartQty = {} }) {
 
   // Pricing is derived from the products currently in the cart.
   const fmt = (n) => n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+  const fmtInt = (n) => Math.round(n).toLocaleString('en-US')
   const totalWas = items.reduce((s, it) => s + Number(it.was) * (qtys[it.id] || 1), 0)
   const totalNow = items.reduce((s, it) => s + Number(it.now) * (qtys[it.id] || 1), 0)
   const itemCount = items.reduce((s, it) => s + (qtys[it.id] || 1), 0)
 
   // Price-breakup line items — single source of truth shared with the PriceSheet.
   const breakup = { deliveryFee: 7, couponDiscount: 7, couponCashback: 30, cardCashback: 45 }
-  // "saved" banner is calculated from the breakup: product discount + every
-  // saving/benefit line shown in the payment-summary sheet.
-  const savings =
-    (totalWas - totalNow) +
-    breakup.deliveryFee +
-    breakup.couponDiscount +
-    breakup.couponCashback +
-    breakup.cardCashback
+  // "saved" banner = the discount off MRP (subtotal was → now) plus the coupon
+  // discount line from the breakup. Cashback is a reward credited later, not a
+  // price reduction, so it's excluded — this keeps the saved amount below the
+  // total you actually pay.
+  const savings = (totalWas - totalNow) + breakup.couponDiscount
 
   return (
     <div className="co">
@@ -368,7 +366,7 @@ function Checkout({ onBack, cartQty = {} }) {
           <div className="co-saved-banner">
             <img className="co-saved-wave" src="/icons/save-wave.svg" alt="" />
             <div className="co-saved-label">
-              <span className="co-saved-txt"><b><Dh />{fmt(savings)}</b> saved!</span>
+              <span className="co-saved-txt"><b><Dh />{fmtInt(savings)}</b> saved!</span>
               <img className="co-saved-one" src="/icons/save-one.png" alt="noon One" />
             </div>
           </div>
