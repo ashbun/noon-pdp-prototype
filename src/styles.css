@@ -115,7 +115,7 @@ input, button, textarea, select { font-family: inherit; }
   background: #16171c; color: #fff; font-size: 12px; font-weight: 600;
   padding: 6px 12px; border-radius: 8px;
 }
-.gallery-dots { position: absolute; left: 50%; bottom: 26px; transform: translateX(-50%); display: flex; gap: 5px; }
+.gallery-dots { position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%); display: flex; gap: 5px; }
 .gallery-dots .dot { width: 6px; height: 6px; border-radius: 50%; background: #c4c9d2; }
 .gallery-dots .dot.on { width: 16px; border-radius: 3px; background: var(--ink); }
 .gallery-360 {
@@ -216,7 +216,7 @@ input, button, textarea, select { font-family: inherit; }
 .pab-stepper {
   position: absolute; right: 6px; bottom: 6px; height: 32px;
   display: flex; align-items: center; gap: 4px; padding: 4px;
-  background: var(--blue-600); border-radius: 8px;
+  background: var(--blue2); border-radius: 8px;
 }
 .pab-stepper button { width: 24px; height: 24px; border: 0; background: none; color: #fff; display: grid; place-items: center; padding: 0; cursor: pointer; }
 .pab-stepper span { width: 24px; text-align: center; font-size: 18px; font-weight: 500; color: #fff; line-height: 24px; }
@@ -338,7 +338,7 @@ input, button, textarea, select { font-family: inherit; }
   border: 1px solid var(--line); border-radius: 10px; padding: 12px;
   font-size: 14px; color: var(--ink);
 }
-.delivery-express b { font-weight: 700; }
+.delivery-express b { font-weight: 600; }
 .express-pill { background: var(--yellow); color: #16171c; font-size: 12px; font-weight: 900; font-style: italic; padding: 3px 8px; border-radius: 4px; }
 
 .row-item {
@@ -349,13 +349,14 @@ input, button, textarea, select { font-family: inherit; }
 .other-delivery > span { flex: 1; }
 
 /* --------------------------- Trustmarkers --------------------------- */
-.trust-row { display: flex; align-items: stretch; padding: 16px 12px; }
-.trust-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; }
-.trust-ico {
-  width: 40px; height: 40px; border-radius: 10px; background: var(--blue-tint);
-  color: var(--blue); display: grid; place-items: center;
+.trust-row { display: flex; align-items: stretch; gap: 8px; padding: 12px; }
+.trust-col {
+  flex: 1; height: 80px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  background: var(--white); border: 1px solid var(--line-2); border-radius: 12px; padding: 14px 8px;
 }
-.trust-label { display: flex; flex-direction: column; align-items: center; font-size: 13px; font-weight: 600; color: var(--ink); line-height: 1.25; text-align: center; }
+.trust-ico { width: 20px; height: 20px; display: block; }
+.trust-label { display: flex; flex-direction: column; align-items: center; font-size: 12px; font-weight: 600; color: var(--ink); line-height: 14px; letter-spacing: -0.12px; text-align: center; }
 
 /* --------------------------- Product details --------------------------- */
 .section-h { margin: 0 0 14px; font-size: 16px; font-weight: 700; color: var(--ink); }
@@ -442,7 +443,7 @@ input, button, textarea, select { font-family: inherit; }
 .co-now { font-size: 16px; font-weight: 700; color: var(--ink); }
 .co-was { font-size: 12px; font-weight: 400; color: #666d85; text-decoration: line-through; }
 .co-off { font-size: 12px; font-weight: 600; color: #1f7a74; }
-.co-item-eta { background: linear-gradient(90deg, #fdf9c4, #ffffff); padding: 4px 6px; border-radius: 6px; font-size: 13px; line-height: 18px; color: var(--ink); }
+.co-item-eta { background: linear-gradient(90deg, #fdf9c4, #ffffff); padding: 3px 6px; border-radius: 6px; font-size: 13px; line-height: 18px; color: var(--ink); }
 .co-item-eta b { font-weight: 700; }
 .co-item-tertiary { display: flex; flex-direction: column; gap: 4px; }
 .co-item-point { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #666d85; }
@@ -458,41 +459,51 @@ input, button, textarea, select { font-family: inherit; }
 .co-add-btn { border: 1px solid var(--blue-600); background: none; color: var(--blue-600); font-size: 13px; font-weight: 700; padding: 6px 14px; border-radius: 8px; cursor: pointer; }
 
 .co-card { background: var(--white); border-radius: 16px; padding: 16px; }
-.co-card.co-coupon { padding: 12px; }
-.co-coupon-head { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 12px; }
-.co-coupon-input { display: flex; align-items: center; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
-.co-coupon-input input { flex: 1; border: 0; outline: 0; padding: 12px 14px; font-size: 13px; color: var(--ink); background: none; }
-.co-coupon-input input::placeholder { color: var(--ink-500); }
-.co-coupon-input button { border: 0; background: none; color: var(--ink-500); font-size: 13px; font-weight: 700; padding: 0 14px; cursor: pointer; }
-.co-coupon-all { display: flex; align-items: center; gap: 10px; width: 100%; border: 0; background: none; padding: 14px 0 0; margin-top: 12px; border-top: 1px solid var(--line-2); cursor: pointer; font-size: 13px; font-weight: 600; color: var(--blue-600); }
-.co-coupon-all > span:nth-child(2) { flex: 1; text-align: left; }
-.co-coupon-ico { color: var(--blue-600); display: grid; place-items: center; }
+.co-card.co-coupon { padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; }
+.co-card.co-savings { padding: 12px; display: flex; flex-direction: column; gap: 12px; }
+.co-savings .section-h { margin: 0; }
+.co-coupon-head { font-size: 16px; font-weight: 700; line-height: 20px; color: #0e0e0e; letter-spacing: -0.16px; margin: 0 0 2px; }
+.co-coupon-input { display: flex; align-items: center; gap: 10px; height: 56px; background: var(--surface); border-radius: 12px; padding: 12px; overflow: hidden; }
+.co-coupon-input input { flex: 1; min-width: 0; border: 0; outline: 0; padding: 0; font-size: 13px; color: var(--ink); background: none; letter-spacing: -0.26px; }
+.co-coupon-input input::placeholder { color: var(--ink-600); }
+.co-coupon-input button { border: 0; background: none; color: var(--ink-500); font-size: 12px; font-weight: 500; padding: 0; cursor: pointer; letter-spacing: 0.12px; }
+.co-coupon-div { align-self: center; width: 100%; height: 1px; background: var(--line); margin: 4px 0; }
+.co-coupon-all { display: flex; align-items: center; gap: 8px; width: 100%; border: 0; background: none; padding: 4px 0; cursor: pointer; font-size: 14px; font-weight: 600; color: #0e0e0e; }
+.co-coupon-all > span:nth-child(2) { flex: 1; text-align: left; line-height: 18px; letter-spacing: -0.14px; }
+.co-coupon-ico { flex: 0 0 auto; width: 32px; height: 32px; border-radius: 50%; background: var(--blue-tint); color: var(--blue-600); display: grid; place-items: center; }
+.co-coupon-ico .i-coupon { width: 19px; height: 19px; }
 .co-coupon-all .row-chev { color: var(--ink-600); }
 
-.co-inst-row { display: flex; gap: 8px; margin-bottom: 12px; }
-.co-inst { flex: 1; border: 1px solid var(--line); border-radius: 12px; padding: 10px 8px; display: flex; flex-direction: column; align-items: flex-start; gap: 3px; }
-.co-inst-brand { font-size: 14px; font-weight: 800; font-style: italic; }
-.co-inst-brand.tabby { color: #3bebb7; }
-.co-inst-brand.tamara { color: #ff4f9a; }
-.co-inst-bank { color: var(--blue-600); display: grid; place-items: center; height: 20px; }
-.co-inst-amt { font-size: 13px; font-weight: 700; color: var(--ink); }
-.co-inst-sub { font-size: 11px; color: var(--ink-600); }
-.co-cashback { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-top: 1px solid var(--line-2); }
-.co-cc { flex: 0 0 auto; width: 40px; height: 26px; border-radius: 4px; background: var(--yellow); display: grid; place-items: center; }
-.co-cc-noon { font-size: 11px; font-weight: 900; color: #16171c; }
-.co-cashback-txt { flex: 1; font-size: 12px; color: var(--ink-800); line-height: 16px; }
-.co-cashback-txt b { font-weight: 700; }
-.co-cashback-apply { border: 0; background: none; color: var(--blue-600); font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 2px; cursor: pointer; flex: 0 0 auto; }
-.co-cashback-apply .row-chev { color: var(--blue-600); }
+.co-inst-wrap { display: flex; flex-direction: column; gap: 8px; }
+.co-inst-row { display: flex; gap: 8px; }
+.co-inst { flex: 1; min-width: 0; background: var(--surface); border-radius: 12px; padding: 8px; display: flex; flex-direction: column; gap: 8px; }
+.co-inst-top { display: flex; align-items: center; justify-content: space-between; }
+.co-inst-logo { width: 38px; height: 24px; object-fit: contain; border-radius: 2px; display: block; }
+.co-inst-chev { width: 16px; height: 16px; color: var(--ink-600); flex: 0 0 auto; }
+.co-inst-det { display: flex; flex-direction: column; gap: 2px; }
+.co-inst-amt { font-size: 12px; font-weight: 500; line-height: 14px; color: var(--ink); letter-spacing: -0.12px; }
+.co-inst-bank-lbl { line-height: 14px; }
+.co-inst-sub { font-size: 11px; font-weight: 600; line-height: 14px; color: var(--emerald-800); letter-spacing: -0.12px; }
+.co-cashback-list { display: flex; flex-direction: column; gap: 8px; }
+.co-cashback { display: flex; align-items: center; gap: 8px; background: var(--surface); border-radius: 12px; padding: 8px; }
+.co-cc-card { flex: 0 0 auto; width: 54px; height: 34px; object-fit: cover; border-radius: 4px; display: block; }
+.co-cashback-txt { flex: 1; min-width: 0; font-size: 12px; font-weight: 500; color: var(--ink-700); line-height: 18px; letter-spacing: -0.12px; }
+.co-cashback-txt b { font-weight: 700; color: #1d2539; }
+.co-cashback-apply { border: 0; background: none; color: var(--blue); font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 2px; cursor: pointer; flex: 0 0 auto; padding-right: 4px; letter-spacing: -0.14px; }
+.co-cashback-apply .co-inst-chev { color: var(--blue); }
 
-.co-footer { flex: 0 0 auto; background: var(--white); border-top: 1px solid var(--line-2); padding: 4px 14px 8px; }
-.co-saved { margin-bottom: 6px; }
-.co-saved-pill { display: inline-flex; align-items: center; gap: 4px; background: #eafaef; color: var(--green); font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 6px; }
-.co-footer-row { display: flex; align-items: center; gap: 20px; }
-.co-total { display: flex; flex-direction: column; }
-.co-total-label { font-size: 12px; color: var(--ink-600); }
-.co-total-val { font-size: 18px; font-weight: 700; color: var(--ink); }
-.co-checkout-btn { flex: 1; }
+.co-footer { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-start; }
+.co-saved-banner { position: relative; width: 239px; height: 48px; margin-bottom: -16px; }
+.co-saved-wave { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.co-saved-label { position: absolute; left: 12px; top: 4px; display: flex; align-items: center; gap: 8px; padding: 2px 4px; }
+.co-saved-txt { font-size: 14px; font-weight: 400; line-height: 18px; color: var(--emerald); letter-spacing: -0.14px; white-space: nowrap; }
+.co-saved-txt b { font-weight: 600; }
+.co-saved-one { height: 14px; width: auto; display: block; }
+.co-footer-bar { position: relative; z-index: 2; width: 100%; background: var(--white); box-shadow: 0 -4px 10px rgba(0,0,0,0.08); display: flex; align-items: center; gap: 12px; height: 72px; padding: 10px 12px; border-radius: 12px 12px 0 0; }
+.co-total { display: flex; flex-direction: column; gap: 4px; padding-left: 4px; }
+.co-total-label { font-size: 12px; font-weight: 500; line-height: 14px; color: var(--ink-600); letter-spacing: -0.12px; }
+.co-total-val { font-size: 20px; font-weight: 700; line-height: 24px; color: #0e0e0e; letter-spacing: -0.2px; text-decoration: underline dotted; text-underline-position: from-font; }
+.co-checkout-btn { flex: 1; height: 52px; border: 0; border-radius: 12px; background: var(--blue); color: var(--white); font-size: 17px; font-weight: 600; letter-spacing: -0.26px; cursor: pointer; }
 
 .co-tabs { flex: 0 0 auto; display: flex; background: var(--white); border-top: 1px solid var(--line-2); padding: 6px 4px calc(6px + env(safe-area-inset-bottom)); }
 .co-tab { flex: 1; border: 0; background: none; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 4px 0; color: var(--ink-500); font-size: 10px; cursor: pointer; }

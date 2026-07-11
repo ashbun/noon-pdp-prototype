@@ -26,9 +26,7 @@ function PDP() {
   const [view, setView] = useState('pdp')
   const [cartQty, setCartQty] = useState({})
 
-  const hasAddedItems = Object.values(cartQty).some((q) => q > 0)
-
-  if (view === 'checkout') return <Checkout onBack={() => setView('pdp')} showSecond={hasAddedItems} />
+  if (view === 'checkout') return <Checkout onBack={() => setView('pdp')} cartQty={cartQty} />
 
   return (
     <div className="pdp">
@@ -178,10 +176,29 @@ const CHECKOUT_ITEMS = [
   },
 ]
 
-function Checkout({ onBack, showSecond }) {
-  const [qtys, setQtys] = useState({ c1: 1, c2: 1 })
-  const step = (id, d) => setQtys((p) => ({ ...p, [id]: Math.max(1, (p[id] || 1) + d) }))
-  const items = showSecond ? CHECKOUT_ITEMS : CHECKOUT_ITEMS.slice(0, 1)
+function Checkout({ onBack, cartQty = {} }) {
+  // The PDP product is always in the cart; anything added from the bottom
+  // sheet (qty > 0) is reflected here as its own line item.
+  const addedItems = PAB_PRODUCTS
+    .filter((p) => (cartQty[p.id] || 0) > 0)
+    .map((p) => ({
+      id: p.id, img: p.img, fit: p.fit, title: p.title,
+      now: p.price, was: p.was,
+      off: `${Math.round((1 - Number(p.price) / Number(p.was)) * 100)}% OFF`,
+      date: '7th Sep, Saturday',
+    }))
+  const [items, setItems] = useState(() => [CHECKOUT_ITEMS[0], ...addedItems])
+  const [qtys, setQtys] = useState(() => {
+    const init = { [CHECKOUT_ITEMS[0].id]: 1 }
+    addedItems.forEach((it) => { init[it.id] = cartQty[it.id] || 1 })
+    return init
+  })
+  const removeItem = (id) => setItems((prev) => prev.filter((it) => it.id !== id))
+  const step = (id, d) => {
+    // Stepping below 1 removes the line item from the cart.
+    if (d < 0 && (qtys[id] || 1) <= 1) { removeItem(id); return }
+    setQtys((p) => ({ ...p, [id]: Math.max(1, (p[id] || 1) + d) }))
+  }
 
   return (
     <div className="co">
@@ -219,7 +236,11 @@ function Checkout({ onBack, showSecond }) {
                 </div>
                 <div className="co-item-step">
                   <button aria-label={qtys[it.id] === 1 ? 'Remove' : 'Decrease'} onClick={() => step(it.id, -1)}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" d="M5 12h14"/></svg>
+                    {qtys[it.id] === 1 ? (
+                      <svg width="15" height="16" viewBox="0 0 17.5 19.4987" aria-hidden><path fill="currentColor" d={TRASH_D}/></svg>
+                    ) : (
+                      <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" d="M5 12h14"/></svg>
+                    )}
                   </button>
                   <span>{qtys[it.id]}</span>
                   <button aria-label="Increase" onClick={() => step(it.id, 1)}>
@@ -269,6 +290,7 @@ function Checkout({ onBack, showSecond }) {
             <input placeholder="Enter your coupon code here" />
             <button>APPLY</button>
           </div>
+          <div className="co-coupon-div" />
           <button className="co-coupon-all">
             <span className="co-coupon-ico"><CouponIcon /></span>
             <span>View all coupons &amp; offers</span>
@@ -278,41 +300,65 @@ function Checkout({ onBack, showSecond }) {
 
         <div className="co-card co-savings">
           <h3 className="section-h">Savings &amp; benefits</h3>
-          <div className="co-inst-row">
-            <div className="co-inst">
-              <span className="co-inst-brand tabby">tabby</span>
-              <span className="co-inst-amt"><Dh />375 &times; 4</span>
-              <span className="co-inst-sub">0% Installments</span>
+          <div className="co-inst-wrap">
+            <div className="co-inst-row">
+              <div className="co-inst">
+                <div className="co-inst-top">
+                  <img className="co-inst-logo" src="/icons/save-tabby.png" alt="tabby" />
+                  <Chev className="co-inst-chev" />
+                </div>
+                <div className="co-inst-det">
+                  <span className="co-inst-amt"><Dh />375 &times; 4</span>
+                  <span className="co-inst-sub">0% Installments</span>
+                </div>
+              </div>
+              <div className="co-inst">
+                <div className="co-inst-top">
+                  <img className="co-inst-logo" src="/icons/save-tamara.png" alt="tamara" />
+                  <Chev className="co-inst-chev" />
+                </div>
+                <div className="co-inst-det">
+                  <span className="co-inst-amt"><Dh />375 &times; 4</span>
+                  <span className="co-inst-sub">0% Installments</span>
+                </div>
+              </div>
+              <div className="co-inst">
+                <div className="co-inst-top">
+                  <img className="co-inst-logo" src="/icons/save-bank.png" alt="Bank Installments" />
+                  <Chev className="co-inst-chev" />
+                </div>
+                <div className="co-inst-det">
+                  <span className="co-inst-amt co-inst-bank-lbl">Bank<br />Installments</span>
+                </div>
+              </div>
             </div>
-            <div className="co-inst">
-              <span className="co-inst-brand tamara">tamara</span>
-              <span className="co-inst-amt"><Dh />375 &times; 3</span>
-              <span className="co-inst-sub">0% Installments</span>
-            </div>
-            <div className="co-inst">
-              <span className="co-inst-bank">
-                <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" d="M3 10 12 4l9 6M5 10v9h14v-9M9 19v-5h6v5"/></svg>
-              </span>
-              <span className="co-inst-sub">Bank Installments</span>
+            <div className="co-cashback-list">
+              {['/icons/save-noon-yellow.png', '/icons/save-noon-dark.png'].map((src) => (
+                <div className="co-cashback" key={src}>
+                  <img className="co-cc-card" src={src} alt="noon One credit card" />
+                  <span className="co-cashback-txt">Earn <b><Dh />105 cashback</b> with the noon One credit card.</span>
+                  <button className="co-cashback-apply">Apply <Chev className="co-inst-chev" /></button>
+                </div>
+              ))}
             </div>
           </div>
-          {[0, 1].map((i) => (
-            <div className="co-cashback" key={i}>
-              <span className="co-cc"><span className="co-cc-noon">noon</span></span>
-              <span className="co-cashback-txt">Earn <b><Dh />105 cashback</b> with the noon One credit card.</span>
-              <button className="co-cashback-apply">Apply <Chev className="row-chev" /></button>
-            </div>
-          ))}
         </div>
       </div>
 
       <div className="co-footer">
-        <div className="co-footer-row">
+        <div className="co-saved-banner">
+          <img className="co-saved-wave" src="/icons/save-wave.svg" alt="" />
+          <div className="co-saved-label">
+            <span className="co-saved-txt"><b><Dh />130</b> saved!</span>
+            <img className="co-saved-one" src="/icons/save-one.png" alt="noon One" />
+          </div>
+        </div>
+        <div className="co-footer-bar">
           <div className="co-total">
             <span className="co-total-label">Total</span>
-            <span className="co-total-val"><Dh />1,760.00</span>
+            <span className="co-total-val"><Dh /> 1,760.00</span>
           </div>
-          <button className="cta add-cart co-checkout-btn">Checkout</button>
+          <button className="co-checkout-btn">Checkout</button>
         </div>
       </div>
 
@@ -476,17 +522,15 @@ function Delivery() {
 /* ------------------------------- Trustmarkers ------------------------------ */
 function Trustmarkers() {
   const items = [
-    { label: 'High\nRated', icon: <path fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" d="M12 3l2.5 5 5.5.8-4 3.9.9 5.5L12 21.6 7.1 18.2l.9-5.5-4-3.9L9.5 8z"/> },
-    { label: 'Low & Easy\nReturns', icon: <><path fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" d="M3 12a9 9 0 1 1 3 6.7"/><path fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" d="M3 20v-4h4"/></> },
-    { label: 'Secure\nTransactions', icon: <path fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" d="M12 3l7 3v5c0 4.4-3 8.3-7 9.5C8 19.3 5 15.4 5 11V6z"/> },
+    { label: 'High\nRated', icon: '/icons/trust-return.svg' },
+    { label: 'Low & Easy\nReturns', icon: '/icons/trust-verified.svg' },
+    { label: 'Secure\nTransactions', icon: '/icons/trust-support.svg' },
   ]
   return (
     <section className="card trust-row">
       {items.map((it) => (
         <div className="trust-col" key={it.label}>
-          <span className="trust-ico">
-            <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden>{it.icon}</svg>
-          </span>
+          <img className="trust-ico" src={it.icon} alt="" width="20" height="20" />
           <span className="trust-label">{it.label.split('\n').map((l, i) => <span key={i}>{l}</span>)}</span>
         </div>
       ))}
