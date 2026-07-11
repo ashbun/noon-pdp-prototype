@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { useRef, useState } from 'react'
+import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
 import { Retune } from 'retune'
 
 const MOTION = { type: 'tween', ease: 'linear', duration: 0.18 }
@@ -26,13 +26,20 @@ function PDP() {
   const [view, setView] = useState('pdp')
   const [cartQty, setCartQty] = useState({})
 
+  // Scroll-linked gallery: the product image shrinks as the page scrolls,
+  // so the content sliding over the pinned gallery feels more interactive.
+  const scrollRef = useRef(null)
+  const { scrollY } = useScroll({ container: scrollRef })
+  const imgScale = useTransform(scrollY, [0, 320], [1, 0.62], { clamp: true })
+  const imgOpacity = useTransform(scrollY, [0, 260, 400], [1, 1, 0.35], { clamp: true })
+
   if (view === 'checkout') return <Checkout onBack={() => setView('pdp')} cartQty={cartQty} />
 
   return (
     <div className="pdp">
       <StatusBar />
-      <div className="pdp-scroll">
-        <Gallery />
+      <div className="pdp-scroll" ref={scrollRef}>
+        <Gallery imgScale={imgScale} imgOpacity={imgOpacity} />
         <div className="pdp-sections">
           <MainInfo />
           <Delivery />
@@ -487,10 +494,15 @@ function StatusBar() {
 }
 
 /* --------------------------------- Gallery --------------------------------- */
-function Gallery() {
+function Gallery({ imgScale, imgOpacity }) {
   return (
     <div className="gallery">
-      <img className="gallery-img" src="/anker-charger.png" alt="Anker 737 GaN USB-C charger" />
+      <motion.img
+        className="gallery-img"
+        style={{ scale: imgScale, opacity: imgOpacity }}
+        src="/anker-charger.png"
+        alt="Anker 737 GaN USB-C charger"
+      />
       <div className="gallery-dots">
         <span className="dot on" /><span className="dot" /><span className="dot" />
       </div>
