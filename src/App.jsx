@@ -205,8 +205,18 @@ function Checkout({ onBack, cartQty = {} }) {
   const fmt = (n) => n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
   const totalWas = items.reduce((s, it) => s + Number(it.was) * (qtys[it.id] || 1), 0)
   const totalNow = items.reduce((s, it) => s + Number(it.now) * (qtys[it.id] || 1), 0)
-  const savings = totalWas - totalNow
   const itemCount = items.reduce((s, it) => s + (qtys[it.id] || 1), 0)
+
+  // Price-breakup line items — single source of truth shared with the PriceSheet.
+  const breakup = { deliveryFee: 7, couponDiscount: 7, couponCashback: 30, cardCashback: 45 }
+  // "saved" banner is calculated from the breakup: product discount + every
+  // saving/benefit line shown in the payment-summary sheet.
+  const savings =
+    (totalWas - totalNow) +
+    breakup.deliveryFee +
+    breakup.couponDiscount +
+    breakup.couponCashback +
+    breakup.cardCashback
 
   return (
     <div className="co">
@@ -380,6 +390,7 @@ function Checkout({ onBack, cartQty = {} }) {
           totalWas={totalWas}
           totalNow={totalNow}
           savings={savings}
+          breakup={breakup}
         />
       )}
 
@@ -406,7 +417,7 @@ function Checkout({ onBack, cartQty = {} }) {
 }
 
 /* ------------------------- Checkout price-breakup sheet ------------------------ */
-function PriceSheet({ onClose, fmt, itemCount, totalWas, totalNow, savings }) {
+function PriceSheet({ onClose, fmt, itemCount, totalWas, totalNow, savings, breakup }) {
   return (
     <div className="ps-overlay" onClick={onClose}>
       <div className="ps-sheet" onClick={(e) => e.stopPropagation()}>
@@ -427,24 +438,24 @@ function PriceSheet({ onClose, fmt, itemCount, totalWas, totalNow, savings }) {
             <span className="ps-lbl">Delivery Fee</span>
             <span className="ps-vals">
               <span className="ps-free">Free with <img className="ps-one" src="/icons/save-one.png" alt="noon One" /></span>
-              <span className="ps-was"><Dh />7.00</span>
+              <span className="ps-was"><Dh />{fmt(breakup.deliveryFee)}</span>
             </span>
           </div>
           <div className="ps-div" />
           <div className="ps-row">
             <span className="ps-lbl">Coupon Discount</span>
-            <span className="ps-now ps-neg">&minus; <Dh />7.00</span>
+            <span className="ps-now ps-neg">&minus; <Dh />{fmt(breakup.couponDiscount)}</span>
           </div>
         </div>
 
         <div className="ps-mint">
           <div className="ps-row">
             <span className="ps-lbl">Coupon Cashback</span>
-            <span className="ps-now"><Dh />30</span>
+            <span className="ps-now"><Dh />{breakup.couponCashback}</span>
           </div>
           <div className="ps-row">
             <span className="ps-lbl">noon one credit card</span>
-            <span className="ps-now"><Dh />45</span>
+            <span className="ps-now"><Dh />{breakup.cardCashback}</span>
           </div>
           <p className="ps-note">cashback will be credited to the primary cardholder's account</p>
         </div>
