@@ -347,6 +347,7 @@ function Checkout({ onBack, cartQty = {} }) {
 
       <div className="co-footer">
         <div className="co-saved-banner">
+          <img className="co-saved-wave" src="/icons/save-wave.svg" alt="" />
           <div className="co-saved-label">
             <span className="co-saved-txt"><b><Dh />130</b> saved!</span>
             <img className="co-saved-one" src="/icons/save-one.png" alt="noon One" />
