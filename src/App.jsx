@@ -354,13 +354,15 @@ function Checkout({ onBack, cartQty = {} }) {
       </div>
 
       <div className="co-footer">
-        <div className="co-saved-banner">
-          <img className="co-saved-wave" src="/icons/save-wave.svg" alt="" />
-          <div className="co-saved-label">
-            <span className="co-saved-txt"><b><Dh />{fmt(savings)}</b> saved!</span>
-            <img className="co-saved-one" src="/icons/save-one.png" alt="noon One" />
+        {!showPrice && (
+          <div className="co-saved-banner">
+            <img className="co-saved-wave" src="/icons/save-wave.svg" alt="" />
+            <div className="co-saved-label">
+              <span className="co-saved-txt"><b><Dh />{fmt(savings)}</b> saved!</span>
+              <img className="co-saved-one" src="/icons/save-one.png" alt="noon One" />
+            </div>
           </div>
-        </div>
+        )}
         <div className="co-footer-bar">
           <button className="co-total" onClick={() => setShowPrice(true)} aria-label="View price breakdown">
             <span className="co-total-label">Total</span>

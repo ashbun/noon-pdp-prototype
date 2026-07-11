@@ -515,7 +515,7 @@ input, button, textarea, select { font-family: inherit; }
 .co-tab.on { color: var(--blue2); }
 
 /* Price-breakup bottom sheet */
-.ps-overlay { position: absolute; inset: 0; z-index: 20; display: flex; flex-direction: column; justify-content: flex-end; background: rgba(16,22,40,0.45); padding-bottom: calc(161px + env(safe-area-inset-bottom)); animation: ps-fade 0.18s ease; }
+.ps-overlay { position: absolute; inset: 0; z-index: 20; display: flex; flex-direction: column; justify-content: flex-end; background: rgba(16,22,40,0.45); padding-bottom: calc(129px + env(safe-area-inset-bottom)); animation: ps-fade 0.18s ease; }
 @keyframes ps-fade { from { opacity: 0; } to { opacity: 1; } }
 .ps-sheet { background: var(--white); border-radius: 20px 20px 0 0; padding: 20px 20px 0; overflow: hidden; animation: ps-rise 0.22s ease; }
 @keyframes ps-rise { from { transform: translateY(24px); } to { transform: translateY(0); } }
