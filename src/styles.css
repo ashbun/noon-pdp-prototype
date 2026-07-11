@@ -515,7 +515,7 @@ input, button, textarea, select { font-family: inherit; }
 .co-tab.on { color: var(--blue2); }
 
 /* Price-breakup bottom sheet */
-.ps-overlay { position: absolute; inset: 0; z-index: 20; display: flex; flex-direction: column; justify-content: flex-end; background: rgba(16,22,40,0.45); padding-bottom: calc(129px + env(safe-area-inset-bottom)); animation: ps-fade 0.18s ease; }
+.ps-overlay { position: absolute; inset: 0; z-index: 20; display: flex; flex-direction: column; justify-content: flex-end; background: rgba(16,22,40,0.45); padding-bottom: calc(100px + env(safe-area-inset-bottom)); animation: ps-fade 0.18s ease; }
 @keyframes ps-fade { from { opacity: 0; } to { opacity: 1; } }
 .ps-sheet { background: var(--white); border-radius: 20px 20px 0 0; padding: 20px 20px 0; overflow: hidden; animation: ps-rise 0.22s ease; }
 @keyframes ps-rise { from { transform: translateY(24px); } to { transform: translateY(0); } }
@@ -532,6 +532,6 @@ input, button, textarea, select { font-family: inherit; }
 .ps-free { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 600; color: var(--blue2); }
 .ps-one { height: 13px; width: auto; display: block; }
 .ps-div { height: 0; border-top: 1px dashed var(--line); }
-.ps-mint { position: relative; margin: 0 -20px; background: #e7fbf3; padding: 20px 20px 16px; display: flex; flex-direction: column; gap: 12px; --sc: 9px; -webkit-mask: radial-gradient(var(--sc) at 50% 0, #0000 98%, #000) 50% 0 / calc(2 * var(--sc)) 100% repeat-x, linear-gradient(#000 0 0) 0 var(--sc) / 100% 100% no-repeat; mask: radial-gradient(var(--sc) at 50% 0, #0000 98%, #000) 50% 0 / calc(2 * var(--sc)) 100% repeat-x, linear-gradient(#000 0 0) 0 var(--sc) / 100% 100% no-repeat; }
+.ps-mint { position: relative; margin: 0 -20px; background: #e7fbf3; padding: 20px 20px 28px; display: flex; flex-direction: column; gap: 12px; --sc: 9px; -webkit-mask: radial-gradient(var(--sc) at 50% 0, #0000 98%, #000) 50% 0 / calc(2 * var(--sc)) 100% repeat-x, linear-gradient(#000 0 0) 0 var(--sc) / 100% 100% no-repeat; mask: radial-gradient(var(--sc) at 50% 0, #0000 98%, #000) 50% 0 / calc(2 * var(--sc)) 100% repeat-x, linear-gradient(#000 0 0) 0 var(--sc) / 100% 100% no-repeat; }
 .ps-mint .ps-now { color: var(--emerald-800); }
 .ps-note { margin: -4px 0 0; font-size: 11px; color: var(--ink-500); letter-spacing: -0.1px; }
