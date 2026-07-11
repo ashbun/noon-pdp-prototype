@@ -30,7 +30,7 @@ function PDP() {
   // so the content sliding over the pinned gallery feels more interactive.
   const scrollRef = useRef(null)
   const { scrollY } = useScroll({ container: scrollRef })
-  const imgScale = useTransform(scrollY, [0, 320], [1, 0.62], { clamp: true })
+  const imgScale = useTransform(scrollY, [0, 320], [1, 0.7], { clamp: true })
   const imgOpacity = useTransform(scrollY, [0, 260, 400], [1, 1, 0.35], { clamp: true })
 
   if (view === 'checkout') return <Checkout onBack={() => setView('pdp')} cartQty={cartQty} />
