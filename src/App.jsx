@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { Retune } from 'retune'
 
 const MOTION = { type: 'tween', ease: 'linear', duration: 0.18 }
 
@@ -15,6 +16,7 @@ export default function App() {
       <div className="phone">
         <PDP />
       </div>
+      <Retune force />
     </div>
   )
 }
@@ -22,8 +24,11 @@ export default function App() {
 function PDP() {
   const [cartOpen, setCartOpen] = useState(false)
   const [view, setView] = useState('pdp')
+  const [cartQty, setCartQty] = useState({})
 
-  if (view === 'checkout') return <Checkout onBack={() => setView('pdp')} />
+  const hasAddedItems = Object.values(cartQty).some((q) => q > 0)
+
+  if (view === 'checkout') return <Checkout onBack={() => setView('pdp')} showSecond={hasAddedItems} />
 
   return (
     <div className="pdp">
@@ -43,6 +48,8 @@ function PDP() {
       <CartSheet
         open={cartOpen}
         onClose={() => setCartOpen(false)}
+        qty={cartQty}
+        setQty={setCartQty}
         onCheckout={() => { setCartOpen(false); setView('checkout') }}
       />
     </div>
@@ -75,8 +82,7 @@ const PAB_PRODUCTS = [
   { id: 'p5', img: '/pab-usbc-cable.jpg', fit: 'cover', title: 'Anker 100W USB-C to USB-C Fast Charging Cable, 2m Braided Nylon Cord', price: '29', was: '79', noAd: true },
 ]
 
-function CartSheet({ open, onClose, onCheckout }) {
-  const [qty, setQty] = useState({})
+function CartSheet({ open, onClose, onCheckout, qty, setQty }) {
   const setItemQty = (id, delta) =>
     setQty((prev) => {
       const next = Math.max(0, (prev[id] || 0) + delta)
@@ -172,9 +178,10 @@ const CHECKOUT_ITEMS = [
   },
 ]
 
-function Checkout({ onBack }) {
+function Checkout({ onBack, showSecond }) {
   const [qtys, setQtys] = useState({ c1: 1, c2: 1 })
   const step = (id, d) => setQtys((p) => ({ ...p, [id]: Math.max(1, (p[id] || 1) + d) }))
+  const items = showSecond ? CHECKOUT_ITEMS : CHECKOUT_ITEMS.slice(0, 1)
 
   return (
     <div className="co">
@@ -202,34 +209,48 @@ function Checkout({ onBack }) {
       </div>
 
       <div className="co-scroll">
+        <img className="co-express-header" src="/express-header.png" alt="express" />
         <div className="co-express-card">
-          <div className="co-express-tab"><span className="express-pill">express</span></div>
-          {CHECKOUT_ITEMS.map((it) => (
+          {items.map((it) => (
             <div className="co-item" key={it.id}>
-              <div className="co-item-img">
-                <img src={it.img} alt={it.title} style={{ objectFit: it.fit }} />
-              </div>
-              <div className="co-item-main">
-                <div className="co-item-title">{it.title}</div>
-                <div className="co-item-price">
-                  <span className="co-now"><Dh />{it.now}</span>
-                  <span className="co-was"><Dh />{it.was}</span>
-                  <span className="co-off">{it.off}</span>
+              <div className="co-item-imgcol">
+                <div className="co-item-img">
+                  <img src={it.img} alt={it.title} style={{ objectFit: it.fit }} />
                 </div>
-                <div className="co-item-eta">Get by <b>{it.date}</b></div>
-                <div className="co-item-prepaid">
-                  <svg width="13" height="13" viewBox="0 0 24 24" aria-hidden><rect x="3" y="6" width="18" height="12" rx="2" fill="none" stroke="currentColor" strokeWidth="1.8"/><path stroke="currentColor" strokeWidth="1.8" d="M3 10h18"/></svg>
-                  Prepaid only
-                </div>
-                <div className="co-item-faster">Faster Delivery at checkout</div>
                 <div className="co-item-step">
-                  <button aria-label="Decrease" onClick={() => step(it.id, -1)}>
+                  <button aria-label={qtys[it.id] === 1 ? 'Remove' : 'Decrease'} onClick={() => step(it.id, -1)}>
                     <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" d="M5 12h14"/></svg>
                   </button>
                   <span>{qtys[it.id]}</span>
                   <button aria-label="Increase" onClick={() => step(it.id, 1)}>
                     <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" d="M12 5v14M5 12h14"/></svg>
                   </button>
+                </div>
+              </div>
+              <div className="co-item-main">
+                <div className="co-item-primary">
+                  <div className="co-item-title">{it.title}</div>
+                  <button className="co-item-wish" aria-label="Wishlist">
+                    <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden><path fill="none" stroke="#475067" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" d="M14 6C14 4.34315 12.6009 3 10.875 3C9.58459 3 8.47685 3.75085 8 4.82228C7.52315 3.75085 6.41541 3 5.125 3C3.39911 3 2 4.34315 2 6C2 10.8137 8 14 8 14C8 14 14 10.8137 14 6Z"/></svg>
+                  </button>
+                </div>
+                <div className="co-item-secondary">
+                  <div className="co-item-price">
+                    <span className="co-now"><Dh />{it.now}</span>
+                    <span className="co-was"><Dh />{it.was}</span>
+                    <span className="co-off">{it.off}</span>
+                  </div>
+                  <div className="co-item-eta">Get by <b>{it.date}</b></div>
+                </div>
+                <div className="co-item-tertiary">
+                  <div className="co-item-point">
+                    <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden><rect x="3" y="6" width="18" height="12" rx="2" fill="none" stroke="currentColor" strokeWidth="1.8"/><path stroke="currentColor" strokeWidth="1.8" d="M3 10h18"/></svg>
+                    Prepaid only
+                  </div>
+                  <div className="co-item-point">
+                    <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden><rect x="3" y="6" width="18" height="12" rx="2" fill="none" stroke="currentColor" strokeWidth="1.8"/><path stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" d="M6.5 14l2 2 4-4"/></svg>
+                    Faster Delivery at checkout
+                  </div>
                 </div>
               </div>
             </div>
@@ -239,10 +260,6 @@ function Checkout({ onBack }) {
             <span className="co-one-pill">one</span>
             <span>Save with noon One. Try it now for <b>Free</b></span>
             <Chev className="row-chev" />
-          </div>
-          <div className="co-freeship">
-            <span>Add <b><Dh />12</b> from Express for free shipping</span>
-            <button className="co-add-btn">+ Add</button>
           </div>
         </div>
 
@@ -290,7 +307,6 @@ function Checkout({ onBack }) {
       </div>
 
       <div className="co-footer">
-        <div className="co-saved"><span className="co-saved-pill"><Dh />130 saved!</span></div>
         <div className="co-footer-row">
           <div className="co-total">
             <span className="co-total-label">Total</span>
@@ -322,14 +338,6 @@ function Checkout({ onBack }) {
 function StatusBar() {
   return (
     <div className="pdp-topbar">
-      <div className="statusbar">
-        <span className="sb-time">9:41</span>
-        <span className="sb-right">
-          <svg width="17" height="11" viewBox="0 0 17 11" aria-hidden><g fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></g></svg>
-          <svg width="16" height="12" viewBox="0 0 16 12" aria-hidden fill="currentColor"><path d="M8 9.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zM8 5c1.7 0 3.3.7 4.5 1.8l-1.4 1.4A4.4 4.4 0 0 0 8 7c-1.2 0-2.3.5-3.1 1.2L3.5 6.8A6.4 6.4 0 0 1 8 5zm0-4c2.8 0 5.4 1.1 7.3 3l-1.4 1.4A8.4 8.4 0 0 0 8 3 8.4 8.4 0 0 0 2.1 5.4L.7 4A10.4 10.4 0 0 1 8 1z"/></svg>
-          <svg width="25" height="12" viewBox="0 0 25 12" aria-hidden><rect x="0.5" y="0.5" width="21" height="11" rx="3" fill="none" stroke="currentColor" opacity="0.4"/><rect x="2" y="2" width="18" height="8" rx="1.5" fill="currentColor"/><rect x="23" y="4" width="1.5" height="4" rx="0.75" fill="currentColor" opacity="0.4"/></svg>
-        </span>
-      </div>
       <div className="pdp-nav">
         <button className="navbtn" aria-label="Back">
           <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M15 18l-6-6 6-6"/></svg>
@@ -355,13 +363,9 @@ function Gallery() {
   return (
     <div className="gallery">
       <img className="gallery-img" src="/anker-charger.png" alt="Anker 737 GaN USB-C charger" />
-      <span className="gallery-badge">noon&rsquo;s exclusive</span>
       <div className="gallery-dots">
         <span className="dot on" /><span className="dot" /><span className="dot" />
       </div>
-      <button className="gallery-360" aria-label="360 view">
-        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 1 1-2.64-6.36M21 3v4h-4"/></svg>
-      </button>
     </div>
   )
 }
@@ -407,19 +411,15 @@ function MainInfo() {
       </div>
 
       <div className="combo-row">
-        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden className="i-combo"><path fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" d="M6 7h12l-1 13H7L6 7zM9 7V5a3 3 0 0 1 6 0v2"/></svg>
-        Saving <b><Dh />45</b> with Combo
+        <img className="combo-ico" src="/icons/combo-icon.gif" alt="" width="20" height="20" />
+        <span className="combo-txt">Saving <Dh />45 with Combo</span>
         <InfoDot />
       </div>
 
-      <div className="unit-row">500ml &middot; <Dh />2.35/ml</div>
-
-      <div className="badges-row">
-        <span className="mega-deal">Mega Deal</span>
-        <span className="lowest">
-          <svg width="13" height="13" viewBox="0 0 24 24" aria-hidden><path fill="currentColor" d="M12 21 3 8h18z"/></svg>
-          Lowest Price in 30 days
-        </span>
+      <div className="unit-row">
+        <span>500ml</span>
+        <span className="unit-div" />
+        <span><Dh />2.35/ml</span>
       </div>
 
       <div className="coupons">
