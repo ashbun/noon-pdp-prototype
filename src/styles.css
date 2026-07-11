@@ -282,7 +282,7 @@ input, button, textarea, select { font-family: inherit; }
 .tag-prepaid svg { color: #c2410c; }
 
 .price-row { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; }
-.price-now { font-size: 24px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; }
+.price-now { font-size: 24px; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; }
 .price-now .cur { font-size: 14px; font-weight: 800; margin-right: 2px; }
 .price-was { font-size: 13px; color: var(--ink-600); text-decoration: line-through; }
 .price-off { font-size: 14px; font-weight: 700; color: var(--green); }
@@ -343,7 +343,7 @@ input, button, textarea, select { font-family: inherit; }
 
 .row-item {
   display: flex; align-items: center; gap: 10px; width: 100%; text-align: left;
-  border: 0; background: var(--surface); border-radius: 10px; padding: 13px 14px;
+  border: 0; background: var(--surface); border-radius: 10px; padding: 10px 12px;
   cursor: pointer; font-size: 14px; font-weight: 600; color: var(--ink-800);
 }
 .other-delivery > span { flex: 1; }
@@ -363,7 +363,7 @@ input, button, textarea, select { font-family: inherit; }
 .accordion { margin-bottom: 8px; background: var(--surface); border-radius: 10px; overflow: hidden; }
 .accordion-head {
   display: flex; align-items: center; justify-content: space-between; width: 100%;
-  border: 0; background: none; padding: 14px; cursor: pointer;
+  border: 0; background: none; padding: 12px; cursor: pointer;
   font-size: 14px; font-weight: 600; color: var(--ink-800);
 }
 .accordion-body { overflow: hidden; }
@@ -402,7 +402,7 @@ input, button, textarea, select { font-family: inherit; }
 .seller-offers {
   display: flex; align-items: center; gap: 8px; width: 100%; text-align: left;
   border: 1px dashed var(--blue-100); background: var(--blue-tint); border-radius: 10px;
-  padding: 13px 14px; cursor: pointer; font-size: 14px; font-weight: 600; color: var(--ink);
+  padding: 8px 14px; cursor: pointer; font-size: 14px; font-weight: 600; color: var(--ink);
 }
 .seller-offers > span { flex: 1; }
 .i-tag { color: var(--blue); flex: 0 0 auto; }

@@ -572,8 +572,6 @@ function SellerWidget() {
         ))}
       </div>
 
-      <div className="seller-subtitle">This is a placeholder for brands to place subtitle</div>
-
       <button className="seller-offers">
         <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden className="i-tag"><path fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" d="M3 11V4h7l10 10-7 7L3 11z"/><circle cx="7.5" cy="7.5" r="1.3" fill="currentColor"/></svg>
         <span>5 offers from other sellers from <span className="offers-price"><Dh />649</span></span>
