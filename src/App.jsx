@@ -573,44 +573,59 @@ function CouponIcon() {
 }
 
 /* ------------------------------ Bottom-nav icons ----------------------------- */
+/* Geometry extracted 1:1 from Figma node 10488-24665. currentColor = tab tint;
+   #fff = duotone cut-outs. */
 function TabIcon({ name }) {
-  const p = { fill: 'currentColor' }
   switch (name) {
     case 'home':
       return (
-        <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden>
-          <path {...p} d="M11.3 3.03 4 9.13A2 2 0 0 0 3.3 10.66V19a2 2 0 0 0 2 2h2.7v-4.6a1.6 1.6 0 0 1 1.6-1.6h2.8a1.6 1.6 0 0 1 1.6 1.6V21h2.7a2 2 0 0 0 2-2v-8.34a2 2 0 0 0-.72-1.53l-7.28-6.1a2 2 0 0 0-2.57 0Z"/>
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden>
+          <path fill="currentColor" stroke="currentColor" strokeLinejoin="round" d="M24.0002 26.6682H20.0002V18.6665C20.0002 17.1932 18.8069 15.9998 17.3335 15.9998H14.6719C13.1969 15.9998 12.0035 17.1965 12.0052 18.6715L12.0185 26.6698H8.00019C7.26352 26.6698 6.66685 26.0732 6.66685 25.3365V13.3348H25.3335V25.3365C25.3335 26.0732 24.7369 26.6698 24.0002 26.6698V26.6682Z"/>
+          <path fill="currentColor" stroke="currentColor" strokeLinejoin="round" d="M25.3331 12.2019V6.66685H23.9998V12.2019H25.3331Z"/>
+          <path fill="currentColor" stroke="currentColor" strokeLinejoin="round" d="M16.8883 5.33315H15.11C14.8217 5.33315 14.54 5.42648 14.31 5.59981L3.99833 13.3331V14.6665H27.9983V13.3331L17.6867 5.59981C17.4567 5.42648 17.175 5.33315 16.8867 5.33315H16.8883Z"/>
         </svg>
       )
     case 'cats':
       return (
-        <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden>
-          <path {...p} d="M6 2.4c.3 0 .55.2.63.5l.62 2.35 2.35.62c.63.17.63 1.07 0 1.24l-2.35.62-.62 2.35c-.08.3-.33.5-.63.5s-.55-.2-.63-.5l-.62-2.35-2.35-.62c-.63-.17-.63-1.07 0-1.24l2.35-.62.62-2.35c.08-.3.33-.5.63-.5Z"/>
-          <rect {...p} x="13" y="3.6" width="7.4" height="7.4" rx="2.2"/>
-          <rect {...p} x="3.3" y="13.4" width="7.4" height="7.4" rx="2.2"/>
-          <rect {...p} x="13" y="13.4" width="7.4" height="7.4" rx="2.2"/>
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden>
+          <path fill="#fff" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" d="M12.6583 25.86C10.9717 26.0466 9.27 26.0466 7.58333 25.86C6.88833 25.7833 6.33833 25.2333 6.26166 24.5383C6.075 22.8516 6.075 21.15 6.26166 19.4633C6.33833 18.7683 6.88833 18.2183 7.58333 18.1416C9.27 17.955 10.9717 17.955 12.6583 18.1416C13.3533 18.2183 13.9033 18.7683 13.98 19.4633C14.1667 21.15 14.1667 22.8516 13.98 24.5383C13.9033 25.2333 13.3533 25.7833 12.6583 25.86Z"/>
+          <path fill="#fff" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" d="M24.4166 25.86C22.73 26.0466 21.0283 26.0466 19.3416 25.86C18.6466 25.7833 18.0966 25.2333 18.02 24.5383C17.8333 22.8516 17.8333 21.15 18.02 19.4633C18.0966 18.7683 18.6466 18.2183 19.3416 18.1416C21.0283 17.955 22.73 17.955 24.4166 18.1416C25.1116 18.2183 25.6616 18.7683 25.7383 19.4633C25.925 21.15 25.925 22.8516 25.7383 24.5383C25.6616 25.2333 25.1116 25.7833 24.4166 25.86Z"/>
+          <path fill="#fff" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" d="M18.02 12.78C17.8333 11.0933 17.8333 9.39166 18.02 7.70499C18.0966 7.00999 18.6466 6.45999 19.3416 6.38333C21.0283 6.19666 22.73 6.19666 24.4166 6.38333C25.1116 6.45999 25.6616 7.00999 25.7383 7.70499C25.925 9.39166 25.925 11.0933 25.7383 12.78C25.6616 13.475 25.1116 14.025 24.4166 14.1017C22.73 14.2883 21.0283 14.2883 19.3416 14.1017C18.6466 14.025 18.0966 13.475 18.02 12.78Z"/>
+          <path fill="currentColor" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" d="M9.33333 4L9.62833 4.79667C10.355 6.76167 11.905 8.31167 13.87 9.03833L14.6667 9.33333L13.87 9.62833C11.905 10.355 10.355 11.905 9.62833 13.87L9.33333 14.6667L9.03833 13.87C8.31167 11.905 6.76167 10.355 4.79667 9.62833L4 9.33333L4.79667 9.03833C6.76167 8.31167 8.31167 6.76167 9.03833 4.79667L9.33333 4Z"/>
         </svg>
       )
     case 'deals':
       return (
-        <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden>
-          <path {...p} d="M8 7V6a4 4 0 0 1 8 0v1h2.1a1.6 1.6 0 0 1 1.6 1.72l-.86 10.4A2.2 2.2 0 0 1 16.65 21H7.35a2.2 2.2 0 0 1-2.19-1.88L4.3 8.72A1.6 1.6 0 0 1 5.9 7H8Zm2 0h4V6a2 2 0 0 0-4 0v1Z"/>
-          <circle cx="9.5" cy="12" r="1.15" fill="var(--white)"/>
-          <circle cx="14.5" cy="12" r="1.15" fill="var(--white)"/>
+        <svg width="32" height="32" viewBox="13.75 0 32 32" fill="none" aria-hidden>
+          <path fill="#fff" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" d="M41.1667 10.6667L38.5 8H26.5V26.6683H38.265C40.545 26.6683 42.3383 24.72 42.15 22.4467L41.1683 10.6667H41.1667Z"/>
+          <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" d="M35.8346 11.9993V5.99935C35.8346 4.15768 34.343 2.66602 32.5013 2.66602C30.6596 2.66602 29.168 4.15768 29.168 5.99935V10.666"/>
+          <path fill="#fff" stroke="#fff" strokeWidth="1.33333" strokeLinejoin="round" d="M29.8346 16.6673C30.2028 16.6673 30.5013 16.3688 30.5013 16.0007C30.5013 15.6325 30.2028 15.334 29.8346 15.334C29.4664 15.334 29.168 15.6325 29.168 16.0007C29.168 16.3688 29.4664 16.6673 29.8346 16.6673Z"/>
+          <path fill="#fff" stroke="currentColor" strokeLinejoin="round" d="M29.1654 16V10.6667C29.1654 9.19333 27.972 8 26.4987 8C25.0254 8 23.832 9.19333 23.832 10.6667V16"/>
+          <path fill="currentColor" stroke="currentColor" strokeLinejoin="round" d="M31.8741 26.669H21.1274C19.5441 26.669 18.3108 25.2973 18.4758 23.724L19.4408 14.5273C19.5124 13.849 20.0841 13.334 20.7674 13.334H32.2341C32.9158 13.334 33.4891 13.849 33.5608 14.5273L34.5258 23.724C34.6908 25.299 33.4574 26.669 31.8741 26.669Z"/>
+          <path fill="#fff" d="M28.9141 23.0801C29.4663 23.0801 29.9141 22.6324 29.9141 22.0801C29.9141 21.5278 29.4663 21.0801 28.9141 21.0801C28.3618 21.0801 27.9141 21.5278 27.9141 22.0801C27.9141 22.6324 28.3618 23.0801 28.9141 23.0801Z"/>
+          <path stroke="#fff" strokeLinecap="round" strokeLinejoin="round" d="M29.1654 17.002L23.832 22.3353"/>
+          <path fill="#fff" d="M24.0859 18.2549C24.6382 18.2549 25.0859 17.8072 25.0859 17.2549C25.0859 16.7026 24.6382 16.2549 24.0859 16.2549C23.5337 16.2549 23.0859 16.7026 23.0859 17.2549C23.0859 17.8072 23.5337 18.2549 24.0859 18.2549Z"/>
         </svg>
       )
     case 'account':
       return (
-        <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden>
-          <path {...p} fillRule="evenodd" clipRule="evenodd" d="M12 2.4a9.6 9.6 0 1 0 0 19.2 9.6 9.6 0 0 0 0-19.2ZM12 6.2a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13.6a7.6 7.6 0 0 1-5.1-1.97c.6-1.98 2.66-3.33 5.1-3.33s4.5 1.35 5.1 3.33A7.6 7.6 0 0 1 12 19.8Z"/>
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden>
+          <path fill="currentColor" stroke="currentColor" strokeLinejoin="round" d="M11.2067 20.96L8.79004 23.86C10.6884 25.6033 13.22 26.6667 16 26.6667C18.78 26.6667 21.3167 25.6 23.2167 23.8533L20.805 20.96C20.2984 20.3517 19.5484 20 18.7567 20H13.255C12.4634 20 11.7134 20.3517 11.2067 20.96Z"/>
+          <path stroke="currentColor" strokeLinejoin="round" d="M16 26.6667C21.891 26.6667 26.6667 21.891 26.6667 16C26.6667 10.109 21.891 5.33333 16 5.33333C10.109 5.33333 5.33333 10.109 5.33333 16C5.33333 21.891 10.109 26.6667 16 26.6667Z"/>
+          <path fill="currentColor" d="M16.0067 17.3333C18.2158 17.3333 20.0067 15.5425 20.0067 13.3333C20.0067 11.1242 18.2158 9.33333 16.0067 9.33333C13.7975 9.33333 12.0067 11.1242 12.0067 13.3333C12.0067 15.5425 13.7975 17.3333 16.0067 17.3333Z"/>
         </svg>
       )
     case 'cart':
       return (
-        <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden>
-          <path {...p} d="M2.2 3.2a.9.9 0 0 1 .9-.9h1.5a1.6 1.6 0 0 1 1.56 1.24l.2.86h13.1a1.2 1.2 0 0 1 1.17 1.48l-1.35 5.7A2.2 2.2 0 0 1 17.93 13H8.4l.28 1.4h9.5a.9.9 0 0 1 0 1.8H8a1.6 1.6 0 0 1-1.57-1.29L4.02 4.1H3.1a.9.9 0 0 1-.9-.9Z"/>
-          <circle {...p} cx="8.5" cy="19.4" r="1.6"/>
-          <circle {...p} cx="16.5" cy="19.4" r="1.6"/>
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden>
+          <g transform="translate(8.83 7.5)"><path fill="currentColor" stroke="currentColor" strokeLinejoin="round" d="M10.5467 11.1667H3.01C2.33834 11.1667 1.77 10.6667 1.68667 9.99833L0.500003 0.5H17.2433C18.175 0.5 18.8183 1.43 18.4917 2.30167L16.79 6.84167C15.815 9.44333 13.3267 11.1683 10.5483 11.1683L10.5467 11.1667Z"/></g>
+          <g transform="translate(8.83 18.17)"><path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" d="M10.915 0.5H1.83333C1.09667 0.5 0.5 1.09667 0.5 1.83333C0.5 3.30667 1.69333 4.5 3.16667 4.5H15.1667"/></g>
+          <g transform="translate(3.5 4.83)"><path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" d="M0.5 0.5H4.32333C4.995 0.5 5.56333 1 5.64667 1.66833L6.435 7.98"/></g>
+          <g transform="translate(10.67 24)"><path fill="currentColor" d="M2 4C3.10457 4 4 3.10457 4 2C4 0.895431 3.10457 0 2 0C0.895431 0 0 0.895431 0 2C0 3.10457 0.895431 4 2 4Z"/></g>
+          <g transform="translate(20 24)"><path fill="currentColor" d="M2 4C3.10457 4 4 3.10457 4 2C4 0.895431 3.10457 0 2 0C0.895431 0 0 0.895431 0 2C0 3.10457 0.895431 4 2 4Z"/></g>
+          <g transform="translate(12.83 10.17)"><path stroke="#fff" strokeLinecap="round" strokeLinejoin="round" d="M0.5 0.5V5.83333"/></g>
+          <g transform="translate(16.83 10.17)"><path stroke="#fff" strokeLinecap="round" strokeLinejoin="round" d="M0.5 0.5V5.83333"/></g>
+          <g transform="translate(20.83 10.17)"><path stroke="#fff" strokeLinecap="round" strokeLinejoin="round" d="M0.5 0.5V5.83333"/></g>
         </svg>
       )
     default:

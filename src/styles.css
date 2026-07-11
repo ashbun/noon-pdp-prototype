@@ -507,12 +507,13 @@ input, button, textarea, select { font-family: inherit; }
 .co-total-val { font-size: 20px; font-weight: 700; line-height: 24px; color: #0e0e0e; letter-spacing: -0.2px; text-decoration: underline dotted; text-underline-position: from-font; }
 .co-checkout-btn { flex: 1; height: 52px; border: 0; border-radius: 12px; background: var(--blue2); color: var(--white); font-size: 17px; font-weight: 600; letter-spacing: -0.26px; cursor: pointer; }
 
-.co-tabs { position: relative; z-index: 30; flex: 0 0 auto; display: flex; background: var(--white); border-top: 1px solid var(--line-2); padding: 6px 4px calc(6px + env(safe-area-inset-bottom)); }
-.co-tab { position: relative; flex: 1; border: 0; background: none; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 6px 0 4px; color: var(--ink-900); font-size: 11px; font-weight: 500; cursor: pointer; }
-.co-tab-ico { position: relative; display: grid; place-items: center; }
-.co-tab-badge { position: absolute; top: -4px; left: 12px; min-width: 15px; height: 15px; padding: 0 3px; border-radius: 999px; background: var(--blue2); color: var(--white); font-size: 9px; font-weight: 700; line-height: 15px; text-align: center; border: 1.5px solid var(--white); }
-.co-tab-ind { position: absolute; top: -6px; width: 26px; height: 3px; border-radius: 0 0 3px 3px; background: var(--blue2); }
-.co-tab.on { color: var(--blue2); }
+.co-tabs { position: relative; z-index: 30; flex: 0 0 auto; display: flex; gap: 4px; align-items: center; justify-content: center; background: var(--white); border-top: 1px solid var(--line-2); padding: 0 0 env(safe-area-inset-bottom); }
+.co-tab { position: relative; flex: 0 0 auto; width: 67px; border: 0; background: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; padding: 8px 0; color: #475067; font-size: 12px; font-weight: 500; letter-spacing: -0.16px; cursor: pointer; }
+.co-tab-ico { position: relative; display: grid; place-items: center; width: 32px; height: 32px; }
+.co-tab-ico svg { display: block; }
+.co-tab-badge { position: absolute; top: -1px; left: 17px; min-width: 15px; height: 15px; padding: 0 3px; border-radius: 999px; background: #0057ff; color: var(--white); font-size: 9px; font-weight: 700; line-height: 15px; text-align: center; border: 1px solid var(--white); box-sizing: border-box; }
+.co-tab-ind { position: absolute; top: 0; width: 56px; height: 4px; border-radius: 0 0 8px 8px; background: #0057ff; }
+.co-tab.on { color: #0057ff; }
 
 /* Price-breakup bottom sheet */
 .ps-overlay { position: absolute; inset: 0; z-index: 20; display: flex; flex-direction: column; justify-content: flex-end; background: rgba(16,22,40,0.45); padding-bottom: calc(100px + env(safe-area-inset-bottom)); animation: ps-fade 0.18s ease; }
