@@ -193,12 +193,20 @@ function Checkout({ onBack, cartQty = {} }) {
     addedItems.forEach((it) => { init[it.id] = cartQty[it.id] || 1 })
     return init
   })
+  const [showPrice, setShowPrice] = useState(false)
   const removeItem = (id) => setItems((prev) => prev.filter((it) => it.id !== id))
   const step = (id, d) => {
     // Stepping below 1 removes the line item from the cart.
     if (d < 0 && (qtys[id] || 1) <= 1) { removeItem(id); return }
     setQtys((p) => ({ ...p, [id]: Math.max(1, (p[id] || 1) + d) }))
   }
+
+  // Pricing is derived from the products currently in the cart.
+  const fmt = (n) => n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+  const totalWas = items.reduce((s, it) => s + Number(it.was) * (qtys[it.id] || 1), 0)
+  const totalNow = items.reduce((s, it) => s + Number(it.now) * (qtys[it.id] || 1), 0)
+  const savings = totalWas - totalNow
+  const itemCount = items.reduce((s, it) => s + (qtys[it.id] || 1), 0)
 
   return (
     <div className="co">
@@ -349,32 +357,95 @@ function Checkout({ onBack, cartQty = {} }) {
         <div className="co-saved-banner">
           <img className="co-saved-wave" src="/icons/save-wave.svg" alt="" />
           <div className="co-saved-label">
-            <span className="co-saved-txt"><b><Dh />130</b> saved!</span>
+            <span className="co-saved-txt"><b><Dh />{fmt(savings)}</b> saved!</span>
             <img className="co-saved-one" src="/icons/save-one.png" alt="noon One" />
           </div>
         </div>
         <div className="co-footer-bar">
-          <div className="co-total">
+          <button className="co-total" onClick={() => setShowPrice(true)} aria-label="View price breakdown">
             <span className="co-total-label">Total</span>
-            <span className="co-total-val"><Dh /> 1,760.00</span>
-          </div>
+            <span className="co-total-val"><Dh /> {fmt(totalNow)}</span>
+          </button>
           <button className="co-checkout-btn">Checkout</button>
         </div>
       </div>
 
+      {showPrice && (
+        <PriceSheet
+          onClose={() => setShowPrice(false)}
+          fmt={fmt}
+          itemCount={itemCount}
+          totalWas={totalWas}
+          totalNow={totalNow}
+          savings={savings}
+        />
+      )}
+
       <div className="co-tabs">
         {[
-          { l: 'Home', d: 'M3 11 12 4l9 7M5 10v9h14v-9', on: true },
-          { l: 'Categories', d: 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z' },
-          { l: 'Deals', d: 'M3 11V4h7l10 10-7 7L3 11z' },
-          { l: 'Account', d: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-3.3 3.6-6 8-6s8 2.7 8 6' },
-          { l: 'Cart', d: 'M6 6h15l-1.5 9h-12zM6 6 5 3H2m4 16a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm12 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z' },
+          { l: 'Home', icon: 'home' },
+          { l: 'Categories', icon: 'cats' },
+          { l: 'Deals', icon: 'deals' },
+          { l: 'Account', icon: 'account' },
+          { l: 'Cart', icon: 'cart', on: true, badge: '2' },
         ].map((t) => (
           <button className={`co-tab${t.on ? ' on' : ''}`} key={t.l}>
-            <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" d={t.d}/></svg>
+            {t.on && <span className="co-tab-ind" />}
+            <span className="co-tab-ico">
+              <TabIcon name={t.icon} />
+              {t.badge && <span className="co-tab-badge">{t.badge}</span>}
+            </span>
             <span>{t.l}</span>
           </button>
         ))}
+      </div>
+    </div>
+  )
+}
+
+/* ------------------------- Checkout price-breakup sheet ------------------------ */
+function PriceSheet({ onClose, fmt, itemCount, totalWas, totalNow, savings }) {
+  return (
+    <div className="ps-overlay" onClick={onClose}>
+      <div className="ps-sheet" onClick={(e) => e.stopPropagation()}>
+        <div className="ps-head">
+          <h3 className="ps-title">Payment summary</h3>
+          <span className="ps-count">{itemCount} items</span>
+        </div>
+
+        <div className="ps-rows">
+          <div className="ps-row">
+            <span className="ps-lbl">Subtotal</span>
+            <span className="ps-vals">
+              <span className="ps-was"><Dh />{fmt(totalWas)}</span>
+              <span className="ps-now"><Dh />{fmt(totalNow)}</span>
+            </span>
+          </div>
+          <div className="ps-row">
+            <span className="ps-lbl">Delivery Fee</span>
+            <span className="ps-vals">
+              <span className="ps-free">Free with <img className="ps-one" src="/icons/save-one.png" alt="noon One" /></span>
+              <span className="ps-was"><Dh />7.00</span>
+            </span>
+          </div>
+          <div className="ps-div" />
+          <div className="ps-row">
+            <span className="ps-lbl">Coupon Discount</span>
+            <span className="ps-now ps-neg">&minus; <Dh />7.00</span>
+          </div>
+        </div>
+
+        <div className="ps-mint">
+          <div className="ps-row">
+            <span className="ps-lbl">Coupon Cashback</span>
+            <span className="ps-now"><Dh />30</span>
+          </div>
+          <div className="ps-row">
+            <span className="ps-lbl">noon one credit card</span>
+            <span className="ps-now"><Dh />45</span>
+          </div>
+          <p className="ps-note">cashback will be credited to the primary cardholder's account</p>
+        </div>
       </div>
     </div>
   )
@@ -497,6 +568,52 @@ function CouponIcon() {
       <circle cx="9" cy="9" r="1.3" fill="currentColor"/><circle cx="15" cy="15" r="1.3" fill="currentColor"/>
     </svg>
   )
+}
+
+/* ------------------------------ Bottom-nav icons ----------------------------- */
+function TabIcon({ name }) {
+  const p = { fill: 'currentColor' }
+  switch (name) {
+    case 'home':
+      return (
+        <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden>
+          <path {...p} d="M11.3 3.03 4 9.13A2 2 0 0 0 3.3 10.66V19a2 2 0 0 0 2 2h2.7v-4.6a1.6 1.6 0 0 1 1.6-1.6h2.8a1.6 1.6 0 0 1 1.6 1.6V21h2.7a2 2 0 0 0 2-2v-8.34a2 2 0 0 0-.72-1.53l-7.28-6.1a2 2 0 0 0-2.57 0Z"/>
+        </svg>
+      )
+    case 'cats':
+      return (
+        <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden>
+          <path {...p} d="M6 2.4c.3 0 .55.2.63.5l.62 2.35 2.35.62c.63.17.63 1.07 0 1.24l-2.35.62-.62 2.35c-.08.3-.33.5-.63.5s-.55-.2-.63-.5l-.62-2.35-2.35-.62c-.63-.17-.63-1.07 0-1.24l2.35-.62.62-2.35c.08-.3.33-.5.63-.5Z"/>
+          <rect {...p} x="13" y="3.6" width="7.4" height="7.4" rx="2.2"/>
+          <rect {...p} x="3.3" y="13.4" width="7.4" height="7.4" rx="2.2"/>
+          <rect {...p} x="13" y="13.4" width="7.4" height="7.4" rx="2.2"/>
+        </svg>
+      )
+    case 'deals':
+      return (
+        <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden>
+          <path {...p} d="M8 7V6a4 4 0 0 1 8 0v1h2.1a1.6 1.6 0 0 1 1.6 1.72l-.86 10.4A2.2 2.2 0 0 1 16.65 21H7.35a2.2 2.2 0 0 1-2.19-1.88L4.3 8.72A1.6 1.6 0 0 1 5.9 7H8Zm2 0h4V6a2 2 0 0 0-4 0v1Z"/>
+          <circle cx="9.5" cy="12" r="1.15" fill="var(--white)"/>
+          <circle cx="14.5" cy="12" r="1.15" fill="var(--white)"/>
+        </svg>
+      )
+    case 'account':
+      return (
+        <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden>
+          <path {...p} fillRule="evenodd" clipRule="evenodd" d="M12 2.4a9.6 9.6 0 1 0 0 19.2 9.6 9.6 0 0 0 0-19.2ZM12 6.2a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13.6a7.6 7.6 0 0 1-5.1-1.97c.6-1.98 2.66-3.33 5.1-3.33s4.5 1.35 5.1 3.33A7.6 7.6 0 0 1 12 19.8Z"/>
+        </svg>
+      )
+    case 'cart':
+      return (
+        <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden>
+          <path {...p} d="M2.2 3.2a.9.9 0 0 1 .9-.9h1.5a1.6 1.6 0 0 1 1.56 1.24l.2.86h13.1a1.2 1.2 0 0 1 1.17 1.48l-1.35 5.7A2.2 2.2 0 0 1 17.93 13H8.4l.28 1.4h9.5a.9.9 0 0 1 0 1.8H8a1.6 1.6 0 0 1-1.57-1.29L4.02 4.1H3.1a.9.9 0 0 1-.9-.9Z"/>
+          <circle {...p} cx="8.5" cy="19.4" r="1.6"/>
+          <circle {...p} cx="16.5" cy="19.4" r="1.6"/>
+        </svg>
+      )
+    default:
+      return null
+  }
 }
 
 /* --------------------------------- Delivery -------------------------------- */
