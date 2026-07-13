@@ -201,6 +201,64 @@ function PabCard({ p, qty, onChange }) {
   )
 }
 
+/* ---- Inline sponsored offers carousel (checkout page) ---- */
+function OffersRow() {
+  const [qty, setQty] = useState({})
+  const setItemQty = (id, delta) =>
+    setQty((prev) => ({ ...prev, [id]: Math.max(0, (prev[id] || 0) + delta) }))
+  return (
+    <div className="co-card co-offers">
+      <div className="co-offers-head">
+        <h3 className="co-offers-title">Don't miss out on these offers</h3>
+        <span className="co-offers-ad">Ad</span>
+      </div>
+      <div className="co-offers-rail">
+        {PAB_PRODUCTS.map((p) => (
+          <OfferCard key={p.id} p={p} qty={qty[p.id] || 0} onChange={(d) => setItemQty(p.id, d)} />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function OfferCard({ p, qty, onChange }) {
+  const off = p.was ? Math.round((1 - Number(p.price) / Number(p.was)) * 100) : 0
+  return (
+    <div className="pab-card">
+      <div className="pab-img">
+        <img className="pab-photo" src={p.img} alt={p.title} />
+        <button className="pab-wish" aria-label="Wishlist">
+          <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden><path fill="#fff" stroke="#475067" strokeLinecap="round" strokeLinejoin="round" d="M14 6C14 4.34315 12.6009 3 10.875 3C9.58459 3 8.47685 3.75085 8 4.82228C7.52315 3.75085 6.41541 3 5.125 3C3.39911 3 2 4.34315 2 6C2 10.8137 8 14 8 14C8 14 14 10.8137 14 6Z"/></svg>
+        </button>
+        {p.best && <span className="pab-best">Best Seller</span>}
+        {!p.noAd && <span className="pab-ad">Ad</span>}
+      </div>
+      <div className="pab-body">
+        <div className="pab-title">{p.title}</div>
+        <div className="pab-price">
+          <span className="pab-now"><Dh />{p.price}</span>
+          <span className="pab-was"><Dh />{p.was}</span>
+          {off > 0 && <span className="pab-off">{off}%</span>}
+        </div>
+        <img className="pab-eta-img" src="/icons/express-today.svg" alt="express Today" width="122" height="18" />
+        {qty === 0 ? (
+          <button className="pab-add" onClick={() => onChange(1)}>ADD</button>
+        ) : (
+          <div className="pab-add pab-add-stepper">
+            <button aria-label="Decrease" onClick={() => onChange(-1)}>
+              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" d="M5 12h14"/></svg>
+            </button>
+            <span>{qty}</span>
+            <button aria-label="Increase" onClick={() => onChange(1)}>
+              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" d="M12 5v14M5 12h14"/></svg>
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
 /* --------------------------------- Checkout -------------------------------- */
 const CHECKOUT_ITEMS = [
   {
@@ -338,6 +396,8 @@ function Checkout({ onBack, onProceed, cartQty = {} }) {
             <Chev className="row-chev" />
           </div>
         </div>
+
+        <OffersRow />
 
         <div className="co-card co-coupon">
           <div className="co-coupon-head">Got a coupon?</div>
