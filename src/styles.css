@@ -181,7 +181,7 @@ input, button, textarea, select { font-family: inherit; }
 .cart-overlay.open .cart-sheet { transform: translateY(0); }
 .cart-head {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 16px 16px 10px;
+  padding: 16px 16px 12px;
 }
 .cart-head h3 { margin: 0; font-size: 16px; font-weight: 700; line-height: 20px; color: var(--ink); letter-spacing: -0.15px; }
 .cart-head-actions { display: flex; align-items: center; gap: 10px; }
@@ -208,11 +208,13 @@ input, button, textarea, select { font-family: inherit; }
 
 .cart-grid {
   display: grid; grid-template-columns: repeat(2, 1fr); grid-auto-rows: max-content; gap: 14px 12px;
-  align-content: start; overflow-y: auto; padding: 4px 16px 16px; scrollbar-width: none;
+  align-content: start; overflow-y: auto; padding: 0 16px 16px; scrollbar-width: none;
 }
 .cart-grid::-webkit-scrollbar { display: none; }
 .cart-grid .pab-card { width: auto; }
 .cart-grid .pab-img { flex: 0 0 auto; }
+/* Option 2 (2×n grid): larger product title; option 1 (rail) stays 13px */
+.cart-grid .pab-title { font-size: 14px; }
 
 .pab-card { flex: 0 0 auto; width: 134px; display: flex; flex-direction: column; border-radius: 10px; overflow: hidden; }
 .pab-img {
@@ -636,7 +638,7 @@ input, button, textarea, select { font-family: inherit; }
 .pc-scroll { flex: 1; overflow-y: auto; padding: 12px 12px 132px; display: flex; flex-direction: column; gap: 12px; }
 .pc-scroll > * { flex: 0 0 auto; }
 .pc-card { background: var(--white); border-radius: 16px; padding: 14px; }
-.pc-card.pc-ship { border: 1px solid #ffffff; }
+.pc-card.pc-ship { border: 1px solid #000000; }
 
 .pc-sec-head { display: flex; align-items: center; gap: 6px; font-size: 16px; font-weight: 700; color: var(--ink); letter-spacing: -0.2px; }
 
