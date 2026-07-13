@@ -259,6 +259,84 @@ function OfferCard({ p, qty, onChange }) {
   )
 }
 
+/* ---- "Deals under 30 AED" carousel (checkout page) ---- */
+const DEAL_PRODUCTS = [
+  { id: 'd1', img: '/pab-usbc-cable.jpg', title: 'Anker USB-C to USB-C Cable, 60W Fast Charging', sub: '1.8 m • White', rating: '4.3', count: '128', now: '25', was: '45', off: '45% off', best: true },
+  { id: 'd2', img: '/pab-ugreen.png', title: 'UGREEN USB Type-C Cable Nylon Braided', sub: '1 m • Grey', rating: '4.5', count: '312', now: '27', was: '49', off: '45% off' },
+  { id: 'd3', img: '/pab-wallcharger.jpg', title: '20W USB-C Wall Charger Fast Adapter', sub: '20 W', rating: '4.6', count: '876', now: '29', was: '59', off: '51% off', best: true },
+  { id: 'd4', img: '/pab-anker737.png', title: 'Anker PowerLine Fast Charging Cable', sub: '0.9 m', rating: '4.2', count: '54', now: '19', was: '39', off: '51% off' },
+  { id: 'd5', img: '/pab-powerbank.png', title: 'Mini Magnetic Wireless Charger Pad', sub: '15 W', rating: '4.4', count: '203', now: '28', was: '69', off: '59% off' },
+]
+
+function FlashIcon() {
+  return <svg className="deal-flash" width="12" height="12" viewBox="0 0 24 24" aria-hidden><path fill="#2122b8" d="M13 2L4.5 13.5H11l-1 8.5L19.5 10H13z"/></svg>
+}
+function StarIcon() {
+  return <svg className="deal-star" width="12" height="12" viewBox="0 0 24 24" aria-hidden><path fill="#1f7a74" d="M12 2l2.9 6.1 6.6.8-4.9 4.6 1.3 6.5L12 17.8 6.1 20.6l1.3-6.5L2.5 8.9l6.6-.8z"/></svg>
+}
+
+function DealsRow() {
+  const [qty, setQty] = useState({})
+  const setItemQty = (id, delta) =>
+    setQty((prev) => ({ ...prev, [id]: Math.max(0, (prev[id] || 0) + delta) }))
+  return (
+    <div className="co-card co-offers">
+      <div className="co-offers-head">
+        <h3 className="co-offers-title">Deals under 30 AED</h3>
+        <span className="co-offers-ad">Ad</span>
+      </div>
+      <div className="co-offers-rail">
+        {DEAL_PRODUCTS.map((p) => (
+          <DealCard key={p.id} p={p} qty={qty[p.id] || 0} onChange={(d) => setItemQty(p.id, d)} />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function DealCard({ p, qty, onChange }) {
+  return (
+    <div className="deal-card">
+      <div className="deal-img">
+        <img className="deal-photo" src={p.img} alt={p.title} />
+        {p.best && <span className="deal-best">Best seller</span>}
+        <button className="deal-wish" aria-label="Wishlist">
+          <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden><path fill="#fff" stroke="#475067" strokeLinecap="round" strokeLinejoin="round" d="M14 6C14 4.34315 12.6009 3 10.875 3C9.58459 3 8.47685 3.75085 8 4.82228C7.52315 3.75085 6.41541 3 5.125 3C3.39911 3 2 4.34315 2 6C2 10.8137 8 14 8 14C8 14 14 10.8137 14 6Z"/></svg>
+        </button>
+        <span className="deal-ad">Ad</span>
+        <div className="deal-dots"><span className="on" /><span /><span /></div>
+        {qty === 0 ? (
+          <button className="deal-atc" aria-label="Add to cart" onClick={() => onChange(1)}>
+            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="#2122b8" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" d="M12 5v14M5 12h14"/></svg>
+          </button>
+        ) : (
+          <div className="deal-stepper" onClick={(e) => e.stopPropagation()}>
+            <button aria-label="Decrease" onClick={() => onChange(-1)}>
+              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" d="M5 12h14"/></svg>
+            </button>
+            <span>{qty}</span>
+            <button aria-label="Increase" onClick={() => onChange(1)}>
+              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" d="M12 5v14M5 12h14"/></svg>
+            </button>
+          </div>
+        )}
+      </div>
+      <div className="deal-body">
+        <div className="deal-title">{p.title}</div>
+        <div className="deal-sub">{p.sub}</div>
+        <div className="deal-rating"><StarIcon /><b>{p.rating}</b><span>({p.count})</span></div>
+        <div className="deal-div" />
+        <div className="deal-price">
+          <span className="deal-now"><Dh />{p.now}</span>
+          <span className="deal-was"><Dh />{p.was}</span>
+          <span className="deal-off">{p.off}</span>
+        </div>
+        <div className="deal-eta"><FlashIcon />1 HR 15 MINS</div>
+      </div>
+    </div>
+  )
+}
+
 /* --------------------------------- Checkout -------------------------------- */
 const CHECKOUT_ITEMS = [
   {
@@ -398,6 +476,8 @@ function Checkout({ onBack, onProceed, cartQty = {} }) {
         </div>
 
         <OffersRow />
+
+        <DealsRow />
 
         <div className="co-card co-coupon">
           <div className="co-coupon-head">Got a coupon?</div>
