@@ -142,8 +142,8 @@ function CartSheet({ open, onClose, onCheckout, qty, setQty }) {
         </div>
 
         <div className={isGrid ? 'cart-grid' : 'cart-rail'}>
-          {PAB_PRODUCTS.map((p) => (
-            <PabCard key={p.id} p={p} qty={qty[p.id] || 0} onChange={(d) => setItemQty(p.id, d)} />
+          {PAB_PRODUCTS.map((p, i) => (
+            <PabCard key={p.id} p={p} first={i === 0} qty={qty[p.id] || 0} onChange={(d) => setItemQty(p.id, d)} />
           ))}
         </div>
 
@@ -157,7 +157,7 @@ function CartSheet({ open, onClose, onCheckout, qty, setQty }) {
 
 const TRASH_D = 'M7.31152 0.0625H10.1885C11.4235 0.0625 12.4965 0.900296 12.7959 2.09863L13.2754 4.01758L13.2871 4.06543H16.6553C16.6879 4.06418 16.719 4.0625 16.75 4.0625C17.1292 4.0625 17.4375 4.37174 17.4375 4.75098L17.4238 4.88965C17.3597 5.20275 17.0819 5.43848 16.75 5.43848H16.6992C15.9997 5.46604 15.4375 6.04265 15.4375 6.74902V15.749C15.4374 17.7819 13.7829 19.4365 11.75 19.4365H5.75C3.71711 19.4365 2.06265 17.7819 2.0625 15.749V6.74902C2.0625 6.04265 1.50025 5.46604 0.800781 5.43848H0.75C0.370768 5.43848 0.0625 5.13021 0.0625 4.75098V4.75C0.0625 4.37077 0.370768 4.0625 0.75 4.0625C0.76471 4.0625 0.779625 4.06285 0.795898 4.06348C0.811947 4.06409 0.830003 4.06543 0.847656 4.06543H4.21289L4.22461 4.01758L4.7041 2.09863C4.98477 0.973956 5.94536 0.168466 7.08203 0.0722656L7.31152 0.0625ZM3.14453 5.53125C3.33134 5.89768 3.4375 6.31161 3.4375 6.75V15.75C3.4375 17.0258 4.47423 18.0625 5.75 18.0625H11.75C13.0245 18.0625 14.0625 17.0258 14.0625 15.75V6.8125H14.0635V6.75C14.0635 6.31166 14.1697 5.89765 14.3564 5.53125L14.4033 5.44043H3.09766L3.14453 5.53125ZM6.75 8.0625C7.12923 8.0625 7.4375 8.37077 7.4375 8.75V14.75C7.4375 15.1292 7.12923 15.4375 6.75 15.4375C6.37077 15.4375 6.0625 15.1292 6.0625 14.75V8.75C6.0625 8.37077 6.37077 8.0625 6.75 8.0625ZM10.75 8.0625C11.1292 8.0625 11.4375 8.37077 11.4375 8.75V14.75C11.4375 15.1292 11.1292 15.4375 10.75 15.4375C10.3708 15.4375 10.0625 15.1292 10.0625 14.75V8.75C10.0625 8.37077 10.3708 8.0625 10.75 8.0625ZM7.31152 1.4375C6.70782 1.4375 6.18377 1.84726 6.03809 2.43262L5.62988 4.06543H11.8701L11.4619 2.43262C11.3162 1.84726 10.7922 1.4375 10.1885 1.4375H7.31152Z'
 
-function PabCard({ p, qty, onChange }) {
+function PabCard({ p, qty, onChange, first }) {
   const off = p.was ? Math.round((1 - Number(p.price) / Number(p.was)) * 100) : 0
   return (
     <div className="pab-card">
@@ -167,7 +167,7 @@ function PabCard({ p, qty, onChange }) {
           <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden><path fill="#fff" stroke="#475067" strokeLinecap="round" strokeLinejoin="round" d="M14 6C14 4.34315 12.6009 3 10.875 3C9.58459 3 8.47685 3.75085 8 4.82228C7.52315 3.75085 6.41541 3 5.125 3C3.39911 3 2 4.34315 2 6C2 10.8137 8 14 8 14C8 14 14 10.8137 14 6Z"/></svg>
         </button>
         {p.best && <span className="pab-best">Best Seller</span>}
-        {!p.noAd && <span className="pab-ad">Ad</span>}
+        {first && <span className="pab-ad">Ad</span>}
         <div className="pab-dots"><span /><span className="on" /><span /><span /></div>
         {qty === 0 ? (
           <button className="pab-atc" aria-label="Add to cart" onClick={() => onChange(1)}>
@@ -214,15 +214,15 @@ function OffersRow() {
         <span className="co-offers-ad">Ad</span>
       </div>
       <div className="co-offers-rail">
-        {PAB_PRODUCTS.map((p) => (
-          <OfferCard key={p.id} p={p} qty={qty[p.id] || 0} onChange={(d) => setItemQty(p.id, d)} />
+        {PAB_PRODUCTS.map((p, i) => (
+          <OfferCard key={p.id} p={p} first={i === 0} qty={qty[p.id] || 0} onChange={(d) => setItemQty(p.id, d)} />
         ))}
       </div>
     </div>
   )
 }
 
-function OfferCard({ p, qty, onChange }) {
+function OfferCard({ p, qty, onChange, first }) {
   const off = p.was ? Math.round((1 - Number(p.price) / Number(p.was)) * 100) : 0
   return (
     <div className="pab-card">
@@ -232,6 +232,7 @@ function OfferCard({ p, qty, onChange }) {
           <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden><path fill="#fff" stroke="#475067" strokeLinecap="round" strokeLinejoin="round" d="M14 6C14 4.34315 12.6009 3 10.875 3C9.58459 3 8.47685 3.75085 8 4.82228C7.52315 3.75085 6.41541 3 5.125 3C3.39911 3 2 4.34315 2 6C2 10.8137 8 14 8 14C8 14 14 10.8137 14 6Z"/></svg>
         </button>
         {p.best && <span className="pab-best">Best Seller</span>}
+        {first && <span className="pab-ad">Ad</span>}
       </div>
       <div className="pab-body">
         <div className="pab-title">{p.title}</div>
@@ -286,20 +287,21 @@ function DealsRow() {
         <span className="co-offers-ad">Ad</span>
       </div>
       <div className="co-offers-rail">
-        {DEAL_PRODUCTS.map((p) => (
-          <DealCard key={p.id} p={p} qty={qty[p.id] || 0} onChange={(d) => setItemQty(p.id, d)} />
+        {DEAL_PRODUCTS.map((p, i) => (
+          <DealCard key={p.id} p={p} first={i === 0} qty={qty[p.id] || 0} onChange={(d) => setItemQty(p.id, d)} />
         ))}
       </div>
     </div>
   )
 }
 
-function DealCard({ p, qty, onChange }) {
+function DealCard({ p, qty, onChange, first }) {
   return (
     <div className="deal-card">
       <div className="deal-img">
         <img className="deal-photo" src={p.img} alt={p.title} />
         {p.best && <span className="deal-best">Best seller</span>}
+        {first && <span className="deal-ad">Ad</span>}
         <button className="deal-wish" aria-label="Wishlist">
           <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden><path fill="#fff" stroke="#475067" strokeLinecap="round" strokeLinejoin="round" d="M14 6C14 4.34315 12.6009 3 10.875 3C9.58459 3 8.47685 3.75085 8 4.82228C7.52315 3.75085 6.41541 3 5.125 3C3.39911 3 2 4.34315 2 6C2 10.8137 8 14 8 14C8 14 14 10.8137 14 6Z"/></svg>
         </button>
