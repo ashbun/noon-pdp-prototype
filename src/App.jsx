@@ -92,11 +92,14 @@ const PAB_PRODUCTS = [
 ]
 
 function CartSheet({ open, onClose, onCheckout, qty, setQty }) {
+  const [layout, setLayout] = useState('rail')
   const setItemQty = (id, delta) =>
     setQty((prev) => {
       const next = Math.max(0, (prev[id] || 0) + delta)
       return { ...prev, [id]: next }
     })
+
+  const isGrid = layout === 'grid'
 
   return (
     <div
@@ -105,17 +108,37 @@ function CartSheet({ open, onClose, onCheckout, qty, setQty }) {
       aria-hidden={!open}
     >
       <div
-        className="cart-sheet"
+        className={`cart-sheet${isGrid ? ' cart-sheet--tall' : ''}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="cart-head">
           <h3>People also bought this</h3>
-          <button className="cart-close" onClick={onClose} aria-label="Close">
-            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" d="M6 6l12 12M18 6 6 18"/></svg>
-          </button>
+          <div className="cart-head-actions">
+            <div className="cart-layout-toggle" role="group" aria-label="Layout">
+              <button
+                className={`clt-btn${!isGrid ? ' on' : ''}`}
+                onClick={() => setLayout('rail')}
+                aria-label="Horizontal layout"
+                aria-pressed={!isGrid}
+              >
+                <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden><rect x="1" y="3.5" width="6" height="9" rx="1.5" fill="none" stroke="currentColor" strokeWidth="1.4"/><rect x="9" y="3.5" width="6" height="9" rx="1.5" fill="none" stroke="currentColor" strokeWidth="1.4"/></svg>
+              </button>
+              <button
+                className={`clt-btn${isGrid ? ' on' : ''}`}
+                onClick={() => setLayout('grid')}
+                aria-label="Grid layout"
+                aria-pressed={isGrid}
+              >
+                <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden><rect x="2" y="2" width="5" height="5" rx="1.2" fill="none" stroke="currentColor" strokeWidth="1.4"/><rect x="9" y="2" width="5" height="5" rx="1.2" fill="none" stroke="currentColor" strokeWidth="1.4"/><rect x="2" y="9" width="5" height="5" rx="1.2" fill="none" stroke="currentColor" strokeWidth="1.4"/><rect x="9" y="9" width="5" height="5" rx="1.2" fill="none" stroke="currentColor" strokeWidth="1.4"/></svg>
+              </button>
+            </div>
+            <button className="cart-close" onClick={onClose} aria-label="Close">
+              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" d="M6 6l12 12M18 6 6 18"/></svg>
+            </button>
+          </div>
         </div>
 
-        <div className="cart-rail">
+        <div className={isGrid ? 'cart-grid' : 'cart-rail'}>
           {PAB_PRODUCTS.map((p) => (
             <PabCard key={p.id} p={p} qty={qty[p.id] || 0} onChange={(d) => setItemQty(p.id, d)} />
           ))}

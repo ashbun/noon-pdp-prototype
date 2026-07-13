@@ -175,21 +175,39 @@ input, button, textarea, select { font-family: inherit; }
   display: flex; flex-direction: column; overflow: hidden;
   box-shadow: 0 -8px 30px rgba(16,22,40,.22);
   transform: translateY(calc(100% + 12px));
-  transition: transform .3s cubic-bezier(.22,.61,.36,1);
+  transition: transform .3s cubic-bezier(.22,.61,.36,1), max-height .3s cubic-bezier(.22,.61,.36,1);
 }
+.cart-sheet--tall { max-height: min(600px, calc(100% - 24px)); }
 .cart-overlay.open .cart-sheet { transform: translateY(0); }
 .cart-head {
   display: flex; align-items: center; justify-content: space-between;
   padding: 16px 16px 10px;
 }
 .cart-head h3 { margin: 0; font-size: 16px; font-weight: 700; line-height: 20px; color: var(--ink); letter-spacing: -0.15px; }
+.cart-head-actions { display: flex; align-items: center; gap: 10px; }
 .cart-close { width: 24px; height: 24px; border: 0; background: none; padding: 0; cursor: pointer; color: var(--ink); display: grid; place-items: center; }
+
+.cart-layout-toggle { display: flex; align-items: center; gap: 2px; padding: 2px; background: var(--line-2); border-radius: 8px; }
+.clt-btn {
+  width: 28px; height: 24px; border: 0; padding: 0; border-radius: 6px;
+  background: none; color: var(--ink-500); display: grid; place-items: center; cursor: pointer;
+  transition: background .15s ease, color .15s ease;
+}
+.clt-btn.on { background: var(--white); color: var(--ink); box-shadow: 0 1px 2px rgba(16,22,40,.1); }
 
 .cart-rail {
   display: flex; gap: 12px; overflow-x: auto;
   padding: 0 16px var(--radius); scrollbar-width: none;
 }
 .cart-rail::-webkit-scrollbar { display: none; }
+
+.cart-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 12px;
+  align-content: start; overflow-y: auto; padding: 4px 16px 16px; scrollbar-width: none;
+}
+.cart-grid::-webkit-scrollbar { display: none; }
+.cart-grid .pab-card { width: auto; }
+.cart-grid .pab-img { flex: 0 0 auto; }
 
 .pab-card { flex: 0 0 auto; width: 134px; display: flex; flex-direction: column; border-radius: 10px; overflow: hidden; }
 .pab-img {
