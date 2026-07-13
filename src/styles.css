@@ -322,7 +322,7 @@ input, button, textarea, select { font-family: inherit; }
 /* ============================ PLP (product listing) ============================ */
 .plp { display: flex; flex-direction: column; height: 100%; background: var(--surface); }
 .plp-top { flex: 0 0 auto; background: var(--white); }
-.plp-head { display: flex; align-items: center; justify-content: space-between; padding: 6px 12px 12px; }
+.plp-head { display: flex; align-items: center; justify-content: space-between; padding: 16px 12px 12px; }
 .plp-head-actions { display: inline-flex; align-items: center; gap: 8px; }
 .plp-search {
   display: inline-flex; align-items: center; gap: 8px; height: 40px;
