@@ -88,14 +88,22 @@ input, button, textarea, select { font-family: inherit; }
 }
 .sb-time { font-size: 15px; font-weight: 800; letter-spacing: -0.01em; }
 .sb-right { display: inline-flex; align-items: center; gap: 6px; }
-.pdp-nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 12px 12px; }
-.nav-actions { display: inline-flex; gap: 8px; }
-.navbtn {
-  width: 40px; height: 40px; border-radius: 9999px; cursor: pointer;
+/* Shared top navigation (PDP state 1 + PLP state 2) */
+.tb-nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 12px 12px; }
+.tb-actions { display: inline-flex; align-items: center; gap: 8px; }
+.tb-btn {
+  width: 40px; height: 40px; border-radius: 9999px; cursor: pointer; padding: 0;
   background: rgba(255,255,255,.9); color: var(--ink);
   border: 1px solid var(--line-2);
   display: grid; place-items: center; backdrop-filter: blur(4px);
 }
+.tb-search {
+  display: inline-flex; align-items: center; gap: 8px; height: 40px;
+  padding: 8px 12px; border-radius: 9999px; border: 1px solid var(--line);
+  background: var(--white); color: var(--ink-900); cursor: pointer;
+  font-family: inherit; font-size: 12px; font-weight: 500; letter-spacing: -0.1px;
+}
+.tb-search svg { flex: 0 0 auto; color: var(--ink-500); }
 
 /* Scroll container */
 .pdp-scroll { flex: 1; overflow-y: auto; overscroll-behavior: contain; }
@@ -322,20 +330,6 @@ input, button, textarea, select { font-family: inherit; }
 /* ============================ PLP (product listing) ============================ */
 .plp { display: flex; flex-direction: column; height: 100%; background: var(--surface); }
 .plp-top { flex: 0 0 auto; background: var(--white); }
-.plp-head { display: flex; align-items: center; justify-content: space-between; padding: 16px 12px 12px; }
-.plp-head-actions { display: inline-flex; align-items: center; gap: 8px; }
-.plp-search {
-  display: inline-flex; align-items: center; gap: 8px; height: 40px;
-  padding: 8px 12px; border-radius: 9999px; border: 1px solid var(--line);
-  background: var(--white); color: var(--ink-900); cursor: pointer;
-  font-family: inherit; font-size: 12px; font-weight: 500; letter-spacing: -0.1px;
-}
-.plp-search svg { flex: 0 0 auto; color: var(--ink-500); }
-.plp-icon {
-  width: 40px; height: 40px; border-radius: 9999px; cursor: pointer;
-  background: var(--white); color: var(--ink); border: 1px solid var(--line-2);
-  display: grid; place-items: center;
-}
 .plp-scroll { flex: 1; overflow-y: auto; overscroll-behavior: contain; }
 .plp-scroll::-webkit-scrollbar { display: none; }
 .plp-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px 12px; padding: 0 12px 12px; background-color: #ffffff; }

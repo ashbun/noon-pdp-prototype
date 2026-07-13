@@ -364,20 +364,7 @@ function PLP({ onBack }) {
       transition={{ type: 'tween', ease: [0.22, 0.61, 0.36, 1], duration: 0.3 }}
     >
       <div className="plp-top">
-        <div className="plp-head">
-          <button className="plp-icon" onClick={onBack} aria-label="Back">
-            <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M15 18l-6-6 6-6"/></svg>
-          </button>
-          <div className="plp-head-actions">
-            <button className="plp-search" aria-label="Search">
-              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" strokeWidth="2"/><path stroke="currentColor" strokeWidth="2" strokeLinecap="round" d="m20 20-3.5-3.5"/></svg>
-              <span>Search</span>
-            </button>
-            <button className="plp-icon" aria-label="Share">
-              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M12 3v13M8 7l4-4 4 4M5 14v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"/></svg>
-            </button>
-          </div>
-        </div>
+        <TopNav state={2} onBack={onBack} />
       </div>
 
       <div className="plp-scroll">
@@ -1065,25 +1052,42 @@ function CheckMark() {
 }
 
 /* ----------------------------- Status bar + header ----------------------------- */
+/* Shared top navigation. state 1: back + search(icon) + wishlist + share.
+   state 2: back + search(pill) + share. */
+function TopNav({ state = 1, onBack }) {
+  return (
+    <div className="tb-nav">
+      <button className="tb-btn" onClick={onBack} aria-label="Back">
+        <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div className="tb-actions">
+        {state === 2 ? (
+          <button className="tb-search" aria-label="Search">
+            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" strokeWidth="2"/><path stroke="currentColor" strokeWidth="2" strokeLinecap="round" d="m20 20-3.5-3.5"/></svg>
+            <span>Search</span>
+          </button>
+        ) : (
+          <button className="tb-btn" aria-label="Search">
+            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" strokeWidth="1.9"/><path stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" d="m20 20-3.5-3.5"/></svg>
+          </button>
+        )}
+        {state === 1 && (
+          <button className="tb-btn" aria-label="Wishlist">
+            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="1.9" d="M12 20s-7-4.4-7-9.5A3.5 3.5 0 0 1 12 7a3.5 3.5 0 0 1 7 3.5C19 15.6 12 20 12 20z"/></svg>
+          </button>
+        )}
+        <button className="tb-btn" aria-label="Share">
+          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" d="M12 3v13M8 7l4-4 4 4M5 14v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"/></svg>
+        </button>
+      </div>
+    </div>
+  )
+}
+
 function StatusBar() {
   return (
     <div className="pdp-topbar">
-      <div className="pdp-nav">
-        <button className="navbtn" aria-label="Back">
-          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <div className="nav-actions">
-          <button className="navbtn" aria-label="Search">
-            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" strokeWidth="1.9"/><path stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" d="m20 20-3.5-3.5"/></svg>
-          </button>
-          <button className="navbtn" aria-label="Wishlist">
-            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="1.9" d="M12 20s-7-4.4-7-9.5A3.5 3.5 0 0 1 12 7a3.5 3.5 0 0 1 7 3.5C19 15.6 12 20 12 20z"/></svg>
-          </button>
-          <button className="navbtn" aria-label="Share">
-            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v14"/></svg>
-          </button>
-        </div>
-      </div>
+      <TopNav state={1} />
     </div>
   )
 }
