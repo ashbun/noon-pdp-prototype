@@ -84,7 +84,7 @@ function BottomNav({ onAddToCart }) {
 
 /* ------------------------ Add-to-cart bottom sheet ------------------------ */
 const PAB_PRODUCTS = [
-  { id: 'p1', img: '/pab-powerbank.png', fit: 'cover', title: 'Anker magnetic power bank for easy and fast charging', price: '160', was: '453' },
+  { id: 'p1', img: '/pab-powerbank.png', fit: 'cover', title: 'Anker magnetic power bank for easy and fast charging', price: '160', was: '453', best: true },
   { id: 'p2', img: '/pab-anker737.png', fit: 'contain', title: 'Anker 737 Power Bank (PowerCore 24K3), 24,000mAh 3-Port Portable Charger with 140W Output, Smart Digital Display', price: '325', was: '1399' },
   { id: 'p3', img: '/pab-ugreen.png', fit: 'cover', title: '60W USB Type C Cable Nylon Braided USB C to USB C 2.0 Cable (C to C) Compatible For iPhone', price: '35', was: '1399' },
   { id: 'p4', img: '/pab-wallcharger.jpg', fit: 'contain', title: 'Anker 96W USB-C Wall Charger with 2m Charge Cable, GaN Fast Charging for MacBook & iPhone', price: '129', was: '299', noAd: true },
@@ -107,31 +107,33 @@ function CartSheet({ open, onClose, onCheckout, qty, setQty }) {
       onClick={onClose}
       aria-hidden={!open}
     >
+      <div className="cart-toggle-float" role="group" aria-label="Layout" onClick={(e) => e.stopPropagation()}>
+        <button
+          className={`clt-btn${!isGrid ? ' on' : ''}`}
+          onClick={() => setLayout('rail')}
+          aria-label="Horizontal layout"
+          aria-pressed={!isGrid}
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden><rect x="1" y="3.5" width="6" height="9" rx="1.5" fill="none" stroke="currentColor" strokeWidth="1.4"/><rect x="9" y="3.5" width="6" height="9" rx="1.5" fill="none" stroke="currentColor" strokeWidth="1.4"/></svg>
+        </button>
+        <button
+          className={`clt-btn${isGrid ? ' on' : ''}`}
+          onClick={() => setLayout('grid')}
+          aria-label="Grid layout"
+          aria-pressed={isGrid}
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden><rect x="2" y="2" width="5" height="5" rx="1.2" fill="none" stroke="currentColor" strokeWidth="1.4"/><rect x="9" y="2" width="5" height="5" rx="1.2" fill="none" stroke="currentColor" strokeWidth="1.4"/><rect x="2" y="9" width="5" height="5" rx="1.2" fill="none" stroke="currentColor" strokeWidth="1.4"/><rect x="9" y="9" width="5" height="5" rx="1.2" fill="none" stroke="currentColor" strokeWidth="1.4"/></svg>
+        </button>
+      </div>
+
       <div
         className={`cart-sheet${isGrid ? ' cart-sheet--tall' : ''}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="cart-head">
-          <h3>People also bought this</h3>
+          <h3>Don't miss out on these offers</h3>
           <div className="cart-head-actions">
-            <div className="cart-layout-toggle" role="group" aria-label="Layout">
-              <button
-                className={`clt-btn${!isGrid ? ' on' : ''}`}
-                onClick={() => setLayout('rail')}
-                aria-label="Horizontal layout"
-                aria-pressed={!isGrid}
-              >
-                <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden><rect x="1" y="3.5" width="6" height="9" rx="1.5" fill="none" stroke="currentColor" strokeWidth="1.4"/><rect x="9" y="3.5" width="6" height="9" rx="1.5" fill="none" stroke="currentColor" strokeWidth="1.4"/></svg>
-              </button>
-              <button
-                className={`clt-btn${isGrid ? ' on' : ''}`}
-                onClick={() => setLayout('grid')}
-                aria-label="Grid layout"
-                aria-pressed={isGrid}
-              >
-                <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden><rect x="2" y="2" width="5" height="5" rx="1.2" fill="none" stroke="currentColor" strokeWidth="1.4"/><rect x="9" y="2" width="5" height="5" rx="1.2" fill="none" stroke="currentColor" strokeWidth="1.4"/><rect x="2" y="9" width="5" height="5" rx="1.2" fill="none" stroke="currentColor" strokeWidth="1.4"/><rect x="9" y="9" width="5" height="5" rx="1.2" fill="none" stroke="currentColor" strokeWidth="1.4"/></svg>
-              </button>
-            </div>
+            <span className="cart-sponsored">Sponsored</span>
             <button className="cart-close" onClick={onClose} aria-label="Close">
               <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" d="M6 6l12 12M18 6 6 18"/></svg>
             </button>
@@ -155,18 +157,20 @@ function CartSheet({ open, onClose, onCheckout, qty, setQty }) {
 const TRASH_D = 'M7.31152 0.0625H10.1885C11.4235 0.0625 12.4965 0.900296 12.7959 2.09863L13.2754 4.01758L13.2871 4.06543H16.6553C16.6879 4.06418 16.719 4.0625 16.75 4.0625C17.1292 4.0625 17.4375 4.37174 17.4375 4.75098L17.4238 4.88965C17.3597 5.20275 17.0819 5.43848 16.75 5.43848H16.6992C15.9997 5.46604 15.4375 6.04265 15.4375 6.74902V15.749C15.4374 17.7819 13.7829 19.4365 11.75 19.4365H5.75C3.71711 19.4365 2.06265 17.7819 2.0625 15.749V6.74902C2.0625 6.04265 1.50025 5.46604 0.800781 5.43848H0.75C0.370768 5.43848 0.0625 5.13021 0.0625 4.75098V4.75C0.0625 4.37077 0.370768 4.0625 0.75 4.0625C0.76471 4.0625 0.779625 4.06285 0.795898 4.06348C0.811947 4.06409 0.830003 4.06543 0.847656 4.06543H4.21289L4.22461 4.01758L4.7041 2.09863C4.98477 0.973956 5.94536 0.168466 7.08203 0.0722656L7.31152 0.0625ZM3.14453 5.53125C3.33134 5.89768 3.4375 6.31161 3.4375 6.75V15.75C3.4375 17.0258 4.47423 18.0625 5.75 18.0625H11.75C13.0245 18.0625 14.0625 17.0258 14.0625 15.75V6.8125H14.0635V6.75C14.0635 6.31166 14.1697 5.89765 14.3564 5.53125L14.4033 5.44043H3.09766L3.14453 5.53125ZM6.75 8.0625C7.12923 8.0625 7.4375 8.37077 7.4375 8.75V14.75C7.4375 15.1292 7.12923 15.4375 6.75 15.4375C6.37077 15.4375 6.0625 15.1292 6.0625 14.75V8.75C6.0625 8.37077 6.37077 8.0625 6.75 8.0625ZM10.75 8.0625C11.1292 8.0625 11.4375 8.37077 11.4375 8.75V14.75C11.4375 15.1292 11.1292 15.4375 10.75 15.4375C10.3708 15.4375 10.0625 15.1292 10.0625 14.75V8.75C10.0625 8.37077 10.3708 8.0625 10.75 8.0625ZM7.31152 1.4375C6.70782 1.4375 6.18377 1.84726 6.03809 2.43262L5.62988 4.06543H11.8701L11.4619 2.43262C11.3162 1.84726 10.7922 1.4375 10.1885 1.4375H7.31152Z'
 
 function PabCard({ p, qty, onChange }) {
+  const off = p.was ? Math.round((1 - Number(p.price) / Number(p.was)) * 100) : 0
   return (
     <div className="pab-card">
       <div className="pab-img">
-        <img className="pab-photo" src={p.img} alt={p.title} style={{ objectFit: p.fit }} />
+        <img className="pab-photo" src={p.img} alt={p.title} />
         <button className="pab-wish" aria-label="Wishlist">
           <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden><path fill="#fff" stroke="#475067" strokeLinecap="round" strokeLinejoin="round" d="M14 6C14 4.34315 12.6009 3 10.875 3C9.58459 3 8.47685 3.75085 8 4.82228C7.52315 3.75085 6.41541 3 5.125 3C3.39911 3 2 4.34315 2 6C2 10.8137 8 14 8 14C8 14 14 10.8137 14 6Z"/></svg>
         </button>
+        {p.best && <span className="pab-best">Best Seller</span>}
         {!p.noAd && <span className="pab-ad">Ad</span>}
         <div className="pab-dots"><span /><span className="on" /><span /><span /></div>
         {qty === 0 ? (
           <button className="pab-atc" aria-label="Add to cart" onClick={() => onChange(1)}>
-            <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="#101628" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" d="M12 4.5V19.5M19.5 12L4.5 12"/></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="#0076ff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" d="M12 4.5V19.5M19.5 12L4.5 12"/></svg>
           </button>
         ) : (
           <div className="pab-stepper" onClick={(e) => e.stopPropagation()}>
@@ -189,6 +193,7 @@ function PabCard({ p, qty, onChange }) {
         <div className="pab-price">
           <span className="pab-now"><Dh />{p.price}</span>
           <span className="pab-was"><Dh />{p.was}</span>
+          {off > 0 && <span className="pab-off">{off}%</span>}
         </div>
         <img className="pab-eta-img" src="/icons/express-today.svg" alt="express Today" width="122" height="18" />
       </div>
