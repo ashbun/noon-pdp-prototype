@@ -278,6 +278,7 @@ input, button, textarea, select { font-family: inherit; }
 /* Inline sponsored offers carousel (checkout page) */
 .co-card.co-offers { padding: 16px 16px 12px; }
 .co-offers .pab-body { padding-left: 0; padding-right: 0; padding-bottom: 0; }
+.co-offers .pab-eta-img { margin-bottom: 4px; }
 .co-offers-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
 .co-offers-title { margin: 0; font-size: 16px; font-weight: 700; line-height: 20px; color: #0e0e0e; letter-spacing: -0.16px; }
 .co-offers-ad { font-size: 10px; font-weight: 400; line-height: 14px; color: var(--ink-500); background: var(--line-2); padding: 3px 8px; border-radius: 6px; }
