@@ -358,7 +358,12 @@ function PLP({ onBack }) {
   const setItemQty = (id, delta) =>
     setQty((prev) => ({ ...prev, [id]: Math.max(0, (prev[id] || 0) + delta) }))
   return (
-    <div className="plp">
+    <motion.div
+      className="plp"
+      initial={{ x: '-100%' }}
+      animate={{ x: 0 }}
+      transition={{ type: 'tween', ease: [0.22, 0.61, 0.36, 1], duration: 0.3 }}
+    >
       <div className="plp-top">
         <div className="statusbar">
           <span className="sb-time">9:41</span>
@@ -372,17 +377,6 @@ function PLP({ onBack }) {
           <button className="plp-icon" onClick={onBack} aria-label="Back">
             <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M15 18l-6-6 6-6"/></svg>
           </button>
-          <div className="plp-head-actions">
-            <button className="plp-icon" aria-label="Search">
-              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" strokeWidth="2"/><path stroke="currentColor" strokeWidth="2" strokeLinecap="round" d="m20 20-3.5-3.5"/></svg>
-            </button>
-            <button className="plp-icon" aria-label="Wishlist">
-              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M12 20s-7-4.4-7-9.5A3.5 3.5 0 0 1 12 7a3.5 3.5 0 0 1 7 3.5C19 15.6 12 20 12 20z"/></svg>
-            </button>
-            <button className="plp-icon" aria-label="Share">
-              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M12 3v13M8 7l4-4 4 4M5 14v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"/></svg>
-            </button>
-          </div>
         </div>
       </div>
 
@@ -412,7 +406,7 @@ function PLP({ onBack }) {
           </button>
         ))}
       </div>
-    </div>
+    </motion.div>
   )
 }
 
@@ -421,11 +415,9 @@ function PlpCard({ p, qty, onChange }) {
     <div className="plp-card">
       <div className="plp-img">
         <img className="plp-photo" src={p.img} alt={p.title} />
-        {p.best && <span className="plp-best">Best Seller</span>}
         <button className="plp-wish" aria-label="Wishlist">
           <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden><path fill="#fff" stroke="#475067" strokeLinecap="round" strokeLinejoin="round" d="M14 6C14 4.34315 12.6009 3 10.875 3C9.58459 3 8.47685 3.75085 8 4.82228C7.52315 3.75085 6.41541 3 5.125 3C3.39911 3 2 4.34315 2 6C2 10.8137 8 14 8 14C8 14 14 10.8137 14 6Z"/></svg>
         </button>
-        <span className="plp-ad">Ad</span>
         <div className="plp-dots"><span className="on" /><span /><span /></div>
         {p.variantCount > 1 && (
           <div className="plp-variant">
