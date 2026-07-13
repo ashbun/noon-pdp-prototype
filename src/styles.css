@@ -334,7 +334,7 @@ input, button, textarea, select { font-family: inherit; }
 }
 .plp-scroll { flex: 1; overflow-y: auto; overscroll-behavior: contain; }
 .plp-scroll::-webkit-scrollbar { display: none; }
-.plp-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px 12px; padding: 12px; background-color: #ffffff; }
+.plp-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px 12px; padding: 0 12px 12px; background-color: #ffffff; }
 
 .plp-card { display: flex; flex-direction: column; border: 0.5px solid var(--line-2); border-radius: 12px; overflow: hidden; background: var(--white); }
 .plp-img { position: relative; width: 100%; aspect-ratio: 3 / 4; background: rgba(0,40,136,.03); overflow: hidden; }
