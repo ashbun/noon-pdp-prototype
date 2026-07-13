@@ -276,7 +276,8 @@ input, button, textarea, select { font-family: inherit; }
 .pab-add-stepper span { font-size: 14px; font-weight: 700; color: var(--ink); }
 
 /* Inline sponsored offers carousel (checkout page) */
-.co-offers { padding: 16px 16px 14px; }
+.co-card.co-offers { padding: 16px 16px 12px; }
+.co-offers .pab-body { padding-left: 0; padding-right: 0; padding-bottom: 0; }
 .co-offers-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
 .co-offers-title { margin: 0; font-size: 16px; font-weight: 700; line-height: 20px; color: #0e0e0e; letter-spacing: -0.16px; }
 .co-offers-ad { font-size: 10px; font-weight: 400; line-height: 14px; color: var(--ink-500); background: var(--line-2); padding: 3px 8px; border-radius: 6px; }
@@ -312,7 +313,7 @@ input, button, textarea, select { font-family: inherit; }
 .deal-rating .deal-star { flex: 0 0 auto; }
 .deal-rating b { font-size: 12px; font-weight: 600; color: var(--ink-800); letter-spacing: -0.12px; }
 .deal-rating span { font-size: 12px; font-weight: 400; color: var(--ink-500); letter-spacing: -0.12px; }
-.deal-div { height: 1px; background: var(--line); margin: 4px 0; }
+.deal-div { height: 0; margin: 4px 0; border: 0; border-top: 1px dotted #d0d4dd; }
 .deal-price { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px; }
 .deal-now { font-size: 16px; font-weight: 700; color: var(--ink); line-height: 20px; letter-spacing: -0.16px; }
 .deal-was { font-size: 12px; color: var(--ink-500); text-decoration: line-through; line-height: 14px; letter-spacing: -0.12px; }
