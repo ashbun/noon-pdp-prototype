@@ -33,7 +33,10 @@ function PDP() {
   const imgScale = useTransform(scrollY, [0, 320], [1, 0.7], { clamp: true })
   const imgOpacity = useTransform(scrollY, [0, 260, 400], [1, 1, 0.35], { clamp: true })
 
-  if (view === 'checkout') return <Checkout onBack={() => setView('pdp')} cartQty={cartQty} />
+  if (view === 'checkout')
+    return <Checkout onBack={() => setView('pdp')} onProceed={() => setView('payment')} cartQty={cartQty} />
+  if (view === 'payment')
+    return <PaymentCheckout onBack={() => setView('checkout')} cartQty={cartQty} />
 
   return (
     <div className="pdp">
@@ -183,7 +186,7 @@ const CHECKOUT_ITEMS = [
   },
 ]
 
-function Checkout({ onBack, cartQty = {} }) {
+function Checkout({ onBack, onProceed, cartQty = {} }) {
   // The PDP product is always in the cart; anything added from the bottom
   // sheet (qty > 0) is reflected here as its own line item.
   const addedItems = PAB_PRODUCTS
@@ -383,7 +386,7 @@ function Checkout({ onBack, cartQty = {} }) {
             <span className="co-total-label">Total</span>
             <span className="co-total-val"><Dh /> {fmt(totalNow)}</span>
           </button>
-          <button className="co-checkout-btn">Checkout</button>
+          <button className="co-checkout-btn" onClick={onProceed}>Checkout</button>
         </div>
       </div>
 
@@ -466,6 +469,283 @@ function PriceSheet({ onClose, fmt, itemCount, totalWas, totalNow, savings, brea
         </div>
       </div>
     </div>
+  )
+}
+
+/* ------------------------------ Payment / checkout ----------------------------- */
+function PaymentCheckout({ onBack, cartQty = {} }) {
+  // Products are the same set the cart/checkout page carries: the PDP product
+  // is always present, plus anything added from the bottom sheet (qty > 0).
+  const addedItems = PAB_PRODUCTS
+    .filter((p) => (cartQty[p.id] || 0) > 0)
+    .map((p) => ({
+      id: p.id, img: p.img, fit: p.fit, title: p.title,
+      now: p.price, was: p.was,
+      off: `${Math.round((1 - Number(p.price) / Number(p.was)) * 100)}% OFF`,
+    }))
+  const items = [CHECKOUT_ITEMS[0], ...addedItems]
+  const qtys = { [CHECKOUT_ITEMS[0].id]: 1 }
+  addedItems.forEach((it) => { qtys[it.id] = cartQty[it.id] || 1 })
+
+  const fmt = (n) => n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+  const totalWas = items.reduce((s, it) => s + Number(it.was) * (qtys[it.id] || 1), 0)
+  const totalNow = items.reduce((s, it) => s + Number(it.now) * (qtys[it.id] || 1), 0)
+  const itemCount = items.reduce((s, it) => s + (qtys[it.id] || 1), 0)
+
+  const breakup = { deliveryFee: 7, couponDiscount: 2, couponCashback: 30, cardCashback: 45 }
+  const grandTotal = totalNow - breakup.couponDiscount
+  const noonCredits = 50.5
+  const remaining = Math.max(0, grandTotal - noonCredits)
+
+  const [instr, setInstr] = useState('door')       // 'together' | 'door'
+  const [pay, setPay] = useState('card')            // selected pay method
+  const [useCredits, setUseCredits] = useState(true)
+
+  return (
+    <div className="pc">
+      <div className="pc-top">
+        <div className="statusbar">
+          <span className="sb-time">9:41</span>
+          <span className="sb-right">
+            <svg width="17" height="11" viewBox="0 0 17 11" aria-hidden><g fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></g></svg>
+            <svg width="16" height="12" viewBox="0 0 16 12" aria-hidden fill="currentColor"><path d="M8 9.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zM8 5c1.7 0 3.3.7 4.5 1.8l-1.4 1.4A4.4 4.4 0 0 0 8 7c-1.2 0-2.3.5-3.1 1.2L3.5 6.8A6.4 6.4 0 0 1 8 5zm0-4c2.8 0 5.4 1.1 7.3 3l-1.4 1.4A8.4 8.4 0 0 0 8 3 8.4 8.4 0 0 0 2.1 5.4L.7 4A10.4 10.4 0 0 1 8 1z"/></svg>
+            <svg width="25" height="12" viewBox="0 0 25 12" aria-hidden><rect x="0.5" y="0.5" width="21" height="11" rx="3" fill="none" stroke="currentColor" opacity="0.4"/><rect x="2" y="2" width="18" height="8" rx="1.5" fill="currentColor"/><rect x="23" y="4" width="1.5" height="4" rx="0.75" fill="currentColor" opacity="0.4"/></svg>
+          </span>
+        </div>
+        <div className="pc-head">
+          <button className="pc-back" onClick={onBack} aria-label="Back">
+            <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <div className="pc-head-mid">
+            <span className="pc-head-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden><path fill="currentColor" d="M12 3 2 11h3v9h5v-6h4v6h5v-9h3z"/></svg>
+              Delivering to Home
+              <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="m6 9 6 6 6-6"/></svg>
+            </span>
+            <span className="pc-head-sub">Villa 52, Springville, K, VGP Layout, Mh&hellip;</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="pc-scroll">
+        {/* Shipment */}
+        <div className="pc-card pc-ship">
+          <div className="pc-ship-head">
+            <span className="pc-ship-title">SHIPMENT 1</span>
+            <span className="pc-ship-count">{itemCount} Item{itemCount > 1 ? 's' : ''}</span>
+          </div>
+          {items.map((it) => (
+            <div className="pc-item" key={it.id}>
+              <div className="pc-item-img">
+                <img src={it.img} alt={it.title} style={{ objectFit: it.fit }} />
+                {(qtys[it.id] || 1) > 1 && <span className="pc-item-qty">x{qtys[it.id]}</span>}
+              </div>
+              <div className="pc-item-main">
+                <div className="pc-item-title">{it.title}</div>
+                <div className="pc-item-price">
+                  <span className="pc-now"><Dh />{it.now}</span>
+                  <span className="pc-was"><Dh />{it.was}</span>
+                  <span className="pc-off">{it.off}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+          <div className="pc-ship-eta">
+            <span className="pc-eta-txt">Get it <b>Today before 8pm</b></span>
+            <span className="pc-express">express</span>
+          </div>
+        </div>
+
+        {/* Delivery instructions */}
+        <div className="pc-card">
+          <div className="pc-sec-head">
+            Delivery instructions
+            <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden><circle cx="12" cy="12" r="9" fill="none" stroke="#9aa3b5" strokeWidth="1.8"/><path stroke="#9aa3b5" strokeWidth="2" strokeLinecap="round" d="M12 11v5M12 8h.01"/></svg>
+          </div>
+          <div className="pc-inst-grid">
+            <button className={`pc-inst${instr === 'together' ? ' on' : ''}`} onClick={() => setInstr('together')}>
+              <span className="pc-inst-ico" aria-hidden>&#127811;</span>
+              <span className="pc-inst-lbl">Get items together</span>
+              <span className={`pc-check${instr === 'together' ? ' on' : ''}`}>{instr === 'together' && <CheckMark />}</span>
+            </button>
+            <button className={`pc-inst${instr === 'door' ? ' on' : ''}`} onClick={() => setInstr('door')}>
+              <span className="pc-inst-ico" aria-hidden>&#128682;</span>
+              <span className="pc-inst-lbl">Leave at the door</span>
+              <span className={`pc-check${instr === 'door' ? ' on' : ''}`}>{instr === 'door' && <CheckMark />}</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Receiver details */}
+        <div className="pc-card">
+          <div className="pc-sec-head">Receiver details</div>
+          <div className="pc-receiver">
+            <span className="pc-recv-ico">
+              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden><path fill="var(--blue)" d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11 11 0 0 0 3.5.56 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.2.2 2.4.56 3.5a1 1 0 0 1-.25 1z"/></svg>
+            </span>
+            <div className="pc-recv-txt">
+              <span className="pc-recv-name">Rahul Jaiswal</span>
+              <span className="pc-recv-phone">+971 02124124</span>
+            </div>
+            <button className="pc-link">Change receiver</button>
+          </div>
+        </div>
+
+        {/* Points & Vouchers */}
+        <div className="pc-card">
+          <div className="pc-sec-head">Points &amp; Vouchers</div>
+          <div className="pc-sec-sub">Need credits? Top up now!</div>
+          <div className="pc-vouchers">
+            <div className="pc-voucher pc-mokafaa">
+              <span className="pc-mok-logo">mokafaa</span>
+              <div className="pc-voucher-txt">
+                <b>Mokafaa Points</b>
+                <span>+96611234567 linked ac&hellip;</span>
+              </div>
+              <Chev className="pc-voucher-chev" />
+            </div>
+            <div className="pc-voucher pc-quara">
+              <span className="pc-badge-new">NEW</span>
+              <span className="pc-quara-logo">QUARA</span>
+            </div>
+            <div className="pc-voucher pc-emkan" />
+          </div>
+          <div className="pc-dots"><i className="on" /><i /><i /></div>
+        </div>
+
+        {/* Pay With */}
+        <div className="pc-card">
+          <div className="pc-sec-head">Pay With</div>
+          <button className="pc-credits" onClick={() => setUseCredits((v) => !v)}>
+            <span className={`pc-toggle${useCredits ? ' on' : ''}`}><i /></span>
+            <span className="pc-credits-txt">Use my <Dh />{fmt(noonCredits)} noon credits</span>
+          </button>
+          <p className="pc-credits-note">Select another method to cover the remaining <Dh />{fmt(remaining)}</p>
+
+          <div className="pc-methods">
+            <button className={`pc-method${pay === 'tabby' ? ' on' : ''}`} onClick={() => setPay('tabby')}>
+              <img className="pc-method-logo" src="/icons/save-tabby.png" alt="tabby" />
+              <div className="pc-method-txt">
+                <b>Tabby</b>
+                <span>Pay 4 interest free payments of <Dh />55</span>
+              </div>
+              <span className="pc-badge-new pc-badge-inline">NEW</span>
+            </button>
+            <button className={`pc-method${pay === 'tamara' ? ' on' : ''}`} onClick={() => setPay('tamara')}>
+              <img className="pc-method-logo" src="/icons/save-tamara.png" alt="tamara" />
+              <div className="pc-method-txt">
+                <b>Tamara</b>
+                <span>Pay <Dh />55 or in 4 payments. no late fees</span>
+              </div>
+            </button>
+            <button className={`pc-method${pay === 'apple' ? ' on' : ''}`} onClick={() => setPay('apple')}>
+              <span className="pc-applepay"><ApplePay /></span>
+              <div className="pc-method-txt"><b>Apple Pay</b></div>
+            </button>
+
+            <div className={`pc-method pc-method-card${pay === 'card' ? ' on' : ''}`} onClick={() => setPay('card')}>
+              <div className="pc-method-cardhead">
+                <span className="pc-card-chip">CARD</span>
+                <b>Debit/Credit Card</b>
+                <button className="pc-link">Add/Change</button>
+              </div>
+              <div className="pc-card-row">
+                <span className="pc-card-visa">VISA</span>
+                <div className="pc-card-info">
+                  <span className="pc-card-name">Yomna Yassin's de&hellip;</span>
+                  <span className="pc-card-inst">Installments Available <Dh />200/mo</span>
+                </div>
+                <span className="pc-card-num">&bull;&bull;&bull;&bull; 6280</span>
+                <span className="pc-cvv">CVV</span>
+              </div>
+              <div className="pc-card-instmt">
+                <span>Select an installment starting <Dh />590/mo</span>
+                <span className="pc-instmt-arrow"><Chev className="pc-voucher-chev" /></span>
+              </div>
+            </div>
+
+            <div className="pc-method-noon">
+              <img className="pc-noon-card" src="/icons/save-noon-dark.png" alt="noon One credit card" />
+              <div className="pc-method-txt">
+                <b>noon One Credit Card</b>
+                <span>Extra <Dh />110.20 Cashback <Dh />55</span>
+              </div>
+              <button className="pc-link">Apply Now</button>
+            </div>
+
+            <button className={`pc-method${pay === 'cod' ? ' on' : ''}`} onClick={() => setPay('cod')}>
+              <span className="pc-cash">CASH</span>
+              <div className="pc-method-txt"><b>Cash on Delivery</b></div>
+            </button>
+          </div>
+        </div>
+
+        {/* Payment summary */}
+        <div className="pc-card pc-summary">
+          <h3 className="pc-sec-head">Payment summary</h3>
+          <div className="pc-sum-rows">
+            <div className="pc-sum-row">
+              <span className="pc-sum-lbl">Subtotal</span>
+              <span className="pc-sum-vals">
+                <span className="pc-sum-was">AED {fmt(totalWas)}</span>
+                <span className="pc-sum-now"><Dh />{fmt(totalNow)}</span>
+              </span>
+            </div>
+            <div className="pc-sum-row">
+              <span className="pc-sum-lbl">Delivery fee</span>
+              <span className="pc-sum-vals">
+                <span className="pc-sum-free">Free with <img className="pc-sum-one" src="/icons/save-one.png" alt="noon One" /></span>
+                <span className="pc-sum-was"><Dh />{fmt(breakup.deliveryFee)}</span>
+              </span>
+            </div>
+            <div className="pc-sum-div" />
+            <div className="pc-sum-row">
+              <span className="pc-sum-lbl">Coupon discount</span>
+              <span className="pc-sum-now pc-sum-neg">&minus; <Dh />{fmt(breakup.couponDiscount)}</span>
+            </div>
+            <div className="pc-sum-row pc-sum-total">
+              <span className="pc-sum-lbl">Total</span>
+              <span className="pc-sum-now"><Dh />{fmt(grandTotal)}</span>
+            </div>
+          </div>
+          <div className="pc-mint">
+            <div className="pc-sum-row">
+              <span className="pc-mint-lbl">Coupon Cashback</span>
+              <span className="pc-mint-val"><Dh />{breakup.couponCashback}</span>
+            </div>
+            <div className="pc-sum-row">
+              <span className="pc-mint-lbl">noon one credit card</span>
+              <span className="pc-mint-val"><Dh />{breakup.cardCashback}</span>
+            </div>
+            <p className="pc-mint-note">cashback will be credited to the primary cardholder's account</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="pc-dock">
+        <button className="pc-swipe">
+          <span className="pc-swipe-knob">
+            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+          <span className="pc-swipe-txt">ENTER CVV</span>
+        </button>
+        <div className="pc-dock-total">
+          <span className="pc-dock-items">{itemCount} Items</span>
+          <span className="pc-dock-amt">AED {fmt(grandTotal)}</span>
+        </div>
+      </div>
+      <div className="pc-homebar" />
+    </div>
+  )
+}
+
+function CheckMark() {
+  return <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/></svg>
+}
+
+function ApplePay() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden><path fill="currentColor" d="M17.05 12.04c-.03-2.6 2.12-3.85 2.22-3.91-1.21-1.77-3.1-2.01-3.77-2.04-1.6-.16-3.13.94-3.94.94-.81 0-2.07-.92-3.4-.9-1.75.03-3.36 1.02-4.26 2.58-1.82 3.16-.47 7.84 1.3 10.41.86 1.26 1.89 2.67 3.23 2.62 1.3-.05 1.79-.84 3.36-.84 1.57 0 2.01.84 3.38.81 1.4-.02 2.28-1.28 3.13-2.55.99-1.46 1.4-2.87 1.42-2.94-.03-.01-2.72-1.04-2.75-4.13zM14.6 4.4c.72-.87 1.2-2.08 1.07-3.28-1.03.04-2.28.69-3.02 1.56-.66.77-1.24 2-1.09 3.17 1.15.09 2.32-.58 3.04-1.45z"/></svg>
   )
 }
 
