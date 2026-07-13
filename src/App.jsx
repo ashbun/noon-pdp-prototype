@@ -50,6 +50,7 @@ function PDP() {
           <ProductDetails />
           <AdditionalInfo />
           <SellerWidget />
+          <Reviews />
         </div>
       </div>
       <BottomNav onAddToCart={() => setCartOpen(true)} />
@@ -532,28 +533,58 @@ function PaymentCheckout({ onBack, cartQty = {} }) {
         <div className="pc-card pc-ship">
           <div className="pc-ship-head">
             <span className="pc-ship-title">SHIPMENT 1</span>
-            <span className="pc-ship-count">{itemCount} Item{itemCount > 1 ? 's' : ''}</span>
+            <span className="pc-ship-count">{items.length} Item{items.length > 1 ? 's' : ''}</span>
           </div>
-          {items.map((it) => (
-            <div className="pc-item" key={it.id}>
-              <div className="pc-item-img">
-                <img src={it.img} alt={it.title} style={{ objectFit: it.fit }} />
-                {(qtys[it.id] || 1) > 1 && <span className="pc-item-qty">x{qtys[it.id]}</span>}
-              </div>
-              <div className="pc-item-main">
-                <div className="pc-item-title">{it.title}</div>
-                <div className="pc-item-price">
-                  <span className="pc-now"><Dh />{it.now}</span>
-                  <span className="pc-was"><Dh />{it.was}</span>
-                  <span className="pc-off">{it.off}</span>
+
+          {items.length > 1 ? (
+            <div className="pc-ship-multi">
+              {items.map((it, i) => (
+                <div className="pc-mini" key={it.id}>
+                  <div className="pc-mini-img">
+                    <img src={it.img} alt={it.title} style={{ objectFit: it.fit }} />
+                    {(qtys[it.id] || 1) > 1 && <span className="pc-item-qty">x{qtys[it.id]}</span>}
+                  </div>
+                  <div className="pc-mini-main">
+                    <div className="pc-mini-title">{it.title}</div>
+                    <div className="pc-item-price">
+                      <span className="pc-now"><Dh />{it.now}</span>
+                      <span className="pc-was"><Dh />{it.was}</span>
+                      <span className="pc-off">{it.off}</span>
+                    </div>
+                    {i === 0 && <span className="pc-combo">Combo item</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            items.map((it) => (
+              <div className="pc-item" key={it.id}>
+                <div className="pc-item-img">
+                  <img src={it.img} alt={it.title} style={{ objectFit: it.fit }} />
+                  {(qtys[it.id] || 1) > 1 && <span className="pc-item-qty">x{qtys[it.id]}</span>}
+                </div>
+                <div className="pc-item-main">
+                  <div className="pc-item-title">{it.title}</div>
+                  <div className="pc-item-price">
+                    <span className="pc-now"><Dh />{it.now}</span>
+                    <span className="pc-was"><Dh />{it.was}</span>
+                    <span className="pc-off">{it.off}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
+
           <div className="pc-ship-eta">
-            <span className="pc-eta-txt">Get it <b>Today before 8pm</b></span>
+            <span className="pc-eta-txt">Get it <b>{items.length > 1 ? 'in 1hrs 12mins' : 'Today before 8pm'}</b></span>
             <span className="pc-express">express</span>
           </div>
+          {items.length > 1 && (
+            <button className="pc-ship-later">
+              <span>Save on fees with later delivery</span>
+              <Chev className="pc-voucher-chev pc-later-chev" />
+            </button>
+          )}
         </div>
 
         {/* Delivery instructions */}
@@ -564,12 +595,16 @@ function PaymentCheckout({ onBack, cartQty = {} }) {
           </div>
           <div className="pc-inst-grid">
             <button className={`pc-inst${instr === 'together' ? ' on' : ''}`} onClick={() => setInstr('together')}>
-              <span className="pc-inst-ico" aria-hidden>&#127811;</span>
+              <span className="pc-inst-ico" aria-hidden>
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 21c0-4 0-6.5 1.8-8.9C15.3 10.1 18 9 21 9c0 4-1 6.6-3 8.4-1.7 1.5-3.8 2-6 2.1z" fill="#8fd694"/><path d="M12 21C12 16 10.5 12.5 7.5 10.5 5.4 9.1 3.5 8.8 2 9c.4 3.6 1.6 5.9 3.6 7.4C7.4 17.7 9.6 18.4 12 18.6z" fill="#3fa564"/><path d="M12 22v-8" stroke="#2f7a4a" strokeWidth="1.6" strokeLinecap="round"/></svg>
+              </span>
               <span className="pc-inst-lbl">Get items together</span>
               <span className={`pc-check${instr === 'together' ? ' on' : ''}`}>{instr === 'together' && <CheckMark />}</span>
             </button>
             <button className={`pc-inst${instr === 'door' ? ' on' : ''}`} onClick={() => setInstr('door')}>
-              <span className="pc-inst-ico" aria-hidden>&#128682;</span>
+              <span className="pc-inst-ico" aria-hidden>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 3h10a1 1 0 0 1 1 1v17H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" fill="#1f6bff"/><rect x="7.5" y="5" width="8" height="14" rx="1" fill="#9ec2ff"/><circle cx="13.2" cy="12" r="1" fill="#1f6bff"/></svg>
+              </span>
               <span className="pc-inst-lbl">Leave at the door</span>
               <span className={`pc-check${instr === 'door' ? ' on' : ''}`}>{instr === 'door' && <CheckMark />}</span>
             </button>
@@ -639,18 +674,20 @@ function PaymentCheckout({ onBack, cartQty = {} }) {
               </div>
             </button>
             <button className={`pc-method${pay === 'apple' ? ' on' : ''}`} onClick={() => setPay('apple')}>
-              <span className="pc-applepay"><ApplePay /></span>
+              <span className="pc-applepay"><ApplePay /><span className="pc-applepay-txt">Pay</span></span>
               <div className="pc-method-txt"><b>Apple Pay</b></div>
             </button>
 
             <div className={`pc-method pc-method-card${pay === 'card' ? ' on' : ''}`} onClick={() => setPay('card')}>
               <div className="pc-method-cardhead">
-                <span className="pc-card-chip">CARD</span>
+                <span className="pc-card-chip">
+                  <svg width="16" height="12" viewBox="0 0 24 18" aria-hidden><rect x="1" y="1" width="22" height="16" rx="2.5" fill="none" stroke="currentColor" strokeWidth="1.6"/><path stroke="currentColor" strokeWidth="1.6" d="M1 6h22"/></svg>
+                </span>
                 <b>Debit/Credit Card</b>
                 <button className="pc-link">Add/Change</button>
               </div>
               <div className="pc-card-row">
-                <span className="pc-card-visa">VISA</span>
+                <img className="pc-card-thumb" src="/icons/pay-card.png" alt="card" />
                 <div className="pc-card-info">
                   <span className="pc-card-name">Yomna Yassin's de&hellip;</span>
                   <span className="pc-card-inst">Installments Available <Dh />200/mo</span>
@@ -658,14 +695,16 @@ function PaymentCheckout({ onBack, cartQty = {} }) {
                 <span className="pc-card-num">&bull;&bull;&bull;&bull; 6280</span>
                 <span className="pc-cvv">CVV</span>
               </div>
-              <div className="pc-card-instmt">
-                <span>Select an installment starting <Dh />590/mo</span>
-                <span className="pc-instmt-arrow"><Chev className="pc-voucher-chev" /></span>
-              </div>
             </div>
+            <button className="pc-instmt">
+              <span>Select an installment starting <Dh />590/mo</span>
+              <span className="pc-instmt-arrow">
+                <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" d="M9 6l6 6-6 6"/></svg>
+              </span>
+            </button>
 
             <div className="pc-method-noon">
-              <img className="pc-noon-card" src="/icons/save-noon-dark.png" alt="noon One credit card" />
+              <img className="pc-noon-card" src="/icons/pay-noon-card.png" alt="noon One credit card" />
               <div className="pc-method-txt">
                 <b>noon One Credit Card</b>
                 <span>Extra <Dh />110.20 Cashback <Dh />55</span>
@@ -729,9 +768,9 @@ function PaymentCheckout({ onBack, cartQty = {} }) {
           </span>
           <span className="pc-swipe-txt">ENTER CVV</span>
         </button>
-        <div className="pc-dock-total">
+        <div className="pc-dock-row">
           <span className="pc-dock-items">{itemCount} Items</span>
-          <span className="pc-dock-amt">AED {fmt(grandTotal)}</span>
+          <span className="pc-dock-amt"><Dh />{fmt(grandTotal)}</span>
         </div>
       </div>
       <div className="pc-homebar" />
@@ -1056,6 +1095,111 @@ function SellerWidget() {
         <span>5 offers from other sellers from <span className="offers-price"><Dh />649</span></span>
         <Chev className="row-chev" />
       </button>
+    </section>
+  )
+}
+
+/* ------------------------------ Ratings & Reviews ----------------------------- */
+const REVIEW_SUMMARY = [
+  'The portrait mode includes a fantastic wide-angle',
+  'Users appreciate the overall performance of phone.',
+  'Enjoy the wide-angle capability while using portrait a fantastic wide-angle',
+  'Users appreciate the overall performance of this phone.',
+]
+const REVIEW_PHOTOS = ['/icons/rev-photo-1.png', '/icons/rev-photo-2.png', '/icons/rev-photo-3.png', '/icons/rev-photo-1.png']
+const TOP_REVIEWS = [
+  {
+    id: 'r1', name: 'John Anderson', stars: 4, verified: true, when: '8 days ago',
+    specs: ['Mac OS', '8 GB RAM', 'Internal Version', '256 GB'],
+    title: 'This is simply amazing!',
+    body: 'If the camera had the wide angle feature in the portrait mode. If the camera has more fe..',
+    more: 'More', helpful: 15, photos: ['/icons/rev-photo-1.png', '/icons/rev-photo-2.png'],
+  },
+  {
+    id: 'r2', name: 'John Anderson', stars: 5, source: 'from trusted source', when: '6 months ago',
+    specs: ['Mac OS', '8 GB RAM', 'Internal Version', '256 GB'],
+    title: 'This is simply amazing!',
+    body: 'If the camera had the wide angle feature in the portrait mode. If the camera has more fewer features than than the last one it will be worse better than others.',
+    more: 'Less', helpful: 14, photos: ['/icons/rev-photo-1.png', '/icons/rev-photo-2.png'],
+  },
+]
+
+function Stars({ value, size = 15 }) {
+  return (
+    <span className="rv-stars" aria-label={`${value} out of 5`}>
+      {[0, 1, 2, 3, 4].map((i) => (
+        <svg key={i} width={size} height={size} viewBox="0 0 24 24" aria-hidden className={i < value ? 'on' : ''}>
+          <path fill="currentColor" d="M12 3l2.5 5 5.5.8-4 3.9.9 5.5L12 16.6 7.1 18.2l.9-5.5-4-3.9L9.5 8z"/>
+        </svg>
+      ))}
+    </span>
+  )
+}
+
+function Reviews() {
+  return (
+    <section className="card reviews">
+      <h3 className="section-h">Ratings &amp; Reviews</h3>
+
+      <div className="rv-summary-top">
+        <span className="rv-score">4.8</span>
+        <Stars value={5} size={20} />
+        <button className="rv-info" aria-label="About ratings">
+          <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1.8"/><path stroke="currentColor" strokeWidth="2" strokeLinecap="round" d="M12 11v5M12 8h.01"/></svg>
+        </button>
+      </div>
+      <p className="rv-sub">Avg. rating based on 64 reviews from trusted sources</p>
+
+      <button className="rv-ai">
+        <span className="rv-ai-txt"><b>64 reviews</b>, summarised by <b className="rv-ai-noon">noon AI</b></span>
+        <svg className="rv-ai-spark" width="16" height="16" viewBox="0 0 24 24" aria-hidden><path fill="currentColor" d="M12 2l1.6 5.4L19 9l-5.4 1.6L12 16l-1.6-5.4L5 9l5.4-1.6z"/></svg>
+      </button>
+      <ul className="rv-bullets">
+        {REVIEW_SUMMARY.map((t, i) => <li key={i}>{t}</li>)}
+      </ul>
+
+      <h4 className="rv-h">Photo Reviews (64)</h4>
+      <div className="rv-photos">
+        {REVIEW_PHOTOS.map((src, i) => <img key={i} src={src} alt="review" />)}
+      </div>
+
+      <h4 className="rv-h">Top Reviews (64)</h4>
+      {TOP_REVIEWS.map((r) => (
+        <div className="rv-card" key={r.id}>
+          <div className="rv-card-head">
+            <span className="rv-name">{r.name}</span>
+            {r.verified && (
+              <span className="rv-verified">
+                <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden><circle cx="12" cy="12" r="10" fill="var(--emerald)"/><path fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" d="M7 12.5l3.2 3.2L17 9"/></svg>
+                Verified Buy
+              </span>
+            )}
+          </div>
+          <div className="rv-card-sub">
+            <Stars value={r.stars} />
+            <span className="rv-when">{r.source ? `${r.source} · ${r.when}` : r.when}</span>
+          </div>
+          <div className="rv-specs">
+            {r.specs.map((s) => <span className="rv-spec" key={s}>{s}</span>)}
+          </div>
+          <div className="rv-viewprod">
+            <span>Dual core memory</span>
+            <button className="rv-vp-link">View product <Chev className="rv-vp-chev" /></button>
+          </div>
+          <div className="rv-title">{r.title}</div>
+          <p className="rv-body">{r.body} <span className="rv-more">{r.more}</span></p>
+          <button className="rv-translate">Translate to <span className="rv-ar">عربي</span></button>
+          <div className="rv-card-photos">
+            {r.photos.map((src, i) => <img key={i} src={src} alt="review" />)}
+          </div>
+          <button className="rv-helpful">
+            <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" d="M7 11v9H4a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1zM7 11l4-8a2 2 0 0 1 2 2v3h5a2 2 0 0 1 2 2.3l-1.2 7A2 2 0 0 1 17.8 20H7"/></svg>
+            Helpful ({r.helpful})
+          </button>
+        </div>
+      ))}
+
+      <button className="rv-all">All customer reviews <Chev className="rv-all-chev" /></button>
     </section>
   )
 }
