@@ -489,7 +489,6 @@ function PaymentCheckout({ onBack, cartQty = {} }) {
   addedItems.forEach((it) => { qtys[it.id] = cartQty[it.id] || 1 })
 
   const fmt = (n) => n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-  const totalWas = items.reduce((s, it) => s + Number(it.was) * (qtys[it.id] || 1), 0)
   const totalNow = items.reduce((s, it) => s + Number(it.now) * (qtys[it.id] || 1), 0)
   const itemCount = items.reduce((s, it) => s + (qtys[it.id] || 1), 0)
 
@@ -529,6 +528,38 @@ function PaymentCheckout({ onBack, cartQty = {} }) {
       </div>
 
       <div className="pc-scroll">
+        <div className="pc-card pc-vouchers-card">
+          <div className="pc-vouchers-head">
+            <div>
+              <div className="pc-sec-head">Points & Vouchers</div>
+              <div className="pc-sec-sub">Need credits? Top up now!</div>
+            </div>
+            <img className="pc-voucher-wave" src="/icons/save-wave.svg" alt="" aria-hidden="true" />
+          </div>
+
+          <div className="pc-vouchers">
+            <div className="pc-voucher pc-mokafaa">
+              <span className="pc-mok-logo">mokafaa</span>
+              <div className="pc-voucher-txt">
+                <b>Mokafaa Points</b>
+                <span>+96611234567 linked ac…</span>
+              </div>
+              <Chev className="pc-voucher-chev" />
+            </div>
+            <div className="pc-voucher pc-quara">
+              <span className="pc-badge-new">NEW</span>
+              <span className="pc-quara-logo">QUARA</span>
+            </div>
+            <div className="pc-voucher pc-emkan" />
+          </div>
+
+          <div className="pc-dots">
+            <i className="on" />
+            <i />
+            <i />
+          </div>
+        </div>
+
         {/* Shipment */}
         <div className="pc-card pc-ship">
           <div className="pc-ship-head">
@@ -577,7 +608,18 @@ function PaymentCheckout({ onBack, cartQty = {} }) {
 
           <div className="pc-ship-eta">
             <span className="pc-eta-txt">Get it <b>{items.length > 1 ? 'in 1hrs 12mins' : 'Today before 8pm'}</b></span>
-            <span className="pc-express">express</span>
+            <span className="pc-express" aria-hidden>
+              <svg width="57" height="18" viewBox="0 0 57 17.1" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M57 0C56.751 0.891985 54.0348 10.3557 53.22 12.6618C52.5409 14.6416 50.368 16.6866 46.4748 17.1C46.1353 17.0782 9.86876 17.1 9.18972 17.1H8.89546C8.75966 17.1 8.62385 17.1 8.48804 17.1C3.75737 16.9042 0 13.1622 0 8.57176C0 6.20038 0.99593 4.06832 2.603 2.52366C4.21007 0.957252 6.45091 0 8.89546 0H57Z" fill="#FEEE00"/>
+                <path d="M9.66275 11.7569C10.4261 11.7569 11.2403 11.5148 11.8383 11.0846L11.3421 9.88795C10.9604 10.1972 10.337 10.3585 9.78997 10.3585C8.64495 10.3585 8.09789 9.61905 8.09789 9.06779C8.09789 9.02745 8.09789 8.94678 8.09789 8.90645H12.6653C12.7161 8.70477 12.7925 8.22073 12.7925 7.83082C12.7925 6.0157 11.6093 4.94007 10.0317 4.94007C7.98339 4.94007 6.48213 6.7283 6.48213 8.83922C6.48213 10.6543 7.72894 11.7569 9.66275 11.7569ZM11.3294 7.72326H8.276C8.40323 7.01065 9.05207 6.33839 9.92992 6.33839C10.8968 6.33839 11.3548 6.92998 11.3548 7.5888C11.3548 7.61569 11.3548 7.69637 11.3421 7.72326H11.3294Z" fill="#404553"/>
+                <path d="M18.8832 11.5955L17.3819 8.26107L20.1045 5.10142H18.247L16.5549 7.09133L15.7153 5.10142H13.9596L15.3463 8.26107L12.471 11.5955H14.3158L16.186 9.40392L17.1402 11.5955H18.8832Z" fill="#404553"/>
+                <path d="M23.4366 11.7569C25.5231 11.7569 26.6681 9.57871 26.6681 7.62914C26.6681 5.90814 25.7266 4.94007 24.3399 4.94007C23.602 4.94007 23.004 5.26276 22.4824 5.90814L22.6605 5.10142H21.0448L19.1619 14.0695H20.7776L21.4773 10.735C21.8845 11.3804 22.6096 11.7569 23.4366 11.7569ZM23.1694 10.2375C22.5206 10.2375 21.999 9.92829 21.7318 9.48459L22.2152 7.23922C22.546 6.79553 23.0549 6.4594 23.6147 6.4594C24.4035 6.4594 24.976 7.05099 24.976 7.97872C24.976 9.17535 24.2381 10.2375 23.1694 10.2375Z" fill="#404553"/>
+                <path d="M28.7165 11.5955L29.6071 7.33334C29.9633 6.90309 30.5358 6.55351 31.1338 6.55351C31.3882 6.55351 31.6172 6.60729 31.719 6.63418L32.0753 4.94007C31.0956 4.94007 30.4341 5.32999 29.8997 5.94847L30.0778 5.10142H28.4621L27.1008 11.5955H28.7165Z" fill="#404553"/>
+                <path d="M35.1077 11.7569C35.871 11.7569 36.6853 11.5148 37.2832 11.0846L36.787 9.88795C36.4054 10.1972 35.782 10.3585 35.2349 10.3585C34.0899 10.3585 33.5428 9.61905 33.5428 9.06779C33.5428 9.02745 33.5428 8.94678 33.5428 8.90645H38.1102C38.1611 8.70477 38.2374 8.22073 38.2374 7.83082C38.2374 6.0157 37.0542 4.94007 35.4766 4.94007C33.4283 4.94007 31.9271 6.7283 31.9271 8.83922C31.9271 10.6543 33.1739 11.7569 35.1077 11.7569ZM36.7743 7.72326H33.7209C33.8481 7.01065 34.497 6.33839 35.3748 6.33839C36.3418 6.33839 36.7998 6.92998 36.7998 7.5888C36.7998 7.61569 36.7998 7.69637 36.787 7.72326H36.7743Z" fill="#404553"/>
+                <path d="M41.3892 11.7569C43.0686 11.7569 44.0482 10.7216 44.0482 9.48459C44.0482 7.50813 40.9185 7.68292 40.9185 6.88965C40.9185 6.55351 41.2365 6.28461 41.809 6.28461C42.5597 6.28461 43.323 6.7283 43.6156 7.13166L44.4553 5.98881C43.8701 5.35688 42.8904 4.94007 41.8472 4.94007C40.206 4.94007 39.3154 6.00225 39.3154 7.13166C39.3154 9.08123 42.4452 8.86611 42.4452 9.74006C42.4452 10.1031 42.1016 10.4123 41.5546 10.4123C40.664 10.4123 39.7734 9.84762 39.4045 9.39048L38.5012 10.5871C39.1882 11.3535 40.2696 11.7569 41.3892 11.7569Z" fill="#404553"/>
+                <path d="M47.4522 11.7569C49.1316 11.7569 50.1112 10.7216 50.1112 9.48459C50.1112 7.50813 46.9815 7.68292 46.9815 6.88965C46.9815 6.55351 47.2996 6.28461 47.8721 6.28461C48.6227 6.28461 49.3861 6.7283 49.6787 7.13166L50.5183 5.98881C49.9331 5.35688 48.9535 4.94007 47.9102 4.94007C46.269 4.94007 45.3785 6.00225 45.3785 7.13166C45.3785 9.08123 48.5082 8.86611 48.5082 9.74006C48.5082 10.1031 48.1647 10.4123 47.6176 10.4123C46.7271 10.4123 45.8365 9.84762 45.4675 9.39048L44.5642 10.5871C45.2513 11.3535 46.3327 11.7569 47.4522 11.7569Z" fill="#404553"/>
+              </svg>
+            </span>
           </div>
           {items.length > 1 && (
             <button className="pc-ship-later">
@@ -596,14 +638,14 @@ function PaymentCheckout({ onBack, cartQty = {} }) {
           <div className="pc-inst-grid">
             <button className={`pc-inst${instr === 'together' ? ' on' : ''}`} onClick={() => setInstr('together')}>
               <span className="pc-inst-ico" aria-hidden>
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 21c0-4 0-6.5 1.8-8.9C15.3 10.1 18 9 21 9c0 4-1 6.6-3 8.4-1.7 1.5-3.8 2-6 2.1z" fill="#8fd694"/><path d="M12 21C12 16 10.5 12.5 7.5 10.5 5.4 9.1 3.5 8.8 2 9c.4 3.6 1.6 5.9 3.6 7.4C7.4 17.7 9.6 18.4 12 18.6z" fill="#3fa564"/><path d="M12 22v-8" stroke="#2f7a4a" strokeWidth="1.6" strokeLinecap="round"/></svg>
+                <svg width="19" height="18" viewBox="0 0 18.3344 17.9167" fill="none"><path d="M6.02796 0.947873L6.32501 0L5.34195 0.142428C1.54349 0.692755 0.233607 3.77097 0.0284074 5.43944C-0.192777 7.2379 0.898651 8.91816 2.57074 9.39337C2.45604 8.04602 2.48809 6.80439 2.61462 5.69051L3.85663 5.8316C3.73239 6.92527 3.7053 8.16011 3.83668 9.51164C5.48431 9.36078 6.84624 8.0322 7.05877 6.30408C7.12579 5.75914 7.01633 5.24694 6.86331 4.78598C6.75585 4.46228 6.6114 4.12337 6.47636 3.80654C6.42557 3.68739 6.37611 3.57134 6.33045 3.46042C5.97728 2.60235 5.75185 1.82895 6.02796 0.947873Z" fill="#343D54"/><path d="M6.10283 13.5747C5.75743 13.9564 5.41702 14.3637 5.08346 14.7967C4.37358 12.897 3.99223 11.1215 3.83573 9.51161C3.59453 9.5337 3.3472 9.53054 3.09646 9.4997C2.91543 9.47744 2.73962 9.44161 2.56979 9.39334C2.73955 11.3874 3.23073 13.6131 4.21277 15.9989L4.224 15.9943C3.94833 16.4064 3.67895 16.8379 3.41703 17.289L4.49805 17.9166C5.19619 16.7141 5.94653 15.6645 6.72311 14.7608C6.57311 14.5567 6.43778 14.3341 6.31948 14.0933C6.23635 13.924 6.16423 13.7508 6.10283 13.5747Z" fill="#343D54"/><path d="M6.72367 14.7613C8.08675 13.175 9.53066 12.0385 10.915 11.3149L10.3359 10.2071C8.92335 10.9455 7.47393 12.0601 6.10325 13.5753C5.33154 11.3622 6.25178 8.6766 8.26612 7.30953C9.22139 6.66122 10.7357 6.0037 12.4452 5.97054C14.1814 5.93687 16.088 6.55006 17.7547 8.39639L18.3344 9.03853L17.5427 9.38718C16.3049 9.93227 15.5918 10.9923 14.9192 12.2148C14.8289 12.3788 14.738 12.5485 14.6459 12.7203C14.4083 13.1636 14.1631 13.6209 13.9038 14.0303C13.5378 14.608 13.1005 15.1644 12.5136 15.5627C10.5198 16.9158 8.04904 16.5636 6.72367 14.7613Z" fill="#343D54"/></svg>
               </span>
               <span className="pc-inst-lbl">Get items together</span>
               <span className={`pc-check${instr === 'together' ? ' on' : ''}`}>{instr === 'together' && <CheckMark />}</span>
             </button>
             <button className={`pc-inst${instr === 'door' ? ' on' : ''}`} onClick={() => setInstr('door')}>
               <span className="pc-inst-ico" aria-hidden>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 3h10a1 1 0 0 1 1 1v17H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" fill="#1f6bff"/><rect x="7.5" y="5" width="8" height="14" rx="1" fill="#9ec2ff"/><circle cx="13.2" cy="12" r="1" fill="#1f6bff"/></svg>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2C15.95 2 16.5 3.05 16.5 9V17H17.25C17.6642 17 18 17.3358 18 17.75C18 18.1642 17.6642 18.5 17.25 18.5H2.75C2.33579 18.5 2 18.1642 2 17.75C2 17.3358 2.33579 17 2.75 17H3.5V9C3.5 3.05 4.55 2 10 2ZM10 3.5C9.59336 3.5 9.22219 3.50656 8.88281 3.51953C12.3563 3.68208 13 4.98805 13 10.5V17H15V9C15 7.5113 14.9639 6.43399 14.8389 5.625C14.7146 4.82123 14.5256 4.45447 14.3525 4.25684C14.196 4.07825 13.909 3.87429 13.21 3.72363C12.4859 3.56761 11.4692 3.5 10 3.5ZM10 12C9.44772 12 9 12.4477 9 13C9 13.5523 9.44772 14 10 14C10.5523 14 11 13.5523 11 13C11 12.4477 10.5523 12 10 12Z" fill="var(--blue)"/></svg>
               </span>
               <span className="pc-inst-lbl">Leave at the door</span>
               <span className={`pc-check${instr === 'door' ? ' on' : ''}`}>{instr === 'door' && <CheckMark />}</span>
@@ -624,28 +666,6 @@ function PaymentCheckout({ onBack, cartQty = {} }) {
             </div>
             <button className="pc-link">Change receiver</button>
           </div>
-        </div>
-
-        {/* Points & Vouchers */}
-        <div className="pc-card">
-          <div className="pc-sec-head">Points &amp; Vouchers</div>
-          <div className="pc-sec-sub">Need credits? Top up now!</div>
-          <div className="pc-vouchers">
-            <div className="pc-voucher pc-mokafaa">
-              <span className="pc-mok-logo">mokafaa</span>
-              <div className="pc-voucher-txt">
-                <b>Mokafaa Points</b>
-                <span>+96611234567 linked ac&hellip;</span>
-              </div>
-              <Chev className="pc-voucher-chev" />
-            </div>
-            <div className="pc-voucher pc-quara">
-              <span className="pc-badge-new">NEW</span>
-              <span className="pc-quara-logo">QUARA</span>
-            </div>
-            <div className="pc-voucher pc-emkan" />
-          </div>
-          <div className="pc-dots"><i className="on" /><i /><i /></div>
         </div>
 
         {/* Pay With */}
@@ -673,11 +693,6 @@ function PaymentCheckout({ onBack, cartQty = {} }) {
                 <span>Pay <Dh />55 or in 4 payments. no late fees</span>
               </div>
             </button>
-            <button className={`pc-method${pay === 'apple' ? ' on' : ''}`} onClick={() => setPay('apple')}>
-              <span className="pc-applepay"><ApplePay /><span className="pc-applepay-txt">Pay</span></span>
-              <div className="pc-method-txt"><b>Apple Pay</b></div>
-            </button>
-
             <div className={`pc-method pc-method-card${pay === 'card' ? ' on' : ''}`} onClick={() => setPay('card')}>
               <div className="pc-method-cardhead">
                 <span className="pc-card-chip">
@@ -696,13 +711,6 @@ function PaymentCheckout({ onBack, cartQty = {} }) {
                 <span className="pc-cvv">CVV</span>
               </div>
             </div>
-            <button className="pc-instmt">
-              <span>Select an installment starting <Dh />590/mo</span>
-              <span className="pc-instmt-arrow">
-                <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" d="M9 6l6 6-6 6"/></svg>
-              </span>
-            </button>
-
             <div className="pc-method-noon">
               <img className="pc-noon-card" src="/icons/pay-noon-card.png" alt="noon One credit card" />
               <div className="pc-method-txt">
@@ -716,47 +724,6 @@ function PaymentCheckout({ onBack, cartQty = {} }) {
               <span className="pc-cash">CASH</span>
               <div className="pc-method-txt"><b>Cash on Delivery</b></div>
             </button>
-          </div>
-        </div>
-
-        {/* Payment summary */}
-        <div className="pc-card pc-summary">
-          <h3 className="pc-sec-head">Payment summary</h3>
-          <div className="pc-sum-rows">
-            <div className="pc-sum-row">
-              <span className="pc-sum-lbl">Subtotal</span>
-              <span className="pc-sum-vals">
-                <span className="pc-sum-was">AED {fmt(totalWas)}</span>
-                <span className="pc-sum-now"><Dh />{fmt(totalNow)}</span>
-              </span>
-            </div>
-            <div className="pc-sum-row">
-              <span className="pc-sum-lbl">Delivery fee</span>
-              <span className="pc-sum-vals">
-                <span className="pc-sum-free">Free with <img className="pc-sum-one" src="/icons/save-one.png" alt="noon One" /></span>
-                <span className="pc-sum-was"><Dh />{fmt(breakup.deliveryFee)}</span>
-              </span>
-            </div>
-            <div className="pc-sum-div" />
-            <div className="pc-sum-row">
-              <span className="pc-sum-lbl">Coupon discount</span>
-              <span className="pc-sum-now pc-sum-neg">&minus; <Dh />{fmt(breakup.couponDiscount)}</span>
-            </div>
-            <div className="pc-sum-row pc-sum-total">
-              <span className="pc-sum-lbl">Total</span>
-              <span className="pc-sum-now"><Dh />{fmt(grandTotal)}</span>
-            </div>
-          </div>
-          <div className="pc-mint">
-            <div className="pc-sum-row">
-              <span className="pc-mint-lbl">Coupon Cashback</span>
-              <span className="pc-mint-val"><Dh />{breakup.couponCashback}</span>
-            </div>
-            <div className="pc-sum-row">
-              <span className="pc-mint-lbl">noon one credit card</span>
-              <span className="pc-mint-val"><Dh />{breakup.cardCashback}</span>
-            </div>
-            <p className="pc-mint-note">cashback will be credited to the primary cardholder's account</p>
           </div>
         </div>
       </div>
@@ -780,12 +747,6 @@ function PaymentCheckout({ onBack, cartQty = {} }) {
 
 function CheckMark() {
   return <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/></svg>
-}
-
-function ApplePay() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden><path fill="currentColor" d="M17.05 12.04c-.03-2.6 2.12-3.85 2.22-3.91-1.21-1.77-3.1-2.01-3.77-2.04-1.6-.16-3.13.94-3.94.94-.81 0-2.07-.92-3.4-.9-1.75.03-3.36 1.02-4.26 2.58-1.82 3.16-.47 7.84 1.3 10.41.86 1.26 1.89 2.67 3.23 2.62 1.3-.05 1.79-.84 3.36-.84 1.57 0 2.01.84 3.38.81 1.4-.02 2.28-1.28 3.13-2.55.99-1.46 1.4-2.87 1.42-2.94-.03-.01-2.72-1.04-2.75-4.13zM14.6 4.4c.72-.87 1.2-2.08 1.07-3.28-1.03.04-2.28.69-3.02 1.56-.66.77-1.24 2-1.09 3.17 1.15.09 2.32-.58 3.04-1.45z"/></svg>
-  )
 }
 
 /* ----------------------------- Status bar + header ----------------------------- */
