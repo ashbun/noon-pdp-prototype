@@ -554,6 +554,26 @@ input, button, textarea, select { font-family: inherit; }
 .co-card.co-coupon { padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; }
 .co-card.co-savings { padding: 12px; display: flex; flex-direction: column; gap: 12px; }
 .co-savings .section-h { margin: 0; }
+
+/* Payment summary breakup card */
+.co-card.co-sum { padding: 0; overflow: hidden; }
+.co-sum-title { margin: 0; padding: 16px 12px 0; font-size: 16px; font-weight: 700; line-height: 24px; color: var(--ink-900); letter-spacing: -0.2px; }
+.co-sum-rows { display: flex; flex-direction: column; gap: 12px; padding: 16px 12px; }
+.co-sum-row { display: flex; align-items: center; justify-content: space-between; }
+.co-sum-lbl { font-size: 15px; font-weight: 500; line-height: 18px; color: var(--ink-700); letter-spacing: -0.26px; }
+.co-sum-lbl-dot { color: rgba(2,6,12,.6); text-decoration: underline dotted; text-underline-offset: 3px; }
+.co-sum-vals { display: flex; align-items: center; gap: 4px; }
+.co-sum-was { font-size: 15px; color: rgba(2,6,12,.45); text-decoration: line-through; }
+.co-sum-now { font-size: 15px; font-weight: 600; color: var(--ink); letter-spacing: -0.14px; }
+.co-sum-free { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 500; color: var(--blue); letter-spacing: -0.26px; }
+.co-sum-one { height: 15px; width: auto; display: block; }
+.co-sum-div { border-top: 1px dashed var(--line); }
+.co-sum-total { font-size: 17px; font-weight: 700; color: var(--ink); letter-spacing: -0.26px; }
+.co-sum-cashback { background: #d1fae5; display: flex; flex-direction: column; gap: 8px; padding: 12px; }
+.co-sum-cb-group { display: flex; flex-direction: column; gap: 2px; }
+.co-sum-cb-lbl { font-size: 15px; font-weight: 600; color: #033d38; letter-spacing: -0.26px; }
+.co-sum-cb-val { font-size: 15px; font-weight: 700; color: #033d38; }
+.co-sum-cb-note { margin: 0; font-size: 11px; font-weight: 400; line-height: 16px; color: #033d38; letter-spacing: -0.26px; }
 .co-coupon-head { font-size: 16px; font-weight: 700; line-height: 20px; color: #0e0e0e; letter-spacing: -0.16px; margin: 0 0 2px; }
 .co-coupon-input { display: flex; align-items: center; gap: 10px; height: auto; flex-shrink: 0; background: var(--surface); border-radius: 12px; padding: 16px 12px; overflow: hidden; }
 .co-coupon-input input { flex: 1; min-width: 0; border: 0; outline: 0; padding: 0; font-size: 13px; color: var(--ink); background: none; letter-spacing: -0.26px; }

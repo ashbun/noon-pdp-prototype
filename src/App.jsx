@@ -541,6 +541,8 @@ function Checkout({ onBack, onProceed, cartQty = {} }) {
             </div>
           </div>
         </div>
+
+        <PaymentSummary fmt={fmt} totalWas={totalWas} totalNow={totalNow} breakup={breakup} />
       </div>
 
       <div className="co-footer">
@@ -638,6 +640,55 @@ function PriceSheet({ onClose, fmt, itemCount, totalWas, totalNow, savings, brea
             <span className="ps-now"><Dh />{breakup.cardCashback}</span>
           </div>
           <p className="ps-note">cashback will be credited to the primary cardholder's account</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* Inline "Payment summary" breakup card (checkout page, Figma 10517-21053) */
+function PaymentSummary({ fmt, totalWas, totalNow, breakup }) {
+  const grandTotal = totalNow - breakup.couponDiscount
+  return (
+    <div className="co-card co-sum">
+      <h3 className="co-sum-title">Payment summary</h3>
+      <div className="co-sum-rows">
+        <div className="co-sum-row">
+          <span className="co-sum-lbl co-sum-lbl-dot">Subtotal</span>
+          <span className="co-sum-vals">
+            <span className="co-sum-was"><Dh />{fmt(totalWas)}</span>
+            <span className="co-sum-now"><Dh />{fmt(totalNow)}</span>
+          </span>
+        </div>
+        <div className="co-sum-row">
+          <span className="co-sum-lbl co-sum-lbl-dot">Delivery fee</span>
+          <span className="co-sum-vals">
+            <span className="co-sum-free">Free with <img className="co-sum-one" src="/icons/save-one.png" alt="noon One" /></span>
+            <span className="co-sum-was"><Dh />{fmt(breakup.deliveryFee)}</span>
+          </span>
+        </div>
+        <div className="co-sum-div" />
+        <div className="co-sum-row">
+          <span className="co-sum-lbl">Coupon discount</span>
+          <span className="co-sum-now">&minus; <Dh />{fmt(breakup.couponDiscount)}</span>
+        </div>
+        <div className="co-sum-div" />
+        <div className="co-sum-row co-sum-total">
+          <span>Total</span>
+          <span><Dh />{fmt(grandTotal)}</span>
+        </div>
+      </div>
+      <div className="co-sum-cashback">
+        <div className="co-sum-row">
+          <span className="co-sum-cb-lbl">Coupon Cashback</span>
+          <span className="co-sum-cb-val"><Dh />{breakup.couponCashback}</span>
+        </div>
+        <div className="co-sum-cb-group">
+          <div className="co-sum-row">
+            <span className="co-sum-cb-lbl">noon one credit card</span>
+            <span className="co-sum-cb-val"><Dh />{breakup.cardCashback}</span>
+          </div>
+          <p className="co-sum-cb-note">cashback will be credited to the primary cardholder's account</p>
         </div>
       </div>
     </div>
