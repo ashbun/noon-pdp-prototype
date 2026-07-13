@@ -341,7 +341,7 @@ function DealCard({ p, qty, onChange }) {
 
 /* ------------------ PLP: "Bestseller in Chargers" listing ------------------ */
 const PLP_PRODUCTS = [
-  { id: 'l1', img: '/pab-usbc-cable.jpg', title: 'Anker USB-C to USB-C Cable, 60W Fast Charging Braided', rating: '4.3', count: '128', now: '25', was: '45', off: '45% off', unit: '1.8 m', unitPrice: '13.9/m', best: true, variantCount: 4 },
+  { id: 'l1', img: '/pab-usbc-cable.jpg', title: 'Anker USB-C to USB-C Cable, 60W Fast Charging Braided', rating: '4.3', count: '128', now: '25', was: '45', off: '45% off', unit: '1.8 m', unitPrice: '13.9/m', best: true, variantCount: 4, ad: true },
   { id: 'l2', img: '/pab-powerbank.png', title: 'Anker Magnetic Wireless Power Bank 5000mAh MagGo', rating: '4.6', count: '890', now: '160', was: '453', off: '65% off', unit: '5000 mAh', unitPrice: '0.03/mAh', best: true, variantCount: 3 },
   { id: 'l3', img: '/pab-anker737.png', title: 'Anker 737 Power Bank (PowerCore 24K), 140W Output', rating: '4.7', count: '512', now: '325', was: '1399', off: '77% off', unit: '24000 mAh', unitPrice: '0.01/mAh', best: true, variantCount: 2 },
   { id: 'l4', img: '/pab-wallcharger.jpg', title: 'Anker 96W USB-C Wall Charger GaN Fast Adapter', rating: '4.5', count: '204', now: '129', was: '299', off: '57% off', unit: '96 W', unitPrice: '1.34/W', best: true, variantCount: 4 },
@@ -416,6 +416,7 @@ function PlpCard({ p, qty, onChange }) {
         <button className="plp-wish" aria-label="Wishlist">
           <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden><path fill="#fff" stroke="#475067" strokeLinecap="round" strokeLinejoin="round" d="M14 6C14 4.34315 12.6009 3 10.875 3C9.58459 3 8.47685 3.75085 8 4.82228C7.52315 3.75085 6.41541 3 5.125 3C3.39911 3 2 4.34315 2 6C2 10.8137 8 14 8 14C8 14 14 10.8137 14 6Z"/></svg>
         </button>
+        {p.ad && <span className="plp-ad">Ad</span>}
         <div className="plp-dots"><span className="on" /><span /><span /></div>
         {p.variantCount > 1 && (
           <div className="plp-variant">
