@@ -232,7 +232,6 @@ function OfferCard({ p, qty, onChange }) {
           <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden><path fill="#fff" stroke="#475067" strokeLinecap="round" strokeLinejoin="round" d="M14 6C14 4.34315 12.6009 3 10.875 3C9.58459 3 8.47685 3.75085 8 4.82228C7.52315 3.75085 6.41541 3 5.125 3C3.39911 3 2 4.34315 2 6C2 10.8137 8 14 8 14C8 14 14 10.8137 14 6Z"/></svg>
         </button>
         {p.best && <span className="pab-best">Best Seller</span>}
-        {!p.noAd && <span className="pab-ad">Ad</span>}
       </div>
       <div className="pab-body">
         <div className="pab-title">{p.title}</div>
@@ -304,8 +303,6 @@ function DealCard({ p, qty, onChange }) {
         <button className="deal-wish" aria-label="Wishlist">
           <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden><path fill="#fff" stroke="#475067" strokeLinecap="round" strokeLinejoin="round" d="M14 6C14 4.34315 12.6009 3 10.875 3C9.58459 3 8.47685 3.75085 8 4.82228C7.52315 3.75085 6.41541 3 5.125 3C3.39911 3 2 4.34315 2 6C2 10.8137 8 14 8 14C8 14 14 10.8137 14 6Z"/></svg>
         </button>
-        <span className="deal-ad">Ad</span>
-        <div className="deal-dots"><span className="on" /><span /><span /></div>
         {qty === 0 ? (
           <button className="pab-atc" aria-label="Add to cart" onClick={() => onChange(1)}>
             <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="#0076ff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" d="M12 4.5V19.5M19.5 12L4.5 12"/></svg>
@@ -377,6 +374,14 @@ function PLP({ onBack }) {
           <button className="plp-icon" onClick={onBack} aria-label="Back">
             <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M15 18l-6-6 6-6"/></svg>
           </button>
+          <div className="plp-head-actions">
+            <button className="plp-icon" aria-label="Search">
+              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" strokeWidth="2"/><path stroke="currentColor" strokeWidth="2" strokeLinecap="round" d="m20 20-3.5-3.5"/></svg>
+            </button>
+            <button className="plp-icon" aria-label="Share">
+              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M12 3v13M8 7l4-4 4 4M5 14v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"/></svg>
+            </button>
+          </div>
         </div>
       </div>
 
