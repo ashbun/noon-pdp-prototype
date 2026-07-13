@@ -306,17 +306,21 @@ function DealCard({ p, qty, onChange }) {
         <span className="deal-ad">Ad</span>
         <div className="deal-dots"><span className="on" /><span /><span /></div>
         {qty === 0 ? (
-          <button className="deal-atc" aria-label="Add to cart" onClick={() => onChange(1)}>
-            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="#2122b8" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" d="M12 5v14M5 12h14"/></svg>
+          <button className="pab-atc" aria-label="Add to cart" onClick={() => onChange(1)}>
+            <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="#0076ff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" d="M12 4.5V19.5M19.5 12L4.5 12"/></svg>
           </button>
         ) : (
-          <div className="deal-stepper" onClick={(e) => e.stopPropagation()}>
-            <button aria-label="Decrease" onClick={() => onChange(-1)}>
-              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" d="M5 12h14"/></svg>
+          <div className="pab-stepper" onClick={(e) => e.stopPropagation()}>
+            <button aria-label={qty === 1 ? 'Remove' : 'Decrease'} onClick={() => onChange(-1)}>
+              {qty === 1 ? (
+                <svg width="17.5" height="19.5" viewBox="0 0 17.5 19.4987" aria-hidden><path fill="#fff" stroke="#fff" strokeWidth="0.125" d={TRASH_D}/></svg>
+              ) : (
+                <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" d="M19.5 12L4.5 12"/></svg>
+              )}
             </button>
             <span>{qty}</span>
             <button aria-label="Increase" onClick={() => onChange(1)}>
-              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" d="M12 5v14M5 12h14"/></svg>
+              <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" d="M12 4.5V19.5M19.5 12L4.5 12"/></svg>
             </button>
           </div>
         )}

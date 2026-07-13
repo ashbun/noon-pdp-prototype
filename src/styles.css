@@ -301,18 +301,6 @@ input, button, textarea, select { font-family: inherit; }
 .deal-dots { position: absolute; left: 6px; bottom: 28px; display: flex; align-items: center; gap: 3px; }
 .deal-dots span { width: 5px; height: 5px; border-radius: 50%; background: #d0d4dd; }
 .deal-dots span.on { background: var(--ink-700); }
-.deal-atc {
-  position: absolute; right: 6px; bottom: 6px; width: 36px; height: 36px; border-radius: 9px;
-  background: #fff; border: 1.125px solid var(--navy); display: grid; place-items: center; padding: 0; cursor: pointer;
-  box-shadow: 0 0 6.75px rgba(0,0,0,.08);
-}
-.deal-stepper {
-  position: absolute; right: 6px; bottom: 6px; height: 36px;
-  display: flex; align-items: center; gap: 2px; padding: 4px; background: var(--navy); border-radius: 9px;
-}
-.deal-stepper button { width: 22px; height: 24px; border: 0; background: none; color: #fff; display: grid; place-items: center; padding: 0; cursor: pointer; }
-.deal-stepper span { min-width: 18px; text-align: center; font-size: 15px; font-weight: 600; color: #fff; line-height: 24px; }
-
 .deal-body { display: flex; flex-direction: column; gap: 4px; padding: 6px 8px 0; }
 .deal-title {
   font-size: 14px; font-weight: 500; line-height: 18px; color: #212121; letter-spacing: -0.14px;
