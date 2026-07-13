@@ -131,9 +131,8 @@ function CartSheet({ open, onClose, onCheckout, qty, setQty }) {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="cart-head">
-          <h3>Don't miss out on these offers</h3>
+          <h3>Shop more like this</h3>
           <div className="cart-head-actions">
-            <span className="cart-sponsored">Sponsored</span>
             <button className="cart-close" onClick={onClose} aria-label="Close">
               <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" d="M6 6l12 12M18 6 6 18"/></svg>
             </button>

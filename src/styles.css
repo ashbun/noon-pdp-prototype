@@ -185,7 +185,6 @@ input, button, textarea, select { font-family: inherit; }
 }
 .cart-head h3 { margin: 0; font-size: 16px; font-weight: 700; line-height: 20px; color: var(--ink); letter-spacing: -0.15px; }
 .cart-head-actions { display: flex; align-items: center; gap: 10px; }
-.cart-sponsored { font-size: 12px; font-weight: 500; line-height: 14px; color: var(--ink-500); letter-spacing: -0.12px; }
 .cart-close { width: 24px; height: 24px; border: 0; background: none; padding: 0; cursor: pointer; color: var(--ink); display: grid; place-items: center; }
 
 /* Layout toggle — floats at the top of the screen, above the sheet */
