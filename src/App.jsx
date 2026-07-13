@@ -598,7 +598,7 @@ function Checkout({ onBack, onProceed, cartQty = {} }) {
           ))}
 
           <div className="co-one">
-            <span className="co-one-pill">one</span>
+            <img className="co-one-logo" src="/icons/save-one.png" alt="noon One" />
             <span>Save with noon One. Try it now for <b>Free</b></span>
             <Chev className="row-chev" />
           </div>
