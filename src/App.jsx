@@ -37,6 +37,8 @@ function PDP() {
     return <Checkout onBack={() => setView('pdp')} onProceed={() => setView('payment')} cartQty={cartQty} />
   if (view === 'payment')
     return <PaymentCheckout onBack={() => setView('checkout')} cartQty={cartQty} />
+  if (view === 'plp')
+    return <PLP onBack={() => setView('pdp')} />
 
   return (
     <div className="pdp">
@@ -44,7 +46,7 @@ function PDP() {
       <div className="pdp-scroll" ref={scrollRef}>
         <Gallery imgScale={imgScale} imgOpacity={imgOpacity} />
         <div className="pdp-sections">
-          <MainInfo />
+          <MainInfo onBestseller={() => setView('plp')} />
           <Delivery />
           <Trustmarkers />
           <ProductDetails />
@@ -335,6 +337,137 @@ function DealCard({ p, qty, onChange }) {
           <span className="deal-off">{p.off}</span>
         </div>
         <div className="deal-eta"><FlashIcon />1 HR 15 MINS</div>
+      </div>
+    </div>
+  )
+}
+
+/* ------------------ PLP: "Bestseller in Chargers" listing ------------------ */
+const PLP_PRODUCTS = [
+  { id: 'l1', img: '/pab-usbc-cable.jpg', title: 'Anker USB-C to USB-C Cable, 60W Fast Charging Braided', rating: '4.3', count: '128', now: '25', was: '45', off: '45% off', unit: '1.8 m', unitPrice: '13.9/m', best: true, variantCount: 4 },
+  { id: 'l2', img: '/pab-powerbank.png', title: 'Anker Magnetic Wireless Power Bank 5000mAh MagGo', rating: '4.6', count: '890', now: '160', was: '453', off: '65% off', unit: '5000 mAh', unitPrice: '0.03/mAh', best: true, variantCount: 3 },
+  { id: 'l3', img: '/pab-anker737.png', title: 'Anker 737 Power Bank (PowerCore 24K), 140W Output', rating: '4.7', count: '512', now: '325', was: '1399', off: '77% off', unit: '24000 mAh', unitPrice: '0.01/mAh', best: true, variantCount: 2 },
+  { id: 'l4', img: '/pab-wallcharger.jpg', title: 'Anker 96W USB-C Wall Charger GaN Fast Adapter', rating: '4.5', count: '204', now: '129', was: '299', off: '57% off', unit: '96 W', unitPrice: '1.34/W', best: true, variantCount: 4 },
+  { id: 'l5', img: '/pab-ugreen.png', title: 'UGREEN 60W USB Type-C Cable Nylon Braided 1m', rating: '4.5', count: '312', now: '27', was: '49', off: '45% off', unit: '1 m', unitPrice: '27.0/m', best: true, variantCount: 3 },
+  { id: 'l6', img: '/anker-charger.png', title: 'USB C Plug, 735 Charger (Nano II 65W) 3-Port', rating: '4.3', count: '126', now: '109', was: '209', off: '47% off', unit: '65 W', unitPrice: '1.67/W', best: true, variantCount: 4 },
+]
+const PLP_SWATCHES = ['#f43333', '#05af25', '#0076ff']
+
+function PLP({ onBack }) {
+  const [qty, setQty] = useState({})
+  const setItemQty = (id, delta) =>
+    setQty((prev) => ({ ...prev, [id]: Math.max(0, (prev[id] || 0) + delta) }))
+  return (
+    <div className="plp">
+      <div className="plp-top">
+        <div className="statusbar">
+          <span className="sb-time">9:41</span>
+          <span className="sb-right">
+            <svg width="17" height="11" viewBox="0 0 17 11" aria-hidden><g fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></g></svg>
+            <svg width="16" height="12" viewBox="0 0 16 12" aria-hidden fill="currentColor"><path d="M8 9.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zM8 5c1.7 0 3.3.7 4.5 1.8l-1.4 1.4A4.4 4.4 0 0 0 8 7c-1.2 0-2.3.5-3.1 1.2L3.5 6.8A6.4 6.4 0 0 1 8 5zm0-4c2.8 0 5.4 1.1 7.3 3l-1.4 1.4A8.4 8.4 0 0 0 8 3 8.4 8.4 0 0 0 2.1 5.4L.7 4A10.4 10.4 0 0 1 8 1z"/></svg>
+            <svg width="25" height="12" viewBox="0 0 25 12" aria-hidden><rect x="0.5" y="0.5" width="21" height="11" rx="3" fill="none" stroke="currentColor" opacity="0.4"/><rect x="2" y="2" width="18" height="8" rx="1.5" fill="currentColor"/><rect x="23" y="4" width="1.5" height="4" rx="0.75" fill="currentColor" opacity="0.4"/></svg>
+          </span>
+        </div>
+        <div className="plp-head">
+          <button className="plp-icon" onClick={onBack} aria-label="Back">
+            <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <div className="plp-head-actions">
+            <button className="plp-icon" aria-label="Search">
+              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" strokeWidth="2"/><path stroke="currentColor" strokeWidth="2" strokeLinecap="round" d="m20 20-3.5-3.5"/></svg>
+            </button>
+            <button className="plp-icon" aria-label="Wishlist">
+              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M12 20s-7-4.4-7-9.5A3.5 3.5 0 0 1 12 7a3.5 3.5 0 0 1 7 3.5C19 15.6 12 20 12 20z"/></svg>
+            </button>
+            <button className="plp-icon" aria-label="Share">
+              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M12 3v13M8 7l4-4 4 4M5 14v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="plp-scroll">
+        <div className="plp-grid">
+          {PLP_PRODUCTS.map((p) => (
+            <PlpCard key={p.id} p={p} qty={qty[p.id] || 0} onChange={(d) => setItemQty(p.id, d)} />
+          ))}
+        </div>
+      </div>
+
+      <div className="co-tabs">
+        {[
+          { l: 'Home', icon: 'home', on: true },
+          { l: 'Categories', icon: 'cats' },
+          { l: 'Deals', icon: 'deals' },
+          { l: 'Account', icon: 'account' },
+          { l: 'Cart', icon: 'cart', badge: '2' },
+        ].map((t) => (
+          <button className={`co-tab${t.on ? ' on' : ''}`} key={t.l}>
+            {t.on && <span className="co-tab-ind" />}
+            <span className="co-tab-ico">
+              <TabIcon name={t.icon} />
+              {t.badge && <span className="co-tab-badge">{t.badge}</span>}
+            </span>
+            <span>{t.l}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function PlpCard({ p, qty, onChange }) {
+  return (
+    <div className="plp-card">
+      <div className="plp-img">
+        <img className="plp-photo" src={p.img} alt={p.title} />
+        {p.best && <span className="plp-best">Best Seller</span>}
+        <button className="plp-wish" aria-label="Wishlist">
+          <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden><path fill="#fff" stroke="#475067" strokeLinecap="round" strokeLinejoin="round" d="M14 6C14 4.34315 12.6009 3 10.875 3C9.58459 3 8.47685 3.75085 8 4.82228C7.52315 3.75085 6.41541 3 5.125 3C3.39911 3 2 4.34315 2 6C2 10.8137 8 14 8 14C8 14 14 10.8137 14 6Z"/></svg>
+        </button>
+        <span className="plp-ad">Ad</span>
+        <div className="plp-dots"><span className="on" /><span /><span /></div>
+        {p.variantCount > 1 && (
+          <div className="plp-variant">
+            <div className="plp-swatches">
+              {PLP_SWATCHES.map((c) => <span key={c} style={{ background: c }} />)}
+            </div>
+            <span className="plp-variant-num">{p.variantCount}</span>
+          </div>
+        )}
+        {qty === 0 ? (
+          <button className="plp-atc" aria-label="Add to cart" onClick={() => onChange(1)}>
+            <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="#0076ff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" d="M12 4.5V19.5M19.5 12L4.5 12"/></svg>
+          </button>
+        ) : (
+          <div className="plp-stepper" onClick={(e) => e.stopPropagation()}>
+            <button aria-label={qty === 1 ? 'Remove' : 'Decrease'} onClick={() => onChange(-1)}>
+              {qty === 1 ? (
+                <svg width="17.5" height="19.5" viewBox="0 0 17.5 19.4987" aria-hidden><path fill="#fff" stroke="#fff" strokeWidth="0.125" d={TRASH_D}/></svg>
+              ) : (
+                <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" d="M19.5 12L4.5 12"/></svg>
+              )}
+            </button>
+            <span>{qty}</span>
+            <button aria-label="Increase" onClick={() => onChange(1)}>
+              <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden><path fill="none" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" d="M12 4.5V19.5M19.5 12L4.5 12"/></svg>
+            </button>
+          </div>
+        )}
+      </div>
+      <div className="plp-body">
+        <div className="plp-title">{p.title}</div>
+        <div className="plp-rating"><StarIcon /><b>{p.rating}</b><span>({p.count})</span></div>
+        <div className="plp-price">
+          <span className="plp-now"><Dh />{p.now}</span>
+          <span className="plp-was"><Dh />{p.was}</span>
+          <span className="plp-off">{p.off}</span>
+        </div>
+        <div className="plp-unit"><span>{p.unit}</span><span className="plp-unit-div" /><span><Dh />{p.unitPrice}</span></div>
+        <div className="plp-coupons">
+          <span className="plp-coupon">Extra 10% Off</span>
+          <span className="plp-coupon">+3</span>
+        </div>
       </div>
     </div>
   )
@@ -984,7 +1117,7 @@ function InfoDot() {
   return <svg width="15" height="15" viewBox="0 0 24 24" className="i-info" aria-hidden><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1.7"/><path fill="currentColor" d="M11 10h2v7h-2zm0-4h2v2h-2z"/></svg>
 }
 
-function MainInfo() {
+function MainInfo({ onBestseller }) {
   return (
     <section className="main-info">
       <div className="store-row">
@@ -1040,7 +1173,7 @@ function MainInfo() {
         </span>
       </div>
 
-      <button className="bestseller">
+      <button className="bestseller" onClick={onBestseller}>
         <span className="bs-badge">
           <svg viewBox="0 0 16 16" aria-hidden><path fill="#1d2539" d="M8 0l1.6 1.2 2-.2.9 1.8 1.8.9-.2 2L15.9 8l-1.2 1.6.2 2-1.8.9-.9 1.8-2-.2L8 15.9l-1.6-1.2-2 .2-.9-1.8-1.8-.9.2-2L.1 8l1.2-1.6-.2-2 1.8-.9.9-1.8 2 .2z"/></svg>
           <span className="bs-badge-num">1</span>
