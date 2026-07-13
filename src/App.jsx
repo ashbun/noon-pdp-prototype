@@ -551,38 +551,6 @@ function PaymentCheckout({ onBack, cartQty = {} }) {
       </div>
 
       <div className="pc-scroll">
-        <div className="pc-card pc-vouchers-card">
-          <div className="pc-vouchers-head">
-            <div>
-              <div className="pc-sec-head">Points & Vouchers</div>
-              <div className="pc-sec-sub">Need credits? Top up now!</div>
-            </div>
-            <img className="pc-voucher-wave" src="/icons/save-wave.svg" alt="" aria-hidden="true" />
-          </div>
-
-          <div className="pc-vouchers">
-            <div className="pc-voucher pc-mokafaa">
-              <span className="pc-mok-logo">mokafaa</span>
-              <div className="pc-voucher-txt">
-                <b>Mokafaa Points</b>
-                <span>+96611234567 linked ac…</span>
-              </div>
-              <Chev className="pc-voucher-chev" />
-            </div>
-            <div className="pc-voucher pc-quara">
-              <span className="pc-badge-new">NEW</span>
-              <span className="pc-quara-logo">QUARA</span>
-            </div>
-            <div className="pc-voucher pc-emkan" />
-          </div>
-
-          <div className="pc-dots">
-            <i className="on" />
-            <i />
-            <i />
-          </div>
-        </div>
-
         {/* Shipment */}
         <div className="pc-card pc-ship">
           <div className="pc-ship-head">
@@ -629,7 +597,12 @@ function PaymentCheckout({ onBack, cartQty = {} }) {
             ))
           )}
 
-          <div className="pc-ship-eta">
+          <div className={`pc-ship-eta${items.length > 1 ? ' pc-ship-eta-multi' : ''}`}>
+            {items.length > 1 && (
+              <svg className="pc-ship-eta-wave" width="215" height="52" viewBox="0 0 231.046 68.4021" fill="none" aria-hidden xmlns="http://www.w3.org/2000/svg">
+                <path d="M196.124 8.97949H25.5197C24.6857 8.97949 23.8609 8.80562 23.0978 8.46898L18.2219 6.31777C14.2558 4.56799 9.8 7.47235 9.8 11.8073V48.6021C9.8 51.9158 12.4863 54.6021 15.8 54.6021H215.237C219.765 54.6021 222.661 49.7777 220.532 45.7811L203.185 13.2181C201.795 10.6094 199.08 8.97949 196.124 8.97949Z" fill="#F9F9FB"/>
+              </svg>
+            )}
             <span className="pc-eta-txt">Get it <b>{items.length > 1 ? 'in 1hrs 12mins' : 'Today before 8pm'}</b></span>
             <span className="pc-express" aria-hidden>
               <svg width="57" height="18" viewBox="0 0 57 17.1" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -644,12 +617,6 @@ function PaymentCheckout({ onBack, cartQty = {} }) {
               </svg>
             </span>
           </div>
-          {items.length > 1 && (
-            <button className="pc-ship-later">
-              <span>Save on fees with later delivery</span>
-              <Chev className="pc-voucher-chev pc-later-chev" />
-            </button>
-          )}
         </div>
 
         {/* Delivery instructions */}
