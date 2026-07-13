@@ -1041,10 +1041,11 @@ function MainInfo() {
       </div>
 
       <button className="bestseller">
-        <span className="bs-medal">
-          <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden><circle cx="12" cy="9" r="6" fill="none" stroke="currentColor" strokeWidth="1.7"/><path fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" d="m9 14-2 7 5-3 5 3-2-7"/></svg>
+        <span className="bs-badge">
+          <svg viewBox="0 0 16 16" aria-hidden><path fill="#1d2539" d="M8 0l1.6 1.2 2-.2.9 1.8 1.8.9-.2 2L15.9 8l-1.2 1.6.2 2-1.8.9-.9 1.8-2-.2L8 15.9l-1.6-1.2-2 .2-.9-1.8-1.8-.9.2-2L.1 8l1.2-1.6-.2-2 1.8-.9.9-1.8 2 .2z"/></svg>
+          <span className="bs-badge-num">1</span>
         </span>
-        <span>Bestseller <b>#1</b> in <a>Chargers</a></span>
+        <span className="bs-txt">Bestseller #1 in <a>Chargers</a></span>
         <Chev className="row-chev" />
       </button>
       </div>
