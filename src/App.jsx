@@ -357,22 +357,24 @@ function PLP({ onBack }) {
   const setItemQty = (id, delta) =>
     setQty((prev) => ({ ...prev, [id]: Math.max(0, (prev[id] || 0) + delta) }))
   return (
-    <motion.div
-      className="plp"
-      initial={{ x: '100%' }}
-      animate={{ x: 0 }}
-      transition={{ type: 'tween', ease: [0.22, 0.61, 0.36, 1], duration: 0.3 }}
-    >
+    <div className="plp">
+      {/* Top bar stays fixed and morphs (search icon → pill); only the
+          listing content slides in from the right. */}
       <div className="plp-top">
         <TopNav state={2} onBack={onBack} />
       </div>
 
       <div className="plp-scroll">
-        <div className="plp-grid">
+        <motion.div
+          className="plp-grid"
+          initial={{ x: '100%' }}
+          animate={{ x: 0 }}
+          transition={{ type: 'tween', ease: [0.22, 0.61, 0.36, 1], duration: 0.3 }}
+        >
           {PLP_PRODUCTS.map((p) => (
             <PlpCard key={p.id} p={p} qty={qty[p.id] || 0} onChange={(d) => setItemQty(p.id, d)} />
           ))}
-        </div>
+        </motion.div>
       </div>
 
       <div className="co-tabs">
@@ -393,7 +395,7 @@ function PLP({ onBack }) {
           </button>
         ))}
       </div>
-    </motion.div>
+    </div>
   )
 }
 
@@ -1062,10 +1064,17 @@ function TopNav({ state = 1, onBack }) {
       </button>
       <div className="tb-actions">
         {state === 2 ? (
-          <button className="tb-search" aria-label="Search">
+          <motion.button
+            className="tb-search"
+            aria-label="Search"
+            initial={{ width: 44 }}
+            animate={{ width: 112 }}
+            transition={{ type: 'tween', ease: [0.22, 0.61, 0.36, 1], duration: 0.32 }}
+            style={{ overflow: 'hidden', whiteSpace: 'nowrap' }}
+          >
             <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" strokeWidth="2"/><path stroke="currentColor" strokeWidth="2" strokeLinecap="round" d="m20 20-3.5-3.5"/></svg>
-            <span>Search</span>
-          </button>
+            <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.14, duration: 0.18 }}>Search</motion.span>
+          </motion.button>
         ) : (
           <button className="tb-btn" aria-label="Search">
             <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" strokeWidth="1.9"/><path stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" d="m20 20-3.5-3.5"/></svg>
