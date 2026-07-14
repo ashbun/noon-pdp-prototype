@@ -37,33 +37,36 @@ function PDP() {
     return <Checkout onBack={() => setView('pdp')} onProceed={() => setView('payment')} cartQty={cartQty} />
   if (view === 'payment')
     return <PaymentCheckout onBack={() => setView('checkout')} cartQty={cartQty} />
-  if (view === 'plp')
-    return <PLP onBack={() => setView('pdp')} />
 
   return (
-    <div className="pdp">
-      <StatusBar />
-      <div className="pdp-scroll" ref={scrollRef}>
-        <Gallery imgScale={imgScale} imgOpacity={imgOpacity} />
-        <div className="pdp-sections">
-          <MainInfo onBestseller={() => setView('plp')} />
-          <Delivery />
-          <Trustmarkers />
-          <ProductDetails />
-          <AdditionalInfo />
-          <SellerWidget />
-          <Reviews />
+    <>
+      <div className="pdp">
+        <StatusBar />
+        <div className="pdp-scroll" ref={scrollRef}>
+          <Gallery imgScale={imgScale} imgOpacity={imgOpacity} />
+          <div className="pdp-sections">
+            <MainInfo onBestseller={() => setView('plp')} />
+            <Delivery />
+            <Trustmarkers />
+            <ProductDetails />
+            <AdditionalInfo />
+            <SellerWidget />
+            <Reviews />
+          </div>
         </div>
+        <BottomNav onAddToCart={() => setCartOpen(true)} />
+        <CartSheet
+          open={cartOpen}
+          onClose={() => setCartOpen(false)}
+          qty={cartQty}
+          setQty={setCartQty}
+          onCheckout={() => { setCartOpen(false); setView('checkout') }}
+        />
       </div>
-      <BottomNav onAddToCart={() => setCartOpen(true)} />
-      <CartSheet
-        open={cartOpen}
-        onClose={() => setCartOpen(false)}
-        qty={cartQty}
-        setQty={setCartQty}
-        onCheckout={() => { setCartOpen(false); setView('checkout') }}
-      />
-    </div>
+      <AnimatePresence>
+        {view === 'plp' && <PLP key="plp" onBack={() => setView('pdp')} />}
+      </AnimatePresence>
+    </>
   )
 }
 
@@ -356,24 +359,29 @@ function PLP({ onBack }) {
   const [qty, setQty] = useState({})
   const setItemQty = (id, delta) =>
     setQty((prev) => ({ ...prev, [id]: Math.max(0, (prev[id] || 0) + delta) }))
+  const slide = { type: 'tween', ease: [0.22, 0.61, 0.36, 1], duration: 0.3 }
   return (
-    <div className="plp">
+    <motion.div className="plp" initial={false} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
       {/* Top bar stays fixed and morphs (search icon → pill); only the
-          listing content slides in from the right. */}
+          listing content slides in/out from the right. */}
       <div className="plp-top">
         <TopNav state={2} onBack={onBack} />
       </div>
 
       <div className="plp-scroll">
         <motion.div
-          className="plp-grid"
+          className="plp-content"
           initial={{ x: '100%' }}
           animate={{ x: 0 }}
-          transition={{ type: 'tween', ease: [0.22, 0.61, 0.36, 1], duration: 0.3 }}
+          exit={{ x: '100%' }}
+          transition={slide}
         >
-          {PLP_PRODUCTS.map((p) => (
-            <PlpCard key={p.id} p={p} qty={qty[p.id] || 0} onChange={(d) => setItemQty(p.id, d)} />
-          ))}
+          <h1 className="plp-heading">Bestseller in chargers</h1>
+          <div className="plp-grid">
+            {PLP_PRODUCTS.map((p) => (
+              <PlpCard key={p.id} p={p} qty={qty[p.id] || 0} onChange={(d) => setItemQty(p.id, d)} />
+            ))}
+          </div>
         </motion.div>
       </div>
 
@@ -395,7 +403,7 @@ function PLP({ onBack }) {
           </button>
         ))}
       </div>
-    </div>
+    </motion.div>
   )
 }
 
@@ -1069,11 +1077,12 @@ function TopNav({ state = 1, onBack }) {
             aria-label="Search"
             initial={{ width: 44 }}
             animate={{ width: 112 }}
+            exit={{ width: 44 }}
             transition={{ type: 'tween', ease: [0.22, 0.61, 0.36, 1], duration: 0.32 }}
             style={{ overflow: 'hidden', whiteSpace: 'nowrap' }}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" strokeWidth="2"/><path stroke="currentColor" strokeWidth="2" strokeLinecap="round" d="m20 20-3.5-3.5"/></svg>
-            <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.14, duration: 0.18 }}>Search</motion.span>
+            <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>Search</motion.span>
           </motion.button>
         ) : (
           <button className="tb-btn" aria-label="Search">
