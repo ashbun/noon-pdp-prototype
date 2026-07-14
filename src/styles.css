@@ -294,7 +294,7 @@ input, button, textarea, select { font-family: inherit; }
 .co-offers-rail::-webkit-scrollbar { display: none; }
 
 /* "Deals under 30 AED" product card */
-.deal-card { flex: 0 0 auto; width: 150px; display: flex; flex-direction: column; border: 1px solid var(--surface); border-radius: 8px; overflow: hidden; padding-bottom: 8px; }
+.deal-card { flex: 0 0 auto; width: 134px; display: flex; flex-direction: column; border: 1px solid var(--surface); border-radius: 8px; overflow: hidden; padding-bottom: 8px; }
 .deal-img { position: relative; width: 100%; aspect-ratio: 3 / 4; background: var(--surface); border-radius: 8px 8px 0 0; overflow: hidden; }
 .deal-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .deal-best {
