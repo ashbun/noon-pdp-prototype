@@ -1305,17 +1305,21 @@ const GLANCE_BULLETS = [
 ]
 function Sparkle({ className = '' }) {
   return (
-    <svg className={className} width="11" height="12" viewBox="0 0 11 12" aria-hidden>
-      <path fill="currentColor" d="M5.5 0c.3 2.3 1.2 3.2 3.5 3.5-2.3.3-3.2 1.2-3.5 3.5C5.2 4.7 4.3 3.8 2 3.5 4.3 3.2 5.2 2.3 5.5 0Z"/>
-      <path fill="currentColor" d="M9 7c.15 1.1.6 1.55 1.7 1.7C9.6 8.85 9.15 9.3 9 10.4c-.15-1.1-.6-1.55-1.7-1.7C8.4 8.55 8.85 8.1 9 7Z"/>
+    <svg className={className} width="14" height="14" viewBox="4 1 13 13" fill="none" aria-hidden>
+      <path d="M10.711 2.48847C10.5461 2.04225 9.9154 2.04225 9.75052 2.48847C9.03278 4.42772 7.50398 5.95652 5.56544 6.67356C5.11922 6.83844 5.11922 7.46918 5.56544 7.63406C7.50468 8.3518 9.03348 9.8806 9.75052 11.8191C9.9154 12.2654 10.5461 12.2654 10.711 11.8191C11.4288 9.8799 12.9576 8.3511 14.8961 7.63406C15.3423 7.46918 15.3423 6.83844 14.8961 6.67356C12.9569 5.95582 11.4281 4.42701 10.711 2.48847Z" fill="url(#ai-spark-grad)"/>
+      <defs>
+        <linearGradient id="ai-spark-grad" x1="5.23" y1="7.15" x2="15.23" y2="7.15" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#4146CE"/>
+          <stop offset="1" stopColor="#BF3DEB"/>
+        </linearGradient>
+      </defs>
     </svg>
   )
 }
 function ProductGlance() {
   const [open, setOpen] = useState(false)
-  const bullets = open ? GLANCE_BULLETS : GLANCE_BULLETS.slice(0, 2)
   return (
-    <section className="glance">
+    <section className={`glance${open ? ' open' : ''}`}>
       <div className="glance-head">
         <span className="glance-title">Product at a glance<Sparkle className="glance-spark" /></span>
         <button className="glance-toggle" onClick={() => setOpen((o) => !o)}>
@@ -1324,13 +1328,29 @@ function ProductGlance() {
         </button>
       </div>
       <ul className="glance-list">
-        {bullets.map((b) => (
+        {GLANCE_BULLETS.slice(0, 2).map((b) => (
           <li key={b}><span className="glance-dot" />{b}</li>
         ))}
       </ul>
-      {open && (
-        <div className="glance-ai"><Sparkle className="glance-ai-spark" /><span className="glance-ai-txt">Summarised by AI</span></div>
-      )}
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            key="more"
+            className="glance-more"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.28, ease: [0.22, 0.61, 0.36, 1] }}
+          >
+            <ul className="glance-list">
+              {GLANCE_BULLETS.slice(2).map((b) => (
+                <li key={b}><span className="glance-dot" />{b}</li>
+              ))}
+            </ul>
+            <div className="glance-ai"><Sparkle className="glance-ai-spark" /><span className="glance-ai-txt">Summarised by AI</span></div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   )
 }
