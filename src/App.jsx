@@ -1317,7 +1317,7 @@ function ProductGlance() {
   return (
     <section className="glance">
       <div className="glance-head">
-        <span className="glance-title">Product at a glance <Sparkle className="glance-spark" /></span>
+        <span className="glance-title">Product at a glance<Sparkle className="glance-spark" /></span>
         <button className="glance-toggle" onClick={() => setOpen((o) => !o)}>
           {open ? 'See less' : 'See more'}
           <Chev className={`glance-chev${open ? ' up' : ''}`} />

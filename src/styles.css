@@ -397,15 +397,15 @@ input, button, textarea, select { font-family: inherit; }
 .card { background: var(--white); border-radius: 16px; padding: 12px; }
 
 /* --------- Product at a glance (AI summary) --------- */
-.glance { background: var(--white); border-radius: 12px; overflow: hidden; padding-top: 6px; }
+.glance { background: var(--white); border: 1px solid #ffffff; border-radius: 12px; overflow: hidden; padding-top: 8px; padding-bottom: var(--radius); }
 .glance-head { display: flex; align-items: center; justify-content: space-between; padding: 0 4px 0 12px; min-height: 24px; }
-.glance-title { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 700; color: var(--ink-900); letter-spacing: -0.14px; }
+.glance-title { display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 700; color: var(--ink-900); letter-spacing: -0.14px; }
 .glance-spark { color: #bf3deb; }
-.glance-toggle { display: inline-flex; align-items: center; gap: 2px; border: 0; background: none; padding: 4px 6px; cursor: pointer; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--blue2); }
+.glance-toggle { display: inline-flex; align-items: center; gap: 4px; border: 0; background: none; padding: 4px 6px; cursor: pointer; font-family: inherit; font-size: 13px; font-weight: 600; color: var(--blue2); }
 .glance-chev { width: 16px; height: 16px; transform: rotate(90deg); }
-.glance-chev.up { transform: rotate(-90deg); }
+.glance-chev.up { transform: rotate(-90deg); background-color: #ffffff; }
 .glance-list { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
-.glance-list li { display: flex; align-items: center; gap: 10px; padding: 0 12px; font-size: 13px; font-weight: 400; line-height: 20px; color: var(--ink-900); letter-spacing: -0.1px; }
+.glance-list li { display: flex; align-items: center; gap: var(--radius); padding: 0 12px; font-size: 13px; font-weight: 400; line-height: 20px; color: var(--ink-900); letter-spacing: -0.1px; }
 .glance-dot { flex: 0 0 auto; width: 6px; height: 6px; background: #efdcf9; transform: rotate(45deg); }
 .glance-ai { margin-top: 10px; height: 28px; display: flex; align-items: center; justify-content: center; gap: 6px; background: linear-gradient(90deg, rgba(65,70,206,.06), rgba(191,61,235,.06)); }
 .glance-ai-spark { color: #7b4de0; }
@@ -557,7 +557,7 @@ input, button, textarea, select { font-family: inherit; }
 /* ----------------------------- Delivery ----------------------------- */
 .delivery { display: flex; flex-direction: column; gap: 12px; }
 .delivery-head { display: flex; align-items: center; justify-content: space-between; }
-.delivery-head h3 { margin: 0; font-size: 16px; font-weight: 700; color: var(--ink); }
+.delivery-head h3 { margin: 0; font-size: 15px; font-weight: 700; color: var(--ink); }
 .one-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: var(--ink-600); }
 .one-pill { background: var(--yellow); color: #16171c; font-size: 11px; font-weight: 900; font-style: italic; padding: 2px 7px; border-radius: 999px; }
 .delivery-express {
@@ -586,7 +586,7 @@ input, button, textarea, select { font-family: inherit; }
 .trust-label { display: flex; flex-direction: column; align-items: center; font-size: 12px; font-weight: 600; color: var(--ink); line-height: 14px; letter-spacing: -0.12px; text-align: center; }
 
 /* --------------------------- Product details --------------------------- */
-.section-h { margin: 0 0 14px; font-size: 16px; font-weight: 700; color: var(--ink); }
+.section-h { margin: 0 0 14px; font-size: 15px; font-weight: 700; color: var(--ink); }
 .details { padding-bottom: 8px; }
 .accordion { margin-bottom: 8px; background: var(--surface); border-radius: 10px; overflow: hidden; }
 .accordion-head {
