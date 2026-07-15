@@ -47,6 +47,9 @@ function PDP() {
           <div className="pdp-sections">
             <MainInfo onBestseller={() => setView('plp')} />
             <Delivery />
+            <ProductGlance />
+            <PaymentOffers />
+            <VariantPicker />
             <Trustmarkers />
             <ProductDetails />
             <AdditionalInfo />
@@ -1288,6 +1291,135 @@ function Delivery() {
         <span>Other Delivery Options</span>
         <Chev className="row-chev down" />
       </button>
+    </section>
+  )
+}
+
+/* --------------------- Product at a glance (AI summary) -------------------- */
+const GLANCE_BULLETS = [
+  'Fast charges laptops and smartphones',
+  'Power up 3 devices at once',
+  'Works with MacBook, iPhone & Samsung',
+  'Efficient GaN technology for less heat',
+  'Compact enough for everyday travel',
+]
+function Sparkle({ className = '' }) {
+  return (
+    <svg className={className} width="11" height="12" viewBox="0 0 11 12" aria-hidden>
+      <path fill="currentColor" d="M5.5 0c.3 2.3 1.2 3.2 3.5 3.5-2.3.3-3.2 1.2-3.5 3.5C5.2 4.7 4.3 3.8 2 3.5 4.3 3.2 5.2 2.3 5.5 0Z"/>
+      <path fill="currentColor" d="M9 7c.15 1.1.6 1.55 1.7 1.7C9.6 8.85 9.15 9.3 9 10.4c-.15-1.1-.6-1.55-1.7-1.7C8.4 8.55 8.85 8.1 9 7Z"/>
+    </svg>
+  )
+}
+function ProductGlance() {
+  const [open, setOpen] = useState(false)
+  const bullets = open ? GLANCE_BULLETS : GLANCE_BULLETS.slice(0, 2)
+  return (
+    <section className="glance">
+      <div className="glance-head">
+        <span className="glance-title">Product at a glance <Sparkle className="glance-spark" /></span>
+        <button className="glance-toggle" onClick={() => setOpen((o) => !o)}>
+          {open ? 'See less' : 'See more'}
+          <Chev className={`glance-chev${open ? ' up' : ''}`} />
+        </button>
+      </div>
+      <ul className="glance-list">
+        {bullets.map((b) => (
+          <li key={b}><span className="glance-dot" />{b}</li>
+        ))}
+      </ul>
+      {open && (
+        <div className="glance-ai"><Sparkle className="glance-ai-spark" /><span className="glance-ai-txt">Summarised by AI</span></div>
+      )}
+    </section>
+  )
+}
+
+/* ------------------------------ Payment offers ----------------------------- */
+const PAY_OFFERS = [
+  { img: '/icons/pay-noon-card.png', kind: 'card', inline: true },
+  { img: '/icons/save-tabby.png', kind: 'logo', title: 'Get extra 5% cashback', sub: 'on using ENBD noon VISA credit card' },
+  { img: '/icons/save-tamara.png', kind: 'logo', title: 'Split your payment in 4', sub: 'Pay zero interest on 4 instalments' },
+]
+function PaymentOffers() {
+  return (
+    <section className="card pay-offers">
+      <h3 className="po-title">Payment offers</h3>
+      <div className="po-rail">
+        {PAY_OFFERS.map((o, i) => (
+          <div className="po-card" key={i}>
+            <span className={`po-icon po-icon-${o.kind}`}><img src={o.img} alt="" /></span>
+            {o.inline ? (
+              <p className="po-desc"><b>Get extra 5% cashback</b> using ENBD noon VISA credit card <a className="po-cta">Apply Now</a></p>
+            ) : (
+              <div className="po-stack">
+                <p className="po-h">{o.title}</p>
+                <p className="po-sub">{o.sub}</p>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+/* ------------------------------ Variant picker ----------------------------- */
+const VP_COLOURS = [
+  { name: '735 GaN', img: '/anker-charger.png' },
+  { name: '735 GaN II', img: '/pab-wallcharger.jpg' },
+  { name: '736 GaN II', img: '/pab-anker737.png' },
+  { name: '736 GaN', img: '/pab-powerbank.png', oos: true },
+]
+function VariantPicker() {
+  const [version, setVersion] = useState('UK 3 PIN')
+  const [model, setModel] = useState('UK 3 PIN')
+  const [colour, setColour] = useState('735 GaN II')
+  return (
+    <section className="card variant-picker">
+      <div className="vp-group">
+        <div className="vp-head">
+          <h3 className="vp-title">Versions</h3>
+          <button className="vp-link"><InfoDot /> Learn more</button>
+        </div>
+        <div className="vp-chips">
+          {['UK 3 PIN', 'US 2 PIN'].map((v) => (
+            <button key={v} className={`vp-chip${version === v ? ' on' : ''}`} onClick={() => setVersion(v)}>{v}</button>
+          ))}
+        </div>
+      </div>
+      <div className="vp-group">
+        <div className="vp-head">
+          <h3 className="vp-title">Charger Model</h3>
+          <button className="vp-link">Size Guide <Chev className="row-chev" /></button>
+        </div>
+        <div className="vp-chips">
+          {['UK 3 PIN', 'US 2 PIN'].map((v) => (
+            <button key={v} className={`vp-chip${model === v ? ' on' : ''}`} onClick={() => setModel(v)}>{v}</button>
+          ))}
+        </div>
+      </div>
+      <div className="vp-group">
+        <div className="vp-head">
+          <h3 className="vp-title">Colour</h3>
+          <button className="vp-link vp-viewall">View All</button>
+        </div>
+        <div className="vp-colours">
+          {VP_COLOURS.map((c) => (
+            <button
+              key={c.name}
+              className={`vp-colour${colour === c.name ? ' on' : ''}${c.oos ? ' oos' : ''}`}
+              onClick={() => !c.oos && setColour(c.name)}
+            >
+              <span className="vp-colour-img">
+                <img src={c.img} alt={c.name} />
+                {c.oos && <span className="vp-oos">OUT OF STOCK</span>}
+              </span>
+              <span className="vp-colour-name">{c.name}</span>
+            </button>
+          ))}
+        </div>
+      </div>
     </section>
   )
 }
