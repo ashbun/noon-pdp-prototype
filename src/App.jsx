@@ -1518,108 +1518,6 @@ function StreamingTeaser({ text, streamedRef, className }) {
   )
 }
 
-// Opacity for a streamed-in character: 10% when it's the newest one revealed,
-// ramping linearly to 100% by the 10th-most-recent character; older stay opaque.
-function charFadeOpacity(distance) {
-  return distance >= 9 ? 1 : 0.1 + (0.9 * distance) / 9
-}
-
-// A single bullet <li> whose text streams in a character at a time (15ms/char)
-// as soon as it mounts, calling onDone once fully revealed so a parent can
-// chain the next bullet.
-function StreamingBullet({ text, onDone }) {
-  const [tick, setTick] = useState(0)
-  const doneRef = useRef(false)
-
-  useEffect(() => {
-    const maxTick = text.length + 9
-    if (tick >= maxTick) {
-      if (!doneRef.current) { doneRef.current = true; onDone && onDone() }
-      return
-    }
-    const id = setTimeout(() => setTick((t) => t + 1), 15)
-    return () => clearTimeout(id)
-  }, [tick, text, onDone])
-
-  const revealedCount = Math.min(tick + 1, text.length)
-
-  return (
-    <motion.li initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }}>
-      <SumCheck />
-      <span>
-        {text.split('').map((ch, i) => {
-          if (i >= revealedCount) return null
-          const opacity = charFadeOpacity(tick - i)
-          return <span key={i} style={{ opacity }}>{ch}</span>
-        })}
-      </span>
-    </motion.li>
-  )
-}
-
-// First two bullets show immediately; the rest stream in one-by-one the first
-// time the list scrolls into view, growing the box's height as each lands.
-// Module-level (not component state) so "first time only" survives the user
-// switching the summary-design option away and back — not just re-scrolling
-// while this component instance happens to stay mounted.
-const glanceStreamed = { current: false }
-
-function DetailsGlanceList() {
-  const extras = GLANCE_BULLETS.slice(2)
-  const alreadyDone = glanceStreamed.current
-  const [revealed, setRevealed] = useState(alreadyDone ? extras.length : 0)
-  const listRef = useRef(null)
-
-  useEffect(() => {
-    if (alreadyDone) return
-    const el = listRef.current
-    if (!el) return
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          glanceStreamed.current = true
-          setRevealed(1)
-          io.disconnect()
-        }
-      },
-      { threshold: 0.1 }
-    )
-    io.observe(el)
-    return () => io.disconnect()
-  }, [alreadyDone])
-
-  return (
-    <motion.ul className="psum-list" layout ref={listRef}>
-      {GLANCE_BULLETS.slice(0, 2).map((b) => (
-        <li key={b}><SumCheck />{b}</li>
-      ))}
-      {extras.map((b, i) => {
-        if (i >= revealed) return null
-        return i === revealed - 1 && !alreadyDone ? (
-          <StreamingBullet
-            key={b}
-            text={b}
-            onDone={() => setRevealed((r) => (r < extras.length ? r + 1 : r))}
-          />
-        ) : (
-          <li key={b}><SumCheck />{b}</li>
-        )
-      })}
-    </motion.ul>
-  )
-}
-
-// A duplicate text layer clipped to a moving highlight band, sweeping across
-// the gradient title twice on mount to draw the eye to "Summarised by AI".
-function ShineTitle({ text, className }) {
-  return (
-    <span className="shine-wrap">
-      <span className={className}>{text}</span>
-      <span className={`${className} shine-overlay`} aria-hidden="true">{text}</span>
-    </span>
-  )
-}
-
 function DetailsAiBox({ variant }) {
   const [open, setOpen] = useState(false)
   const streamedRef = useRef(false)
@@ -1627,16 +1525,20 @@ function DetailsAiBox({ variant }) {
     return (
       <div className="pdet-ai">
         <div className="pdet-ai-head">
-          <ShineTitle text="Summarised by AI" className="pdet-ai-title" />
+          <span className="pdet-ai-title">Summarised by AI</span>
         </div>
-        <DetailsGlanceList />
+        <ul className="psum-list">
+          {GLANCE_BULLETS.map((b) => (
+            <li key={b}><SumCheck />{b}</li>
+          ))}
+        </ul>
       </div>
     )
   }
   return (
     <div className="pdet-ai">
       <button className="pdet-ai-head pdet-ai-toggle" onClick={() => setOpen((o) => !o)}>
-        <ShineTitle text="Summarised by AI" className="pdet-ai-title" />
+        <span className="pdet-ai-title">Summarised by AI</span>
         <Chev className={`pdet-ai-chev${open ? ' up' : ''}`} />
       </button>
       {!open && <StreamingTeaser text={GLANCE_TEASER} streamedRef={streamedRef} className="pdet-ai-teaser" />}
