@@ -25,6 +25,7 @@ function PDP() {
   const [cartOpen, setCartOpen] = useState(false)
   const [view, setView] = useState('pdp')
   const [cartQty, setCartQty] = useState({})
+  const [summaryOption, setSummaryOption] = useState(1)
 
   // Scroll-linked gallery: the product image shrinks as the page scrolls,
   // so the content sliding over the pinned gallery feels more interactive.
@@ -41,17 +42,17 @@ function PDP() {
   return (
     <>
       <div className="pdp">
-        <StatusBar />
+        <StatusBar summaryOption={summaryOption} onSummaryOption={setSummaryOption} />
         <div className="pdp-scroll" ref={scrollRef}>
           <Gallery imgScale={imgScale} imgOpacity={imgOpacity} />
           <div className="pdp-sections">
             <MainInfo onBestseller={() => setView('plp')} />
             <Delivery />
-            <ProductGlance />
+            {summaryOption === 1 && <ProductGlance />}
             <PaymentOffers />
             <VariantPicker />
             <Trustmarkers />
-            <ProductDetails />
+            <ProductDetails summaryOption={summaryOption} />
             <AdditionalInfo />
             <SellerWidget />
             <Reviews />
@@ -1105,10 +1106,22 @@ function TopNav({ state = 1, onBack }) {
   )
 }
 
-function StatusBar() {
+function StatusBar({ summaryOption, onSummaryOption }) {
   return (
     <div className="pdp-topbar">
       <TopNav state={1} />
+      <div className="summary-toggle" role="group" aria-label="Product summary design">
+        {[1, 2, 3].map((n) => (
+          <button
+            key={n}
+            className={`summary-toggle-btn${summaryOption === n ? ' on' : ''}`}
+            onClick={() => onSummaryOption(n)}
+            aria-pressed={summaryOption === n}
+          >
+            {n}
+          </button>
+        ))}
+      </div>
     </div>
   )
 }
@@ -1453,12 +1466,70 @@ function Trustmarkers() {
 }
 
 /* ----------------------------- Product details ----------------------------- */
-function ProductDetails() {
+const GLANCE_TEASER = 'Fast, compact GaN charger that powers up to 3 devices simultaneously, including laptops and sma...'
+
+function DetailsAiBox({ variant }) {
+  const [open, setOpen] = useState(false)
+  if (variant === 2) {
+    return (
+      <div className="pdet-ai">
+        <div className="pdet-ai-head">
+          <span className="pdet-ai-title">Summarised by AI</span>
+        </div>
+        <ul className="psum-list">
+          {GLANCE_BULLETS.map((b) => (
+            <li key={b}><SumCheck />{b}</li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+  return (
+    <div className="pdet-ai">
+      <button className="pdet-ai-head pdet-ai-toggle" onClick={() => setOpen((o) => !o)}>
+        <span className="pdet-ai-title">Summarised by AI</span>
+        <Chev className={`pdet-ai-chev${open ? ' up' : ''}`} />
+      </button>
+      {!open && <p className="pdet-ai-teaser">{GLANCE_TEASER}</p>}
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            className="pdet-ai-expand"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={MOTION}
+          >
+            <ul className="psum-list">
+              {GLANCE_BULLETS.map((b) => (
+                <li key={b}><SumCheck />{b}</li>
+              ))}
+            </ul>
+            <div className="psum-know">
+              <p className="psum-know-h">Good to know</p>
+              <div className="psum-know-row">
+                <svg className="psum-info" width="16" height="16" viewBox="0 0 24 24" aria-hidden>
+                  <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1.8"/>
+                  <path stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" d="M12 11v5"/>
+                  <circle cx="12" cy="7.7" r="1.1" fill="currentColor"/>
+                </svg>
+                <span>Does not support 240V power supply.</span>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
+
+function ProductDetails({ summaryOption }) {
   const rows = ['Overview', 'Highlights', 'Specifications']
   const [open, setOpen] = useState(null)
   return (
     <section className="card details">
       <h3 className="section-h">Product Details</h3>
+      {(summaryOption === 2 || summaryOption === 3) && <DetailsAiBox variant={summaryOption} />}
       {rows.map((r) => (
         <div className="accordion" key={r}>
           <button className="accordion-head" onClick={() => setOpen(open === r ? null : r)}>
