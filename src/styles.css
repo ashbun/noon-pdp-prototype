@@ -397,7 +397,7 @@ input, button, textarea, select { font-family: inherit; }
 .card { background: var(--white); border-radius: 16px; padding: 12px; }
 
 /* --------- Product summary (AI summary) --------- */
-.psum { background: var(--white); border: 1px solid #ffffff; border-radius: 12px; overflow: hidden; padding-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+.psum { background: var(--white); border: 1px solid #ffffff; border-radius: 12px; overflow: hidden; padding-top: 12px; display: flex; flex-direction: column; gap: 0px; }
 .psum-head { display: flex; align-items: center; justify-content: space-between; padding: 0 12px; }
 .psum-title { font-size: 15px; font-weight: 700; letter-spacing: -0.14px; background: linear-gradient(90deg, #4146ce, #bf3deb); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
 .psum-ai { font-size: 12px; font-weight: 500; line-height: 18px; color: var(--ink-500); letter-spacing: -0.1px; }
@@ -405,14 +405,15 @@ input, button, textarea, select { font-family: inherit; }
 .psum-list li { display: flex; align-items: center; gap: 8px; padding: 0 12px; font-size: 13px; font-weight: 400; line-height: 20px; color: var(--ink-700); letter-spacing: -0.1px; }
 .psum-check { flex: 0 0 auto; }
 .psum-know { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; }
-.psum-know-h { margin: 0; padding: 0 12px; font-size: 13px; font-weight: 700; line-height: 20px; color: var(--ink-900); letter-spacing: -0.1px; }
-.psum-know-row { display: flex; align-items: center; gap: 8px; padding: 0 12px; font-size: 13px; font-weight: 400; line-height: 20px; color: var(--ink-700); letter-spacing: -0.1px; }
+.psum-know-h { margin: 0; padding: 4px 12px 0; font-size: 13px; font-weight: 700; line-height: 20px; color: var(--ink-900); letter-spacing: -0.1px; }
+.psum-know-row { display: flex; align-items: center; gap: 8px; padding: 0 12px; margin-bottom: 4px; font-size: 13px; font-weight: 400; line-height: 20px; color: var(--ink-700); letter-spacing: -0.1px; }
 .psum-info { flex: 0 0 auto; color: var(--ink-600); }
 .psum-foot { margin-top: 8px; height: 40px; display: flex; align-items: center; justify-content: space-between; padding: 6px 12px; background: #fdf6ff; }
 .psum-foot-q { font-size: 13px; font-weight: 400; line-height: 20px; color: var(--ink-600); letter-spacing: -0.1px; }
 .psum-ask { display: inline-flex; align-items: center; gap: 0; border: 0; background: none; padding: 4px 0; cursor: pointer; font-family: inherit; }
 .psum-ask-txt { font-size: 12px; font-weight: 600; letter-spacing: 0; background: linear-gradient(90deg, #4146ce, #bf3deb); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
 .psum-ask-chev { width: 16px; height: 16px; color: #a13fe0; }
+.psum-ask-chev path { stroke: #ae3ee7; }
 
 /* --------- Payment offers --------- */
 .pay-offers { display: flex; flex-direction: column; gap: 12px; padding: 12px 0; }
