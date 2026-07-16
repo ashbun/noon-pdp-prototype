@@ -406,17 +406,17 @@ input, button, textarea, select { font-family: inherit; }
 
 /* --------- Product summary (AI summary) --------- */
 .psum { background: var(--white); border: 1px solid #ffffff; border-radius: 12px; overflow: hidden; padding-top: 12px; display: flex; flex-direction: column; gap: 0px; }
-.psum-head { display: flex; align-items: center; justify-content: space-between; padding: 0 12px; }
+.psum-head { display: flex; align-items: center; justify-content: space-between; padding: 0 12px 4px; }
 .psum-title { font-size: 15px; font-weight: 700; letter-spacing: -0.14px; background: linear-gradient(90deg, #4146ce, #bf3deb); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
 .psum-ai { font-size: 12px; font-weight: 500; line-height: 18px; color: var(--ink-500); letter-spacing: -0.1px; }
 .psum-list { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
 .psum-list li { display: flex; align-items: center; gap: 8px; padding: 0 12px; font-size: 13px; font-weight: 400; line-height: 20px; color: var(--ink-700); letter-spacing: -0.1px; }
 .psum-check { flex: 0 0 auto; }
-.psum-know { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; }
-.psum-know-h { margin: 0; padding: 4px 12px 0; font-size: 13px; font-weight: 700; line-height: 20px; color: var(--ink-900); letter-spacing: -0.1px; }
+.psum-know { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+.psum-know-h { margin: 0; padding: 6px 12px 0; font-size: 13px; font-weight: 700; line-height: 20px; color: var(--ink-900); letter-spacing: -0.1px; }
 .psum-know-row { display: flex; align-items: center; gap: 8px; padding: 0 12px; margin-bottom: 4px; font-size: 13px; font-weight: 400; line-height: 20px; color: var(--ink-700); letter-spacing: -0.1px; }
 .psum-info { flex: 0 0 auto; color: var(--ink-600); }
-.psum-foot { margin-top: 8px; height: 40px; display: flex; align-items: center; justify-content: space-between; padding: 6px 12px; background: #fdf6ff; }
+.psum-foot { margin-top: 8px; height: 38px; flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; padding: 4px 12px; background: #fdf6ff; }
 .psum-foot-q { font-size: 13px; font-weight: 400; line-height: 20px; color: var(--ink-600); letter-spacing: -0.1px; }
 .psum-ask { display: inline-flex; align-items: center; gap: 0; border: 0; background: none; padding: 4px 0; cursor: pointer; font-family: inherit; }
 .psum-ask-txt { font-size: 12px; font-weight: 600; letter-spacing: 0; background: linear-gradient(90deg, #4146ce, #bf3deb); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
@@ -607,6 +607,18 @@ input, button, textarea, select { font-family: inherit; }
 .pdet-ai-head { display: flex; align-items: center; justify-content: space-between; padding: 0 12px; }
 .pdet-ai-toggle { border: 0; background: none; cursor: pointer; font-family: inherit; width: 100%; }
 .pdet-ai-title { font-size: 14px; font-weight: 700; letter-spacing: -0.14px; background: linear-gradient(90deg, #4146ce, #bf3deb); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
+.shine-wrap { position: relative; display: inline-block; }
+.shine-overlay {
+  position: absolute; inset: 0; pointer-events: none; background-color: transparent !important;
+  background-image: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,.9) 50%, rgba(255,255,255,0) 60%, rgba(255,255,255,0) 100%);
+  background-size: 200% 100%; background-position: -100% 0;
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;
+  animation: shine-sweep 1.3s ease-in-out 2; animation-fill-mode: forwards;
+}
+@keyframes shine-sweep {
+  from { background-position: -100% 0; }
+  to { background-position: 100% 0; }
+}
 .pdet-ai-chev { width: 20px; height: 20px; color: #8f4fe0; transform: rotate(90deg); transition: transform .18s ease; }
 .pdet-ai-chev.up { transform: rotate(-90deg); }
 .pdet-ai-teaser {

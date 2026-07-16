@@ -1604,6 +1604,17 @@ function DetailsGlanceList() {
   )
 }
 
+// A duplicate text layer clipped to a moving highlight band, sweeping across
+// the gradient title twice on mount to draw the eye to "Summarised by AI".
+function ShineTitle({ text, className }) {
+  return (
+    <span className="shine-wrap">
+      <span className={className}>{text}</span>
+      <span className={`${className} shine-overlay`} aria-hidden="true">{text}</span>
+    </span>
+  )
+}
+
 function DetailsAiBox({ variant }) {
   const [open, setOpen] = useState(false)
   const streamedRef = useRef(false)
@@ -1611,7 +1622,7 @@ function DetailsAiBox({ variant }) {
     return (
       <div className="pdet-ai">
         <div className="pdet-ai-head">
-          <span className="pdet-ai-title">Summarised by AI</span>
+          <ShineTitle text="Summarised by AI" className="pdet-ai-title" />
         </div>
         <DetailsGlanceList />
       </div>
@@ -1620,7 +1631,7 @@ function DetailsAiBox({ variant }) {
   return (
     <div className="pdet-ai">
       <button className="pdet-ai-head pdet-ai-toggle" onClick={() => setOpen((o) => !o)}>
-        <span className="pdet-ai-title">Summarised by AI</span>
+        <ShineTitle text="Summarised by AI" className="pdet-ai-title" />
         <Chev className={`pdet-ai-chev${open ? ' up' : ''}`} />
       </button>
       {!open && <StreamingTeaser text={GLANCE_TEASER} streamedRef={streamedRef} className="pdet-ai-teaser" />}
