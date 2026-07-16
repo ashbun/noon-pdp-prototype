@@ -1317,40 +1317,17 @@ function Sparkle({ className = '' }) {
   )
 }
 function ProductGlance() {
-  const [open, setOpen] = useState(false)
   return (
-    <section className={`glance${open ? ' open' : ''}`}>
+    <section className="glance open">
       <div className="glance-head">
         <span className="glance-title">Product at a glance<Sparkle className="glance-spark" /></span>
-        <button className="glance-toggle" onClick={() => setOpen((o) => !o)}>
-          {open ? 'See less' : 'See more'}
-          <Chev className={`glance-chev${open ? ' up' : ''}`} />
-        </button>
       </div>
       <ul className="glance-list">
-        {GLANCE_BULLETS.slice(0, 2).map((b) => (
+        {GLANCE_BULLETS.map((b) => (
           <li key={b}><span className="glance-dot" />{b}</li>
         ))}
       </ul>
-      <AnimatePresence initial={false}>
-        {open && (
-          <motion.div
-            key="more"
-            className="glance-more"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.28, ease: [0.22, 0.61, 0.36, 1] }}
-          >
-            <ul className="glance-list">
-              {GLANCE_BULLETS.slice(2).map((b) => (
-                <li key={b}><span className="glance-dot" />{b}</li>
-              ))}
-            </ul>
-            <div className="glance-ai"><Sparkle className="glance-ai-spark" /><span className="glance-ai-txt">Summarised by AI</span></div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div className="glance-ai"><Sparkle className="glance-ai-spark" /><span className="glance-ai-txt">Summarised by AI</span></div>
     </section>
   )
 }
