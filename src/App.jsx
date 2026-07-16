@@ -1559,20 +1559,25 @@ function StreamingBullet({ text, onDone }) {
 
 // First two bullets show immediately; the rest stream in one-by-one the first
 // time the list scrolls into view, growing the box's height as each lands.
+// Module-level (not component state) so "first time only" survives the user
+// switching the summary-design option away and back — not just re-scrolling
+// while this component instance happens to stay mounted.
+const glanceStreamed = { current: false }
+
 function DetailsGlanceList() {
   const extras = GLANCE_BULLETS.slice(2)
-  const [revealed, setRevealed] = useState(0)
-  const startedRef = useRef(false)
+  const alreadyDone = glanceStreamed.current
+  const [revealed, setRevealed] = useState(alreadyDone ? extras.length : 0)
   const listRef = useRef(null)
 
   useEffect(() => {
-    if (startedRef.current) return
+    if (alreadyDone) return
     const el = listRef.current
     if (!el) return
     const io = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          startedRef.current = true
+          glanceStreamed.current = true
           setRevealed(1)
           io.disconnect()
         }
@@ -1581,7 +1586,7 @@ function DetailsGlanceList() {
     )
     io.observe(el)
     return () => io.disconnect()
-  }, [])
+  }, [alreadyDone])
 
   return (
     <motion.ul className="psum-list" layout ref={listRef}>
@@ -1590,7 +1595,7 @@ function DetailsGlanceList() {
       ))}
       {extras.map((b, i) => {
         if (i >= revealed) return null
-        return i === revealed - 1 ? (
+        return i === revealed - 1 && !alreadyDone ? (
           <StreamingBullet
             key={b}
             text={b}
