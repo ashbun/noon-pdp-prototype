@@ -1303,31 +1303,43 @@ const GLANCE_BULLETS = [
   'Efficient GaN technology for less heat',
   'Compact enough for everyday travel',
 ]
-function Sparkle({ className = '' }) {
+function SumCheck() {
   return (
-    <svg className={className} width="14" height="14" viewBox="4 1 13 13" fill="none" aria-hidden>
-      <path d="M10.711 2.48847C10.5461 2.04225 9.9154 2.04225 9.75052 2.48847C9.03278 4.42772 7.50398 5.95652 5.56544 6.67356C5.11922 6.83844 5.11922 7.46918 5.56544 7.63406C7.50468 8.3518 9.03348 9.8806 9.75052 11.8191C9.9154 12.2654 10.5461 12.2654 10.711 11.8191C11.4288 9.8799 12.9576 8.3511 14.8961 7.63406C15.3423 7.46918 15.3423 6.83844 14.8961 6.67356C12.9569 5.95582 11.4281 4.42701 10.711 2.48847Z" fill="url(#ai-spark-grad)"/>
-      <defs>
-        <linearGradient id="ai-spark-grad" x1="5.23" y1="7.15" x2="15.23" y2="7.15" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#4146CE"/>
-          <stop offset="1" stopColor="#BF3DEB"/>
-        </linearGradient>
-      </defs>
+    <svg className="psum-check" width="16" height="16" viewBox="0 0 16 16" aria-hidden>
+      <path fill="none" stroke="#8f4fe0" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" d="M3.2 8.4l3 3 6.6-7"/>
     </svg>
   )
 }
 function ProductGlance() {
   return (
-    <section className="glance open">
-      <div className="glance-head">
-        <span className="glance-title">Product at a glance<Sparkle className="glance-spark" /></span>
+    <section className="psum">
+      <div className="psum-head">
+        <span className="psum-title">Product summary</span>
+        <span className="psum-ai">Summarised by AI</span>
       </div>
-      <ul className="glance-list">
+      <ul className="psum-list">
         {GLANCE_BULLETS.map((b) => (
-          <li key={b}><span className="glance-dot" />{b}</li>
+          <li key={b}><SumCheck />{b}</li>
         ))}
       </ul>
-      <div className="glance-ai"><Sparkle className="glance-ai-spark" /><span className="glance-ai-txt">Summarised by AI</span></div>
+      <div className="psum-know">
+        <p className="psum-know-h">Good to know</p>
+        <div className="psum-know-row">
+          <svg className="psum-info" width="16" height="16" viewBox="0 0 24 24" aria-hidden>
+            <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1.8"/>
+            <path stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" d="M12 11v5"/>
+            <circle cx="12" cy="7.7" r="1.1" fill="currentColor"/>
+          </svg>
+          <span>Does not support 240V power supply.</span>
+        </div>
+      </div>
+      <div className="psum-foot">
+        <span className="psum-foot-q">Still have a question about product?</span>
+        <button className="psum-ask">
+          <span className="psum-ask-txt">Ask Nora</span>
+          <Chev className="psum-ask-chev" />
+        </button>
+      </div>
     </section>
   )
 }
