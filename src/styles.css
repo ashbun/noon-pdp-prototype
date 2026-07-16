@@ -607,7 +607,7 @@ input, button, textarea, select { font-family: inherit; }
 .pdet-ai-head { display: flex; align-items: center; justify-content: space-between; padding: 0 12px; }
 .pdet-ai-toggle { border: 0; background: none; cursor: pointer; font-family: inherit; width: 100%; }
 .pdet-ai-title { font-size: 14px; font-weight: 700; letter-spacing: -0.14px; background: linear-gradient(90deg, #4146ce, #bf3deb); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
-.pdet-ai-chev { width: 18px; height: 18px; color: #8f4fe0; transform: rotate(90deg); transition: transform .18s ease; }
+.pdet-ai-chev { width: 20px; height: 20px; color: #8f4fe0; transform: rotate(90deg); transition: transform .18s ease; }
 .pdet-ai-chev.up { transform: rotate(-90deg); }
 .pdet-ai-teaser {
   margin: 0; padding: 4px 12px 0; font-size: 13px; font-weight: 400; line-height: 20px; color: var(--ink-700); letter-spacing: -0.1px;
