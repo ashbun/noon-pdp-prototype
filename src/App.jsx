@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
 import { Retune } from 'retune'
 
@@ -1466,10 +1466,61 @@ function Trustmarkers() {
 }
 
 /* ----------------------------- Product details ----------------------------- */
-const GLANCE_TEASER = 'Fast, compact GaN charger that powers up to 3 devices simultaneously, including laptops and sma...'
+const GLANCE_TEASER = 'Fast, compact GaN charger that powers up to 3 devices simultaneously, including laptops and smart...'
+
+// Reveals text one character at a time (15ms/char) the first time it scrolls
+// into view. The trailing 10 characters fade in (10% -> 100% opacity); older
+// characters are already fully opaque. `streamedRef` remembers completion so
+// re-showing the node (e.g. re-collapsing an accordion) doesn't replay it.
+function StreamingTeaser({ text, streamedRef, className }) {
+  const [tick, setTick] = useState(streamedRef.current ? text.length + 9 : -1)
+  const elRef = useRef(null)
+
+  useEffect(() => {
+    if (streamedRef.current) return
+    const el = elRef.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setTick(0)
+          io.disconnect()
+        }
+      },
+      { threshold: 0.1 }
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [streamedRef])
+
+  useEffect(() => {
+    if (tick < 0) return
+    const maxTick = text.length + 9
+    if (tick >= maxTick) {
+      streamedRef.current = true
+      return
+    }
+    const id = setTimeout(() => setTick((t) => t + 1), 15)
+    return () => clearTimeout(id)
+  }, [tick, text, streamedRef])
+
+  const revealedCount = tick < 0 ? 0 : Math.min(tick + 1, text.length)
+
+  return (
+    <p className={className} ref={elRef}>
+      {text.split('').map((ch, i) => {
+        if (i >= revealedCount) return null
+        const distance = tick - i
+        const opacity = distance >= 9 ? 1 : 0.1 + (0.9 * distance) / 9
+        return <span key={i} style={{ opacity }}>{ch}</span>
+      })}
+    </p>
+  )
+}
 
 function DetailsAiBox({ variant }) {
   const [open, setOpen] = useState(false)
+  const streamedRef = useRef(false)
   if (variant === 2) {
     return (
       <div className="pdet-ai">
@@ -1490,7 +1541,7 @@ function DetailsAiBox({ variant }) {
         <span className="pdet-ai-title">Summarised by AI</span>
         <Chev className={`pdet-ai-chev${open ? ' up' : ''}`} />
       </button>
-      {!open && <p className="pdet-ai-teaser">{GLANCE_TEASER}</p>}
+      {!open && <StreamingTeaser text={GLANCE_TEASER} streamedRef={streamedRef} className="pdet-ai-teaser" />}
       <AnimatePresence initial={false}>
         {open && (
           <motion.div
