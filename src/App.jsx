@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
 import { Retune } from 'retune'
 
@@ -25,7 +25,6 @@ function PDP() {
   const [cartOpen, setCartOpen] = useState(false)
   const [view, setView] = useState('pdp')
   const [cartQty, setCartQty] = useState({})
-  const [summaryOption, setSummaryOption] = useState(1)
 
   // Scroll-linked gallery: the product image shrinks as the page scrolls,
   // so the content sliding over the pinned gallery feels more interactive.
@@ -42,17 +41,16 @@ function PDP() {
   return (
     <>
       <div className="pdp">
-        <StatusBar summaryOption={summaryOption} onSummaryOption={setSummaryOption} />
+        <StatusBar />
         <div className="pdp-scroll" ref={scrollRef}>
           <Gallery imgScale={imgScale} imgOpacity={imgOpacity} />
           <div className="pdp-sections">
             <MainInfo onBestseller={() => setView('plp')} />
             <Delivery />
-            {summaryOption === 1 && <ProductGlance />}
             <PaymentOffers />
             <VariantPicker />
             <Trustmarkers />
-            <ProductDetails summaryOption={summaryOption} />
+            <ProductDetails />
             <AdditionalInfo />
             <SellerWidget />
             <Reviews />
@@ -1106,22 +1104,10 @@ function TopNav({ state = 1, onBack }) {
   )
 }
 
-function StatusBar({ summaryOption, onSummaryOption }) {
+function StatusBar() {
   return (
     <div className="pdp-topbar">
       <TopNav state={1} />
-      <div className="summary-toggle" role="group" aria-label="Product summary design">
-        {[1, 2, 3].map((n) => (
-          <button
-            key={n}
-            className={`summary-toggle-btn${summaryOption === n ? ' on' : ''}`}
-            onClick={() => onSummaryOption(n)}
-            aria-pressed={summaryOption === n}
-          >
-            {n}
-          </button>
-        ))}
-      </div>
     </div>
   )
 }
@@ -1308,55 +1294,6 @@ function Delivery() {
   )
 }
 
-/* --------------------- Product at a glance (AI summary) -------------------- */
-const GLANCE_BULLETS = [
-  'Fast charges laptops and smartphones',
-  'Power up 3 devices at once',
-  'Works with MacBook, iPhone & Samsung',
-  'Efficient GaN technology for less heat',
-  'Compact enough for everyday travel',
-]
-function SumCheck() {
-  return (
-    <svg className="psum-check" width="16" height="16" viewBox="0 0 16 16" aria-hidden>
-      <path fill="none" stroke="#8f4fe0" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" d="M3.2 8.4l3 3 6.6-7"/>
-    </svg>
-  )
-}
-function ProductGlance() {
-  return (
-    <section className="psum">
-      <div className="psum-head">
-        <span className="psum-title">Product summary</span>
-        <span className="psum-ai">Summarised by AI</span>
-      </div>
-      <ul className="psum-list">
-        {GLANCE_BULLETS.map((b) => (
-          <li key={b}><SumCheck />{b}</li>
-        ))}
-      </ul>
-      <div className="psum-know">
-        <p className="psum-know-h">Good to know</p>
-        <div className="psum-know-row">
-          <svg className="psum-info" width="16" height="16" viewBox="0 0 24 24" aria-hidden>
-            <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1.8"/>
-            <path stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" d="M12 11v5"/>
-            <circle cx="12" cy="7.7" r="1.1" fill="currentColor"/>
-          </svg>
-          <span>Does not support 240V power supply.</span>
-        </div>
-      </div>
-      <div className="psum-foot">
-        <span className="psum-foot-q">Still have a question about product?</span>
-        <button className="psum-ask">
-          <span className="psum-ask-txt">Ask Nora</span>
-          <Chev className="psum-ask-chev" />
-        </button>
-      </div>
-    </section>
-  )
-}
-
 /* ------------------------------ Payment offers ----------------------------- */
 const PAY_OFFERS = [
   { img: '/icons/pay-noon-card.png', kind: 'card', inline: true },
@@ -1466,121 +1403,12 @@ function Trustmarkers() {
 }
 
 /* ----------------------------- Product details ----------------------------- */
-const GLANCE_TEASER = 'Fast, compact GaN charger that powers up to 3 devices simultaneously, including laptops and smart...'
-
-// Reveals text one character at a time (15ms/char) the first time it scrolls
-// into view. The trailing 10 characters fade in (10% -> 100% opacity); older
-// characters are already fully opaque. `streamedRef` remembers completion so
-// re-showing the node (e.g. re-collapsing an accordion) doesn't replay it.
-function StreamingTeaser({ text, streamedRef, className }) {
-  const [tick, setTick] = useState(streamedRef.current ? text.length + 9 : -1)
-  const elRef = useRef(null)
-
-  useEffect(() => {
-    if (streamedRef.current) return
-    const el = elRef.current
-    if (!el) return
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setTick(0)
-          io.disconnect()
-        }
-      },
-      { threshold: 0.1 }
-    )
-    io.observe(el)
-    return () => io.disconnect()
-  }, [streamedRef])
-
-  useEffect(() => {
-    if (tick < 0) return
-    const maxTick = text.length + 9
-    if (tick >= maxTick) {
-      streamedRef.current = true
-      return
-    }
-    const id = setTimeout(() => setTick((t) => t + 1), 15)
-    return () => clearTimeout(id)
-  }, [tick, text, streamedRef])
-
-  const revealedCount = tick < 0 ? 0 : Math.min(tick + 1, text.length)
-
-  return (
-    <p className={className} ref={elRef}>
-      {text.split('').map((ch, i) => {
-        if (i >= revealedCount) return null
-        const distance = tick - i
-        const opacity = distance >= 9 ? 1 : 0.1 + (0.9 * distance) / 9
-        return <span key={i} style={{ opacity }}>{ch}</span>
-      })}
-    </p>
-  )
-}
-
-function DetailsAiBox({ variant }) {
-  const [open, setOpen] = useState(false)
-  const streamedRef = useRef(false)
-  if (variant === 2) {
-    return (
-      <div className="pdet-ai">
-        <div className="pdet-ai-head">
-          <span className="pdet-ai-title">Summarised by AI</span>
-        </div>
-        <ul className="psum-list">
-          {GLANCE_BULLETS.map((b) => (
-            <li key={b}><SumCheck />{b}</li>
-          ))}
-        </ul>
-      </div>
-    )
-  }
-  return (
-    <div className="pdet-ai">
-      <button className="pdet-ai-head pdet-ai-toggle" onClick={() => setOpen((o) => !o)}>
-        <span className="pdet-ai-title">Summarised by AI</span>
-        <Chev className={`pdet-ai-chev${open ? ' up' : ''}`} />
-      </button>
-      {!open && <StreamingTeaser text={GLANCE_TEASER} streamedRef={streamedRef} className="pdet-ai-teaser" />}
-      <AnimatePresence initial={false}>
-        {open && (
-          <motion.div
-            className="pdet-ai-expand"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={MOTION}
-          >
-            <ul className="psum-list">
-              {GLANCE_BULLETS.map((b) => (
-                <li key={b}><SumCheck />{b}</li>
-              ))}
-            </ul>
-            <div className="psum-know">
-              <p className="psum-know-h">Good to know</p>
-              <div className="psum-know-row">
-                <svg className="psum-info" width="16" height="16" viewBox="0 0 24 24" aria-hidden>
-                  <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1.8"/>
-                  <path stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" d="M12 11v5"/>
-                  <circle cx="12" cy="7.7" r="1.1" fill="currentColor"/>
-                </svg>
-                <span>Does not support 240V power supply.</span>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  )
-}
-
-function ProductDetails({ summaryOption }) {
+function ProductDetails() {
   const rows = ['Overview', 'Highlights', 'Specifications']
   const [open, setOpen] = useState(null)
   return (
     <section className="card details">
       <h3 className="section-h">Product Details</h3>
-      {(summaryOption === 2 || summaryOption === 3) && <DetailsAiBox variant={summaryOption} />}
       {rows.map((r) => (
         <div className="accordion" key={r}>
           <button className="accordion-head" onClick={() => setOpen(open === r ? null : r)}>
